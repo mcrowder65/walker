@@ -8,7 +8,7 @@ Desired product:<br>
     - Create a google maps web component where you can do the minimum viable product plus a simple web interface where 
     anybody can input current location and desired destination (only for BYU campus).<br>
     - Users can annotate buildings anywhere.<br>
-    -Users can input how much they care about walking through lawns, parking lots, buildings, etc.<br>
+    - Users can input how much they care about walking through lawns, parking lots, buildings, etc.<br>
 
 
 Technologies used:<br>
