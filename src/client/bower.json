@@ -1,0 +1,22 @@
+{
+  "name": "client",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Matt Crowder <mcrowder65@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/mcrowder65/walker",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.8.0",
+    "iron-icon": "^1.0.12",
+    "google-map": "^1.2.0"
+  }
+}
