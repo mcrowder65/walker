@@ -1,7 +1,5 @@
 package server.handlers;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -25,32 +23,31 @@ public class Handler implements HttpHandler {
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 		exchange.getResponseBody().write("Your java server is running.".getBytes());
 		exchange.getResponseBody().close();
-		readFile("../../client/components/walker/walker.html");
 	}
 
-	private void readFile(String filename) {
-		BufferedReader br = null;
-		FileReader fr = null;
-
-		try {
-
-			fr = new FileReader(filename);
-			br = new BufferedReader(fr);
-
-			String sCurrentLine;
-
-			br = new BufferedReader(new FileReader(filename));
-
-			while ((sCurrentLine = br.readLine()) != null) {
-				System.out.println(sCurrentLine);
-			}
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		}
-
-	}
+	// private void readFile(String filename) {
+	// BufferedReader br = null;
+	// FileReader fr = null;
+	//
+	// try {
+	//
+	// fr = new FileReader(filename);
+	// br = new BufferedReader(fr);
+	//
+	// String sCurrentLine;
+	//
+	// br = new BufferedReader(new FileReader(filename));
+	//
+	// while ((sCurrentLine = br.readLine()) != null) {
+	// System.out.println(sCurrentLine);
+	// }
+	//
+	// } catch (IOException e) {
+	//
+	// e.printStackTrace();
+	//
+	// }
+	//
+	// }
 
 }
