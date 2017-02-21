@@ -16,3 +16,16 @@ Technologies used:<br>
     - Client side: Polymer<br>
     - Database: Firebase<br>
     
+    
+    
+    
+Ideas for the shortest Path:
+* Generate nodes based on GMAPI to find paths that we KNOW exist
+* Create a distance matrix based on euclidean distance (also can: create elevation matrix)
+* Update distance matrix based on building data
+* Update nodes for building exits / entrances
+* Calculate Dijkstra's to find a shortest path, including ones that could go through obstacles
+* Check if that path goes through an impossible obstacle, if so, update the weight to infinity and try again
+* Check if that path goes through a lawn or parking lot, if so, update the weight based on preferences.
+* Continue above until path cost does not improve.
+

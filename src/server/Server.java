@@ -35,7 +35,7 @@ public class Server {
 
 		httpServer.setExecutor(null);
 		handler = new Handler();
-		httpServer.createContext("/", handler);
+		httpServer.createContext("/handler", handler);
 		httpServer.start();
 
 	}
