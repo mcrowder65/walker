@@ -37,8 +37,6 @@ public class Handler implements HttpHandler {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
