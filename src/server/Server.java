@@ -1,5 +1,6 @@
 package server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -7,6 +8,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
 import server.handlers.Handler;
@@ -22,6 +25,11 @@ public class Server {
 	}
 
 	public void run(String[] args) throws SAXException, IOException, ParserConfigurationException {
+
+
+		FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(new FileInputStream("key.json"))
+				.setDatabaseUrl("https://walker-73119.firebaseio.com/").build();
+		FirebaseApp.initializeApp(options);
 
 		int port = 8081;
 
