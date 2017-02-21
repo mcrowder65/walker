@@ -23,8 +23,6 @@ public class Server {
 
 	public void run(String[] args) throws SAXException, IOException, ParserConfigurationException {
 
-		// Wipe out persistence data
-
 		int port = 8081;
 
 		System.out.println("Port =" + port);
