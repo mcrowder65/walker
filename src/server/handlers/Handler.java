@@ -17,17 +17,17 @@ import server.Building;
 import sun.net.www.protocol.http.HttpURLConnection;
 
 public class Handler implements HttpHandler {
-	private List<String> buildings;
+
 	private Gson g;
 
 	public Handler() {
-		buildings = new ArrayList<>();
+
 		g = new Gson();
 	}
 
 	/**
 	 * If you go to http://localhost:8081/handler while your browser is running,
-	 * it'll output handle!
+	 * it'll output the buildings!
 	 */
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
@@ -43,24 +43,24 @@ public class Handler implements HttpHandler {
 
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				// TODO Auto-generated method stub
-				System.out.println("onDataChange");
-				System.out.println(dataSnapshot.getValue());
-				String dataSnapshotStr = (String) dataSnapshot.getValue();
-				for (DataSnapshot child : dataSnapshot.getChildren()) {
-					System.out.println(child);
-					Building building = dataSnapshot.getValue(Building.class);
-				}
+				try {
+					List<String> buildings = new ArrayList<>();
+					for (DataSnapshot child : dataSnapshot.getChildren()) {
+						Building building = child.getValue(Building.class);
+						buildings.add(building.toJson());
+					}
+					exchange.getResponseHeaders().add("Content-type", "application/json");
 
-				System.out.println("hello");
+					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+					String json = g.toJson(buildings);
+					exchange.getResponseBody().write(json.getBytes());
+					exchange.getResponseBody().close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 			}
 		});
-
-		exchange.getResponseHeaders().add("Content-type", "application/json");
-		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-		exchange.getResponseBody().write("your java server is running".getBytes());
-		exchange.getResponseBody().close();
 
 	}
 
