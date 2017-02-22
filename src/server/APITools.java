@@ -32,8 +32,8 @@ public class APITools {
 	public static String GetDirectionsResponse(String origin, String destination)
 	{
 		try {
-			return Tools.getHTTPString("https://maps.googleapis.com/maps/api/directions/json?origin=" +
-			        URLEncoder.encode(origin, "UTF-8") + "&destination=" + URLEncoder.encode(destination) + "&key=" + generic.Config.DIRECTIONS_KEY);
+			return Tools.getHTTPString("https://maps.googleapis.com/maps/api/directions/json?mode=walking&origin=" +
+			        URLEncoder.encode(origin, "UTF-8") + "&destination=" + URLEncoder.encode(destination, "UTF-8") + "&key=" + generic.Config.DIRECTIONS_KEY);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return null;
