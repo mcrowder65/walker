@@ -1,0 +1,112 @@
+{
+    "files": {
+        "index.html": {
+            "parentImport": true
+        },
+        "zwitterion-config.js": {
+            "parentImport": true
+        },
+        "styles/prendus-initial-spinner.css": {
+            "parentImport": true
+        },
+        "styles/main.css": {
+            "parentImport": true
+        },
+        "bower_components/webcomponentsjs/webcomponents-lite.min.js": {
+            "parentImport": true
+        },
+        "components/prendus-app/prendus-app.html": {
+            "parentImport": true
+        },
+        "system.js.map": {
+            "parentImport": true
+        },
+        "bower_components/redux-store-element/redux-store.html": {
+            "parentImport": true
+        },
+        "styles/app-theme.html": {
+            "parentImport": true
+        },
+        "styles/shared-styles.html": {
+            "parentImport": true
+        },
+        "components/prendus-router/prendus-router.html": {
+            "parentImport": true
+        },
+        "bower_components/polymer/polymer.html": {
+            "parentImport": true
+        },
+        "node_modules/redux/dist/redux.min.js": {
+            "parentImport": true
+        },
+        "bower_components/paper-styles/typography.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-styles/color.html": {
+            "parentImport": true
+        },
+        "bower_components/app-route/app-route.html": {
+            "parentImport": true
+        },
+        "bower_components/app-route/app-location.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-spinner/paper-spinner.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-pages/iron-pages.html": {
+            "parentImport": true
+        },
+        "bower_components/polymer/polymer-mini.html": {
+            "parentImport": true
+        },
+        "bower_components/font-roboto/roboto.html": {
+            "parentImport": true
+        },
+        "bower_components/polymer/polymer-micro.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-location/iron-query-params.html": {
+            "parentImport": true
+        },
+        "bower_components/app-route/app-route-converter-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-flex-layout/iron-flex-layout.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-spinner/paper-spinner-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-spinner/paper-spinner-styles.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-resizable-behavior/iron-resizable-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-selector/iron-selectable.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-location/iron-location.html": {
+            "parentImport": true
+        },
+        "components/prendus-app/prendus-app.ts": {
+            "parentImport": true
+        },
+        "components/prendus-router/prendus-router.ts": {
+            "parentImport": true
+        },
+        "bower_components/iron-selector/iron-selection.html": {
+            "parentImport": true
+        },
+        "bower_components/redux-store-element/redux-store.ts": {
+            "parentImport": true
+        },
+        "redux/reducers.ts": {
+            "parentImport": false
+        },
+        "redux/initial-state.ts": {
+            "parentImport": false
+        }
+    }
+}

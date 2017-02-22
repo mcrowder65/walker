@@ -1,0 +1,139 @@
+<link href="../../bower_components/polymer/polymer.html" rel="import">
+<link href="../../bower_components/paper-button/paper-button.html" rel="import">
+
+<dom-module id="prendus-landing">
+  <style>
+    :host {
+
+    }
+
+    #banner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 220px);
+      width: 100vw;
+      color: white;
+      text-align: center;
+      background-color: #000;
+      position: relative;
+      z-index: 0;
+    }
+
+    #banner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: .7;
+      z-index: -1;
+      background: url('../../images/landing-image.jpg') center;
+      background-size: cover;
+    }
+
+    #banner > * {
+      margin: 20px;
+      max-width: 800px;
+    }
+
+    paper-button.indigo {
+      background-color: var(--paper-indigo-500);
+      color: white;
+    }
+
+    .signup-cta {
+      margin: auto;
+      width: 120px;
+      display: block;
+      text-align: center;
+    }
+
+    .landing-section {
+      margin: auto;
+      padding: 30px;
+      max-width: 800px;
+      position: relative;
+    }
+
+    .landing-section > * + * {
+      margin-top: 40px;
+    }
+
+    .landing-step {
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+    }
+
+    .landing-step__icon {
+      color: #666;
+      width: 60px;
+      height: 60px;
+      flex-shrink: 0;
+    }
+
+    .landing-step__text {
+      margin-left: 20px;
+    }
+
+    .landing-step__text > * {
+      margin: 0;
+    }
+
+    .landing-step__text > * + * {
+      margin-top: 20px;
+    }
+
+  </style>
+
+  <template>
+    <article class="container">
+      <section id="banner">
+        <h1>Collaborative learning.  For everyone.</h1>
+        <a href="/signup" tabindex="-1">
+          <paper-button class="signup-cta indigo" raised>Sign Up</paper-button>
+        </a>
+      </section>
+      <section id="about" class="landing-section">
+        <h2>Create and share learning resources across the globe.</h2>
+        <p>Get started in just a few easy steps:</p>
+        <div class="landing-step">
+          <iron-icon class="landing-step__icon" icon="create"></iron-icon>
+          <div class="landing-step__text">
+            <h3>Create a course</h3>
+            <p>Think of something you want to teach or practice and create a course to organize your learning materials.</p>
+          </div>
+        </div>
+        <div class="landing-step">
+          <iron-icon class="landing-step__icon" icon="add"></iron-icon>
+          <div class="landing-step__text">
+            <h3>Add your own materials</h3>
+            <p>Add concepts, videos, and quizzes to your course.</p>
+          </div>
+        </div>
+        <div class="landing-step">
+          <iron-icon class="landing-step__icon" icon="language"></iron-icon>
+          <div class="landing-step__text">
+            <h3>Add materials created by others</h3>
+            <p>Find videos and quizzes other people have made and add them to your course.</p>
+          </div>
+        </div>
+        <div class="landing-step">
+          <iron-icon class="landing-step__icon" icon="social:share"></iron-icon>
+          <div class="landing-step__text">
+            <h3>Share your course</h3>
+            <p>Link to your course on a class website or send it to students and classmates.</p>
+          </div>
+        </div>
+        <a href="/signup" tabindex="-1">
+          <paper-button class="signup-cta indigo" raised>Sign Up</paper-button>
+        </a>
+      </section>
+    </article>
+  </template>
+
+  <script src="prendus-landing.ts"></script>
+</dom-module>

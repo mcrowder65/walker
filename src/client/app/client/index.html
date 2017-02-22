@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <base href="/">
+        <script src="zwitterion-config.js"></script>
+        <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+        <link rel="stylesheet" href="/styles/prendus-initial-spinner.css">
+				<link rel="icon" href="images/favicon.png">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <div id="initial-spinner" class="loading-spinner absolute-center"></div>
+        <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+        <link rel="stylesheet" href="/styles/main.css">
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            TeX: {
+                extensions: ["mhchem.js"]
+            }
+          });
+        </script>
+        <style>
+            .CodeMirror-placeholder {
+                color: grey !important;
+            }
+        </style>
+
+        <script>
+            var environment = getEnvironment(window.location.hostname);
+            window.PRENDUS_ENV = environment;
+
+            function getEnvironment(hostname) {
+                if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                    return 'development';
+                }
+                else {
+                    return 'production';
+                }
+            }
+        </script>
+
+        <script>
+            var initialSpinner = document.getElementById('initial-spinner');
+            initialSpinner.style.opacity = 0;
+            setTimeout(function() {
+                initialSpinner.parentNode.removeChild(initialSpinner);
+            }, 500);
+        </script>
+
+        <link rel="import" href="/components/prendus-app/prendus-app.html">
+        <prendus-app></prendus-app>
+    </body>
+
+</html>
