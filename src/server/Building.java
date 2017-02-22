@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 
 public class Building {
 	public String name;
-	transient private Gson g;
 
 	@Override
 	public String toString() {
@@ -12,16 +11,16 @@ public class Building {
 	}
 
 	public Building(String name) {
-		g = new Gson();
+		this.name = name;
 	}
 
 	public Building() {
-		g = new Gson();
+		
 	}
 
 	public String toJson() {
 
-		String jsonString = g.toJson(this);
+		String jsonString = JSONTools.g.toJson(this);
 		return jsonString;
 	}
 }

@@ -1,0 +1,229 @@
+{
+   "geocoded_waypoints" : [
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJh4Z2A7uQTYcRkvtWY6cyYiw",
+         "types" : [ "route" ]
+      },
+      {
+         "geocoder_status" : "OK",
+         "place_id" : "ChIJ1cCvGqWQTYcRIXGlNcgQmTA",
+         "types" : [ "street_address" ]
+      }
+   ],
+   "routes" : [
+      {
+         "bounds" : {
+            "northeast" : {
+               "lat" : 40.2567028,
+               "lng" : -111.6431476
+            },
+            "southwest" : {
+               "lat" : 40.2494957,
+               "lng" : -111.6517134
+            }
+         },
+         "copyrights" : "Map data ©2017 Google",
+         "legs" : [
+            {
+               "distance" : {
+                  "text" : "1.6 mi",
+                  "value" : 2561
+               },
+               "duration" : {
+                  "text" : "7 mins",
+                  "value" : 417
+               },
+               "end_address" : "260 E 1080 N, Provo, UT 84604, USA",
+               "end_location" : {
+                  "lat" : 40.2495657,
+                  "lng" : -111.6471769
+               },
+               "start_address" : "Campus Dr, Provo, UT 84604, USA",
+               "start_location" : {
+                  "lat" : 40.2496055,
+                  "lng" : -111.6512769
+               },
+               "steps" : [
+                  {
+                     "distance" : {
+                        "text" : "135 ft",
+                        "value" : 41
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 10
+                     },
+                     "end_location" : {
+                        "lat" : 40.2499603,
+                        "lng" : -111.6511682
+                     },
+                     "html_instructions" : "Head \u003cb\u003enorth\u003c/b\u003e",
+                     "polyline" : {
+                        "points" : "agttFn{mhT?AeAS"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2496055,
+                        "lng" : -111.6512769
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "151 ft",
+                        "value" : 46
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 18
+                     },
+                     "end_location" : {
+                        "lat" : 40.2499682,
+                        "lng" : -111.6517134
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e toward \u003cb\u003eCampus Dr\u003c/b\u003e",
+                     "maneuver" : "turn-left",
+                     "polyline" : {
+                        "points" : "gittFxzmhTAp@?x@"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2499603,
+                        "lng" : -111.6511682
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.4 mi",
+                        "value" : 648
+                     },
+                     "duration" : {
+                        "text" : "2 mins",
+                        "value" : 137
+                     },
+                     "end_location" : {
+                        "lat" : 40.2555997,
+                        "lng" : -111.6505039
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eCampus Dr\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "iittFd~mhTyAe@GAk@KA?oBWUOIEIEEEGIKQKKGGOEIEI?I?{ACQ?[AY?QCQGOIYQICMAECOGICOEG?IAM@kB?mA@aA?u@@sAA"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2499682,
+                        "lng" : -111.6517134
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.4 mi",
+                        "value" : 640
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 70
+                     },
+                     "end_location" : {
+                        "lat" : 40.2567028,
+                        "lng" : -111.6432626
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eE 1700 N\u003c/b\u003e/\u003cb\u003eE University Pkwy\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "olutFrvmhT?c@A_@AOAOEWG[Qw@O[Oq@s@{CEMc@kAK[GSMm@Ei@Cc@AQ?WA}A?qA?{@A[?_A?m@AQAaDAsC"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2555997,
+                        "lng" : -111.6505039
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.5 mi",
+                        "value" : 769
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 64
+                     },
+                     "end_location" : {
+                        "lat" : 40.2497853,
+                        "lng" : -111.6431476
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003e900 E\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "ksutFjilhTxABpEBF?z@?J?H@d@Av@A\\?VAz@Ax@Cp@AX?v@?rCAL?vDEfACP?TA`@?dBC"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2567028,
+                        "lng" : -111.6432626
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "0.2 mi",
+                        "value" : 278
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 67
+                     },
+                     "end_location" : {
+                        "lat" : 40.2500399,
+                        "lng" : -111.6462733
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eright\u003c/b\u003e onto \u003cb\u003eHeritage Dr\u003c/b\u003e",
+                     "maneuver" : "turn-right",
+                     "polyline" : {
+                        "points" : "ehttFthlhTAxAA|@APCXCLERCHAFGNKVKVIPGTAPAD?DAD?D?D?D?P?J@F@PNpAJnA"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2497853,
+                        "lng" : -111.6431476
+                     },
+                     "travel_mode" : "DRIVING"
+                  },
+                  {
+                     "distance" : {
+                        "text" : "456 ft",
+                        "value" : 139
+                     },
+                     "duration" : {
+                        "text" : "1 min",
+                        "value" : 51
+                     },
+                     "end_location" : {
+                        "lat" : 40.2495657,
+                        "lng" : -111.6471769
+                     },
+                     "html_instructions" : "Turn \u003cb\u003eleft\u003c/b\u003e",
+                     "maneuver" : "turn-left",
+                     "polyline" : {
+                        "points" : "wittFd|lhTbBAB?@@?B@b@?l@?l@?L?LMT"
+                     },
+                     "start_location" : {
+                        "lat" : 40.2500399,
+                        "lng" : -111.6462733
+                     },
+                     "travel_mode" : "DRIVING"
+                  }
+               ],
+               "traffic_speed_entry" : [],
+               "via_waypoint" : []
+            }
+         ],
+         "overview_polyline" : {
+            "points" : "agttFn{mhTeAUAjBaBg@k@KqBW_@UOKS[SSYKaCCu@Ac@Ki@[WEo@UkC?yG@AcAC_@Ms@Qw@O[cAmEi@yASo@Mm@Ei@Eu@AuBAiFEuJnJFrBAnHI`DA~FInDECvCEj@Mj@a@fAQf@CVAV@j@PbBJnAbBAB?@D@lC?LMT"
+         },
+         "summary" : "E 1700 N/E University Pkwy and 900 E",
+         "warnings" : [],
+         "waypoint_order" : []
+      }
+   ],
+   "status" : "OK"
+}

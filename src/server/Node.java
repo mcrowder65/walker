@@ -11,7 +11,7 @@ public class Node {
 		this.position = new Point2D.Double(x, y);
 	}
 
-	public Node(int x, int y, Building buliding) {
+	public Node(int x, int y, Building building) {
 		this.position = new Point2D.Double(x, y);
 		this.building = building;
 	}
