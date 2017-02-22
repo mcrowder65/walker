@@ -22,10 +22,6 @@ public class GraphTools {
 		this.distance = distance;
 	}
 
-	public double[][] getElevation() {
-		return elevation;
-	}
-
 	public void setElevation(double[][] elevation) {
 		this.elevation = elevation;
 	}
