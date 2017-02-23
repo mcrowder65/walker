@@ -1,3 +1,5 @@
+import {Actions} from '../../redux/actions';
+
 class PrendusLanding {
   public is: string;
 

@@ -2,6 +2,8 @@
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
 <link rel="import" href="../../styles/app-theme.html">
 <link rel="import" href="../../styles/shared-styles.html">
+<link rel="import" href="../prendus-navbar/prendus-navbar.html">
+<link rel="import" href="../prendus-footer/prendus-footer.html">
 <link rel="import" href="../prendus-router/prendus-router.html">
 
 <dom-module id="prendus-app">
@@ -22,7 +24,9 @@
     <redux-store root-reducer="[[rootReducer]]"></redux-store>
 
     <template is="dom-if" if="[[rootReducer]]">
+        <prendus-navbar></prendus-navbar>
         <prendus-router id="router"></prendus-router>
+        <prendus-footer></prendus-footer>
     </template>
 
   </template>
