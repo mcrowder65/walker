@@ -15,7 +15,7 @@ public class GraphTools {
 		}
 		Node[] nodes = new Node[pivots.size()];
 		for (int n = 0; n < pivots.size(); n++) {
-			nodes[n] = new Node(pivots.get(n).longitude, pivots.get(n).latitude, null);
+			nodes[n] = new Node(pivots.get(n), null);
 		}
 		return nodes;
 

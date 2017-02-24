@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import generic.Node;
 import generic.Tools;
 import googlemaps.LatLng;
 
