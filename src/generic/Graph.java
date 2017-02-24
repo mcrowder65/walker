@@ -10,6 +10,10 @@ public class Graph {
 		this.elevation = elevation;
 	}
 
+	public Graph() {
+
+	}
+
 	public double[][] getDistance() {
 		return distance;
 	}
