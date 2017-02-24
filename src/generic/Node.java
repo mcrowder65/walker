@@ -6,6 +6,22 @@ import googlemaps.LatLng;
 
 public class Node {
 
+	public LatLng getPosition() {
+		return position;
+	}
+
+	public void setPosition(LatLng position) {
+		this.position = position;
+	}
+
+	public Building getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
+
 	private LatLng position;
 	private Building building;
 
