@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import server.Building;
+import generic.Building;
 import sun.net.www.protocol.http.HttpURLConnection;
 
 public class Handler implements HttpHandler {

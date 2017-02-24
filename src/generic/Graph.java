@@ -1,9 +1,12 @@
 package generic;
 
+import java.util.List;
+
 public class Graph {
 
 	private double[][] distance;
 	private double[][] elevation;
+	private List<Node> nodes;
 
 	public Graph(double[][] distance, double[][] elevation) {
 		this.distance = distance;
