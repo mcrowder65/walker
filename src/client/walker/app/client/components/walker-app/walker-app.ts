@@ -6,6 +6,8 @@ class WalkerApp {
   public is: string;
   public username: string;
   public rootReducer: (state: State, action: Action) => State;
+  public querySelector: any;
+
 
   beforeRegister(): void {
     this.is = 'walker-app';
@@ -18,6 +20,7 @@ class WalkerApp {
   ready(): void {
     this.rootReducer = rootReducer;
   }
+
 }
 
 Polymer(WalkerApp);
