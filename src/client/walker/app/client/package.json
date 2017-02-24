@@ -1,6 +1,6 @@
 {
-  "name": "prendus-learning-platform",
-  "version": "0.3.0",
+  "name": "walker",
+  "version": "0.0.1",
   "dependencies": {
     "redux": "^3.6.0"
   }

@@ -20,6 +20,12 @@
         },
         "redux/initial-state.ts": {
             "parentImport": false
+        },
+        "components/walker-app/walker-app.html": {
+            "parentImport": true
+        },
+        "bower_components/webcomponentsjs/webcomponents-lite.min.js": {
+            "parentImport": true
         }
     }
 }
