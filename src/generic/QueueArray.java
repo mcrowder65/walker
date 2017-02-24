@@ -5,20 +5,31 @@ import java.util.List;
 
 public class QueueArray {
 
-	private List queue;
-	private List dist;
+	private List<Integer> queue;
+	private List<Double> dist;
 
 	public QueueArray() {
 		queue = new ArrayList();
 		dist = new ArrayList();
 	}
 
-	public void makeQ(List pnts, int startIndex) {
+	public List makeQ(List pnts, int startIndex) {
 		for (int i = 0; i < pnts.size(); i++) {
 			queue.add(i);
-			dist.add(Integer.MAX_VALUE);
+			dist.add(Double.MAX_VALUE);
 		}
-		dist.set(startIndex, 0);
+		dist.set(startIndex, (double) 0);
+		return queue;
+	}
+
+	public void deleteMin() {
+		int minIndex = 0;
+		double minDistance = dist.get(minIndex);
+
+		for (int i = 0; i < dist.size(); i++) {
+
+		}
+
 	}
 
 }
