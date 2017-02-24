@@ -10,6 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -104,12 +107,29 @@ public class Tools {
 		}
 		
 	}
-	/*	public void write(String filetype) {
+	public static BufferedImage ClipLogo(BufferedImage img)
+	{
+		
+		return img.getSubimage(0, 0, img.getWidth(), img.getHeight() - Config.GOOGLE_LOGO_HEIGHT);
+		
+	}
+	public static void setImageRGB(BufferedImage img, int x, int y, int r, int g, int b)
+	{
+		int col = (r << 16) | (g << 8) | b;
+		img.setRGB(x, y, col);
+	}
+	static String readFile(String path, Charset encoding) throws IOException 
+	{
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, encoding);
+	}
+	public static String readMock(String name)
+	{
 		try {
-			ImageIO.write(buffer, filetype, image);
+			return Tools.readFile("mock/" + name, Charset.defaultCharset());
 		} catch (IOException e) {
-			System.out.println("Could not write image.");
 			e.printStackTrace();
+			return null;
 		}
-	}*/
+	}
 }

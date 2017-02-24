@@ -86,8 +86,8 @@ public class APITools {
 	public static int getAppropriateZoom(LatLng start, LatLng end, int pixelWidth, int pixelHeight)
 	{
 		//TODO: Get polyline bounding box instead (because the path may be clipped)
-		double meterDistanceX = measureMeterDistance(0, start.longitude, 0, end.longitude);
-		double meterDistanceY = measureMeterDistance(start.latitude, 0, end.latitude, 0);
+		double meterDistanceX = getLongitudeDifference(start, end);
+		double meterDistanceY = getLatitudeDifference(start, end);
 
 		LatLng center = Tools.getCenter(start, end);
 		
@@ -102,7 +102,7 @@ public class APITools {
 			else
 				bestIndex = n;
 		}
-		return bestIndex;
+		return bestIndex + 2;
 		
 	}
 	
@@ -122,14 +122,44 @@ public class APITools {
 	{
 		return 156543.03392 * Math.cos(latitude * Math.PI / 180) / Math.pow(2, zoom);
 	}
-	
+	private static double toMetersLat(double latDiff)
+	{
+		return latDiff / 0.0000089;
+	}
+	private static double toMetersLon(double lonDiff, double latitude)
+	{
+		return (lonDiff * Math.cos(latitude * 0.018) )/ 0.0000089;
+	}
+	public static double getLatitudeDifference(LatLng a, LatLng b)
+	{
+		return Math.abs(toMetersLat(a.latitude - b.latitude));
+	}
+	public static double getLongitudeDifference(LatLng a, LatLng b)
+	{
+		
+		return Math.abs(toMetersLon(a.longitude - b.longitude, a.latitude));
+	}
 	public static LatLng getNortheast(LatLng center, double metersPerPixel, int sizeX, int sizeY)
 	{
-		return new LatLng(center.latitude + (metersPerPixel * sizeY) / 2, center.longitude + (metersPerPixel * sizeX) / 2  );
+		double metersX = (metersPerPixel * sizeX) / 2;
+		double metersY = (metersPerPixel * sizeY) / 2;
+		double coefX = metersX * 0.0000089;
+		double coefY = metersY * 0.0000089;
+		double new_lat = center.latitude + coefY;
+		double new_lon = center.longitude + coefX / Math.cos(center.latitude * 0.018);
+		return new LatLng(new_lat, new_lon);
+		
+	
 	}
 	public static LatLng getSouthwest(LatLng center, double metersPerPixel, int sizeX, int sizeY)
 	{
-		return new LatLng(center.latitude - (metersPerPixel * sizeY) / 2, center.longitude - (metersPerPixel * sizeX) / 2  );
+		double metersX = (metersPerPixel * sizeX) / 2;
+		double metersY = (metersPerPixel * sizeY) / 2;
+		double coefX = metersX * 0.0000089;
+		double coefY = metersY * 0.0000089;
+		double new_lat = center.latitude - coefY;
+		double new_lon = center.longitude - coefX / Math.cos(center.latitude * 0.018);
+		return new LatLng(new_lat, new_lon);
 	}
 	public static Point2D.Double getImagePointFromLatLng(LatLng location, LatLng southwest, LatLng northeast, int sizeX, int sizeY)
 	{
@@ -138,14 +168,21 @@ public class APITools {
 			System.err.println("Error: LatLng could not be mapped to point - it is not visible.");
 			return null;
 		}
-		double lonProportion = (northeast.longitude - southwest.longitude) / (location.longitude - southwest.longitude);
-		double latProportion = (northeast.latitude - southwest.latitude) / (location.latitude - southwest.latitude);
-		return new Point2D.Double(sizeX * lonProportion, sizeY * latProportion);
+		double lonProportion = (location.longitude - southwest.longitude) /(northeast.longitude - southwest.longitude);
+		double latProportion = (location.latitude - southwest.latitude) / (northeast.latitude - southwest.latitude);
+		return new Point2D.Double(sizeX * lonProportion, sizeY - ( sizeY * latProportion));
 	}
-
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY)
+	{
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), null);
+	}
 	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, String polyline)
 	{
 		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), polyline);
+	}
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom)
+	{
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, null);
 	}
 	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom, String polyline)
 	{
