@@ -1,18 +1,17 @@
 {
-  "name": "prendus-learning-platform",
-  "version": "0.3.0",
-  "description": "The tool to create and upload videos and quizzes",
+  "name": "walker",
+  "version": "0.0.1",
+  "description": "The tool walk really really fast",
   "scripts": {
     "start": "zwitterion --serve-dir app/client --http",
     "production-build": "zwitterion --build --output-dir dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:bmackley/prendus-learning-platform.git"
+    "url": "git+ssh://git@github.com:mcrowder65/walker.git"
   },
-  "homepage": "https://github.com/bmackley/prendus-learning-platform",
+  "homepage": "https://github.com/mcrowder65/walker",
   "devDependencies": {
-    "@types/polymer": "^1.1.30",
     "systemjs": "^0.19.41",
     "zwitterion": "^0.7.0"
   }
