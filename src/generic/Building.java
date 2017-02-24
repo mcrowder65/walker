@@ -1,6 +1,8 @@
-package server;
+package generic;
 
 import com.google.gson.Gson;
+
+import server.JSONTools;
 
 public class Building {
 	public String name;
