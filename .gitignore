@@ -3,6 +3,7 @@
 .classpath
 
 .project
-
+src/client/app/client/node_modules
 src/client/node_modules
-src/client/bower_components
+src/client/app/client/bower_components
+

@@ -1,0 +1,7 @@
+{
+  "name": "walker",
+  "version": "0.0.1",
+  "dependencies": {
+    "redux": "^3.6.0"
+  }
+}
