@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "description": "The tool to create and upload videos and quizzes",
   "scripts": {
-    "start": "zwitterion --serve-dir app/client",
+    "start": "zwitterion --serve-dir app/client --http",
     "production-build": "zwitterion --build --output-dir dist"
   },
   "repository": {
