@@ -13,34 +13,7 @@
 
     <body>
         <div id="initial-spinner" class="loading-spinner absolute-center"></div>
-        <link rel="stylesheet" href="/styles/main.css">
-        <style>
-            .CodeMirror-placeholder {
-                color: grey !important;
-            }
-        </style>
 
-        <script>
-            var environment = getEnvironment(window.location.hostname);
-            window.PRENDUS_ENV = environment;
-
-            function getEnvironment(hostname) {
-                if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                    return 'development';
-                }
-                else {
-                    return 'production';
-                }
-            }
-        </script>
-
-        <script>
-            var initialSpinner = document.getElementById('initial-spinner');
-            initialSpinner.style.opacity = 0;
-            setTimeout(function() {
-                initialSpinner.parentNode.removeChild(initialSpinner);
-            }, 500);
-        </script>
 
         <link rel="import" href="/components/prendus-app/prendus-app.html">
         <prendus-app></prendus-app>
