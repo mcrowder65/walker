@@ -584,6 +584,12 @@
         },
         "bower_components/google-apis/google-js-api.html": {
             "parentImport": true
+        },
+        "components/walker-app/walker-app.html": {
+            "parentImport": true
+        },
+        "components/walker-app/walker-app.ts": {
+            "parentImport": true
         }
     }
 }

@@ -2,13 +2,13 @@ import {rootReducer} from '../../redux/reducers';
 import {State} from '../../typings/state';
 import {Action} from '../../typings/action';
 
-class PrendusApp {
+class WalkerApp {
   public is: string;
   public username: string;
   public rootReducer: (state: State, action: Action) => State;
 
   beforeRegister(): void {
-    this.is = 'prendus-app';
+    this.is = 'walker-app';
   }
 
   mapStateToThis(e: any): void {
@@ -20,4 +20,4 @@ class PrendusApp {
   }
 }
 
-Polymer(PrendusApp);
+Polymer(WalkerApp);
