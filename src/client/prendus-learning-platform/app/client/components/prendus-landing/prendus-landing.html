@@ -1,9 +1,12 @@
-<link href="../../bower_components/polymer/polymer.html" rel="import">
-<link href="../../bower_components/paper-button/paper-button.html" rel="import">
-
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
 <dom-module id="prendus-landing">
   <template>
-    hello
+    [[apiKey]]
+    <!-- <google-map fit-to-marker api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
+      <google-map-marker latitude="37.78" longitude="-122.4" draggable="true"></google-map-marker>
+    </google-map> -->
+    <google-map latitude="37.77493" longitude="-122.41942" api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk"></google-map>
   </template>
 
   <script src="prendus-landing.ts"></script>

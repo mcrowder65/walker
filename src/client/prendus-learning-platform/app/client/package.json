@@ -3,6 +3,7 @@
   "version": "0.3.0",
   "dependencies": {
     "codemirror": "5.16.0",
+    "google-maps": "^3.2.1",
     "jshint": "2.9.2",
     "prendus-services": "git+ssh://git@github.com/lastmjs/prendus-services.git#develop",
     "quill": "1.0.0-beta.11",

@@ -11,7 +11,9 @@
     "url": "git+ssh://git@github.com:bmackley/prendus-learning-platform.git"
   },
   "homepage": "https://github.com/bmackley/prendus-learning-platform",
-  "dependencies": {},
+  "dependencies": {
+    "google-map": "^1.1.0"
+  },
   "devDependencies": {
     "@types/polymer": "^1.1.30",
     "systemjs": "^0.19.41",

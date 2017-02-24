@@ -545,6 +545,24 @@
         },
         "images/landing-image.jpg": {
             "parentImport": true
+        },
+        "bower_components/google-map/google-map.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-maps-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-map/google-map-marker.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-jsonp-library/iron-jsonp-library.html": {
+            "parentImport": true
+        },
+        "bower_components/google-map/google-map-poly.html": {
+            "parentImport": true
+        },
+        "bower_components/google-map/google-map-point.html": {
+            "parentImport": true
         }
     }
 }
