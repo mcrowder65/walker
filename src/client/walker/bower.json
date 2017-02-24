@@ -1,0 +1,20 @@
+{
+  "name": "Walker",
+  "version": "0.0.1",
+  "description": "This will make you walk really really fast.",
+  "authors": [
+    "Matt Daddy"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-ajax": "PolymerElements/iron-ajax#^1.2.0",
+    "redux-store-element": "^0.4.2",
+    "polymer": "^1.7.1"
+  }
+}
