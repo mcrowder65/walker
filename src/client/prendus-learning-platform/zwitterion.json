@@ -563,6 +563,27 @@
         },
         "bower_components/google-map/google-map-point.html": {
             "parentImport": true
+        },
+        "bower_components/google-apis/google-apis.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-client-loader.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-legacy-loader.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-plusone-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-realtime-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-youtube-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-js-api.html": {
+            "parentImport": true
         }
     }
 }
