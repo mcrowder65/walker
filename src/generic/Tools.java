@@ -13,6 +13,8 @@ import java.net.URLEncoder;
 
 import javax.imageio.ImageIO;
 
+import googlemaps.LatLng;
+
 public class Tools {
 	
 	private static String readAllLines(BufferedReader in)
@@ -71,12 +73,24 @@ public class Tools {
 	{
 		return new Point2D.Double( (pointA.x + pointB.x) / 2 , (pointA.y + pointB.y) / 2);
 	}
+	public static LatLng getCenter(LatLng pointA, LatLng pointB)
+	{
+		return new LatLng( (pointA.latitude + pointB.latitude) / 2 , (pointA.longitude + pointB.longitude) / 2);
+	}
+
 	public static String pointToString(Point2D.Double p, boolean spaced)
 	{
 		if (spaced)
 			return p.x + ", " + p.y;
 		else
 			return p.x + "," + p.y;
+	}
+	public static String latlngToString(LatLng p, boolean spaced)
+	{
+		if (spaced)
+			return p.latitude + ", " + p.longitude;
+		else
+			return p.latitude + "," + p.longitude;
 	}
 	public static void WriteImage(BufferedImage img, String path)
 	{
