@@ -6,13 +6,34 @@
         "zwitterion-config.js": {
             "parentImport": true
         },
+        "components/walker-app/walker-app.html": {
+            "parentImport": true
+        },
+        "bower_components/webcomponentsjs/webcomponents-lite.min.js": {
+            "parentImport": true
+        },
+        "system.js.map": {
+            "parentImport": true
+        },
+        "bower_components/redux-store-element/redux-store.html": {
+            "parentImport": true
+        },
+        "bower_components/polymer/polymer.html": {
+            "parentImport": true
+        },
+        "node_modules/redux/dist/redux.min.js": {
+            "parentImport": true
+        },
+        "bower_components/polymer/polymer-mini.html": {
+            "parentImport": true
+        },
+        "bower_components/polymer/polymer-micro.html": {
+            "parentImport": true
+        },
         "components/walker-app/walker-app.ts": {
             "parentImport": true
         },
         "bower_components/redux-store-element/redux-store.ts": {
-            "parentImport": true
-        },
-        "images/favicon.png": {
             "parentImport": true
         },
         "redux/reducers.ts": {
@@ -21,10 +42,82 @@
         "redux/initial-state.ts": {
             "parentImport": false
         },
-        "components/walker-app/walker-app.html": {
+        "bower_components/paper-button/paper-button.html": {
             "parentImport": true
         },
-        "bower_components/webcomponentsjs/webcomponents-lite.min.js": {
+        "bower_components/iron-flex-layout/iron-flex-layout.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-behaviors/paper-button-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-material/paper-material-shared-styles.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-styles/shadow.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-behaviors/iron-button-state.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-behaviors/paper-ripple-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-behaviors/iron-control-state.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-ripple/paper-ripple.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/google-map/google-map-marker.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-apis.html": {
+            "parentImport": true
+        },
+        "bower_components/google-map/google-map.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-maps-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-client-loader.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-legacy-loader.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-plusone-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-realtime-api.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-youtube-api.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-resizable-behavior/iron-resizable-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-selector/iron-selector.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-jsonp-library/iron-jsonp-library.html": {
+            "parentImport": true
+        },
+        "bower_components/google-apis/google-js-api.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-selector/iron-multi-selectable.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-selector/iron-selectable.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-selector/iron-selection.html": {
             "parentImport": true
         }
     }
