@@ -1,0 +1,31 @@
+{
+    "files": {
+        "index.html": {
+            "parentImport": true
+        },
+        "zwitterion-config.js": {
+            "parentImport": true
+        },
+        "components/walker-app/walker-app.ts": {
+            "parentImport": true
+        },
+        "bower_components/redux-store-element/redux-store.ts": {
+            "parentImport": true
+        },
+        "images/favicon.png": {
+            "parentImport": true
+        },
+        "redux/reducers.ts": {
+            "parentImport": false
+        },
+        "redux/initial-state.ts": {
+            "parentImport": false
+        },
+        "components/walker-app/walker-app.html": {
+            "parentImport": true
+        },
+        "bower_components/webcomponentsjs/webcomponents-lite.min.js": {
+            "parentImport": true
+        }
+    }
+}
