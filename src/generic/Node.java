@@ -1,4 +1,4 @@
-package server;
+package generic;
 
 import java.awt.geom.Point2D;
 
