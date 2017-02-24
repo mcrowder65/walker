@@ -6,30 +6,17 @@ class PrendusApp {
   public is: string;
   public username: string;
   public rootReducer: (state: State, action: Action) => State;
-  public apiKey: string;
-  public querySelector: any;
 
-  beforeRegister() {
+  beforeRegister(): void {
     this.is = 'prendus-app';
   }
 
-  mapStateToThis(e: any) {
-    const state = e.detail.state
-    this.username = state.currentUser.email;
+  mapStateToThis(e: any): void {
+    const state: State = e.detail.state
   }
 
-  ready() {
+  ready(): void {
     this.rootReducer = rootReducer;
-    this.apiKey = 'AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk';
-
-  }
-  tap() {
-    console.log('tap');
-    const map = this.querySelector('#gmap');
-    console.log(map);
-    map.clear();
-    map.notifyResize();
-
   }
 }
 
