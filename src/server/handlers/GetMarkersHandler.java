@@ -9,20 +9,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import generic.Marker;
+import server.JSONTools;
 import sun.net.www.protocol.http.HttpURLConnection;
 
 public class GetMarkersHandler implements HttpHandler {
 
-	private Gson g;
-
 	public GetMarkersHandler() {
 
-		g = new Gson();
 	}
 
 	/**
@@ -55,7 +52,7 @@ public class GetMarkersHandler implements HttpHandler {
 							"Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-					String json = g.toJson(markers);
+					String json = JSONTools.g.toJson(markers);
 					exchange.getResponseBody().write(json.getBytes());
 					exchange.getResponseBody().close();
 				} catch (IOException e) {
