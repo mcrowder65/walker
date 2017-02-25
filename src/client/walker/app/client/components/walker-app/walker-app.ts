@@ -1,24 +1,43 @@
 import {rootReducer} from '../../redux/reducers';
 import {State} from '../../typings/state';
 import {Action} from '../../typings/action';
+import {Actions} from '../../redux/actions';
+import {Marker} from '../../typings/marker';
 
-class WalkerApp {
+export class WalkerApp {
   public is: string;
   public username: string;
   public rootReducer: (state: State, action: Action) => State;
   public querySelector: any;
-
+  public markers: Marker[];
+  public action: Action;
 
   beforeRegister(): void {
     this.is = 'walker-app';
   }
 
-  mapStateToThis(e: any): void {
-    const state: State = e.detail.state
-  }
-
   ready(): void {
     this.rootReducer = rootReducer;
+  }
+
+  async tap(): Promise<void> {
+    const ajax = this.querySelector('#handler');
+    const request = ajax.generateRequest();
+    await request.completes;
+    const response = request.response;
+
+    //markers is an array of Marker objects
+    const markers = response;
+
+    for(let i: number = 0; i < markers.length; i++) {
+      markers[i] = JSON.parse(markers[i]);
+    }
+    Actions.setMarkers(this, markers);
+  }
+
+  mapStateToThis(e: any): void {
+    const state: State = e.detail.state
+    this.markers = state.markers;
   }
 
 }

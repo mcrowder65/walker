@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="walker-app">
   <template>
@@ -16,13 +16,21 @@
     }
 
     </style>
+    <redux-store root-reducer="[[rootReducer]]" action="[[action]]" on-statechange="mapStateToThis"></redux-store>
+    <iron-ajax
+      id="handler"
+      url="http://localhost:8081/handler"
+      method="get"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
     <paper-button raised class="indigo" on-tap="tap">tap me</paper-button>
       <google-map latitude="37.77493" longitude="-122.41942" fit-to-markers map-type="satellite" api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
         <google-map-marker latitude="37.779" longitude="-122.3892"
             draggable="true" title="Go Giants!"></google-map-marker>
-        <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker>
+        <!-- <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker> -->
       </google-map>
-    <redux-store root-reducer="[[rootReducer]]"></redux-store>
+
 
 
   </template>

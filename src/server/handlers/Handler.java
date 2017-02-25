@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import generic.Building;
+import generic.Marker;
 import sun.net.www.protocol.http.HttpURLConnection;
 
 public class Handler implements HttpHandler {
@@ -31,8 +31,9 @@ public class Handler implements HttpHandler {
 	 */
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
+		System.out.println("handle");
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
-		DatabaseReference ref = database.getReference("buildings");
+		DatabaseReference ref = database.getReference("markers");
 		ref.addValueEventListener(new ValueEventListener() {
 
 			@Override
@@ -42,15 +43,20 @@ public class Handler implements HttpHandler {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				try {
-					List<String> buildings = new ArrayList<>();
+					List<String> markers = new ArrayList<>();
 					for (DataSnapshot child : dataSnapshot.getChildren()) {
-						Building building = child.getValue(Building.class);
-						buildings.add(building.toJson());
+						Marker marker = child.getValue(Marker.class);
+						markers.add(marker.toJson());
 					}
 					exchange.getResponseHeaders().add("Content-type", "application/json");
+					exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+					exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "POST, GET");
+					exchange.getResponseHeaders().add("Access-Control-Max-Age", "3600");
+					exchange.getResponseHeaders().add("Access-Control-Allow-Headers",
+							"Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-					String json = g.toJson(buildings);
+					String json = g.toJson(markers);
 					exchange.getResponseBody().write(json.getBytes());
 					exchange.getResponseBody().close();
 				} catch (IOException e) {
