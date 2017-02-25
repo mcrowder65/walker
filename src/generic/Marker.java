@@ -38,6 +38,11 @@ public class Marker {
 		return title;
 	}
 
+	@Override
+	public String toString() {
+		return "Marker [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + "]";
+	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}

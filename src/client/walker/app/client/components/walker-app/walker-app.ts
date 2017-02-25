@@ -39,7 +39,9 @@ export class WalkerApp {
     const ajax = this.querySelector('#setMarkerAjax');
 
     ajax.body = {
-      marker
+      latitude: marker.latitude,
+      longitude: marker.longitude,
+      title: marker.title
     };
     const request = ajax.generateRequest();
     await request.completes;
