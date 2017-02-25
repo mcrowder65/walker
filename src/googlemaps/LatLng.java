@@ -16,6 +16,8 @@
 package googlemaps;
 
 import googlemaps.StringJoin.UrlValue;
+
+import java.awt.geom.Point2D;
 import java.util.Locale;
 
 /**
@@ -39,6 +41,11 @@ public class LatLng implements UrlValue {
   public LatLng(double lat, double lng) {
     this.latitude = lat;
     this.longitude = lng;
+  }
+  public LatLng(Point2D.Double pnt)
+  {
+	  this.latitude = pnt.y;
+	  this.longitude = pnt.x;
   }
 
   @Override

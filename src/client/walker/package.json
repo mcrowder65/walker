@@ -14,5 +14,8 @@
   "devDependencies": {
     "systemjs": "^0.19.41",
     "zwitterion": "^0.7.0"
+  },
+  "dependencies": {
+    "bower": "^1.8.0"
   }
 }
