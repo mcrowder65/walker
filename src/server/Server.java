@@ -12,20 +12,21 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
-import server.handlers.Handler;
+import server.handlers.marker.GetMarkersHandler;
+import server.handlers.marker.SetMarkerHandler;
 
 public class Server {
 
 	private final int MAX_WAITING_CONNECTIONS = 30;
 	private HttpServer httpServer;
-	private Handler handler;
+	private GetMarkersHandler getMarkersHandler;
+	private SetMarkerHandler setMarkerHandler;
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		new Server().run(args);
 	}
 
 	public void run(String[] args) throws SAXException, IOException, ParserConfigurationException {
-
 
 		FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(new FileInputStream("key.json"))
 				.setDatabaseUrl("https://walker-73119.firebaseio.com/").build();
@@ -42,8 +43,11 @@ public class Server {
 		}
 
 		httpServer.setExecutor(null);
-		handler = new Handler();
-		httpServer.createContext("/handler", handler);
+		getMarkersHandler = new GetMarkersHandler();
+		httpServer.createContext("/getMarkers", getMarkersHandler);
+
+		setMarkerHandler = new SetMarkerHandler();
+		httpServer.createContext("/setMarker", setMarkerHandler);
 		httpServer.start();
 
 	}

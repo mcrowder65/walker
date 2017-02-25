@@ -1,7 +1,5 @@
 package generic;
 
-import com.google.gson.Gson;
-
 import server.JSONTools;
 
 public class Building {
@@ -17,7 +15,7 @@ public class Building {
 	}
 
 	public Building() {
-		
+
 	}
 
 	public String toJson() {

@@ -1,4 +1,4 @@
-package server.handlers;
+package server.handlers.marker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,30 +9,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
-import generic.Building;
+import generic.Marker;
+import server.JSONTools;
+import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
 
-public class Handler implements HttpHandler {
+public class GetMarkersHandler extends WalkerHandler {
 
-	private Gson g;
+	public GetMarkersHandler() {
 
-	public Handler() {
-
-		g = new Gson();
 	}
 
-	/**
-	 * If you go to http://localhost:8081/handler while your browser is running,
-	 * it'll output the buildings!
-	 */
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
-		DatabaseReference ref = database.getReference("buildings");
+		DatabaseReference ref = database.getReference("markers");
+		getRequestBodyAndSetHeaders(exchange);
 		ref.addValueEventListener(new ValueEventListener() {
 
 			@Override
@@ -42,15 +36,14 @@ public class Handler implements HttpHandler {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				try {
-					List<String> buildings = new ArrayList<>();
+					List<String> markers = new ArrayList<>();
 					for (DataSnapshot child : dataSnapshot.getChildren()) {
-						Building building = child.getValue(Building.class);
-						buildings.add(building.toJson());
+						Marker marker = child.getValue(Marker.class);
+						markers.add(marker.toJson());
 					}
-					exchange.getResponseHeaders().add("Content-type", "application/json");
 
 					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-					String json = g.toJson(buildings);
+					String json = JSONTools.g.toJson(markers);
 					exchange.getResponseBody().write(json.getBytes());
 					exchange.getResponseBody().close();
 				} catch (IOException e) {
