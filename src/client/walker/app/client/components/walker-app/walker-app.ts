@@ -39,6 +39,11 @@ export class WalkerApp {
     Actions.setMarkers(this, []);
   }
 
+  async mapClicked(e: any): Promise<void> {
+    const latitude: number = e.detail.latLng.lat();
+    const longitude: number = e.detail.latLng.lng();
+  }
+
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;

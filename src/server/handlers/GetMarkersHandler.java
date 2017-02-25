@@ -16,11 +16,11 @@ import com.sun.net.httpserver.HttpHandler;
 import generic.Marker;
 import sun.net.www.protocol.http.HttpURLConnection;
 
-public class Handler implements HttpHandler {
+public class GetMarkersHandler implements HttpHandler {
 
 	private Gson g;
 
-	public Handler() {
+	public GetMarkersHandler() {
 
 		g = new Gson();
 	}
@@ -31,7 +31,6 @@ public class Handler implements HttpHandler {
 	 */
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		System.out.println("handle");
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference("markers");
 		ref.addValueEventListener(new ValueEventListener() {

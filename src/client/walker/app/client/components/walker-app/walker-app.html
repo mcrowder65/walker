@@ -19,16 +19,26 @@
     <redux-store root-reducer="[[rootReducer]]" action="[[action]]" on-statechange="mapStateToThis"></redux-store>
     <iron-ajax
       id="handler"
-      url="http://localhost:8081/handler"
+      url="http://localhost:8081/getMarkers"
       method="get"
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
-    <google-map fit-to-markers map-type="satellite" api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
+    <google-map
+      fit-to-markers
+      map-type="satellite"
+      click-events="true"
+      on-google-map-click="mapClicked"
+      api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
       <template is="dom-repeat" items="[[markers]]">
-          <google-map-marker latitude="[[item.latitude]]" longitude="[[item.longitude]]" title="[[item.title]]" draggable="false"></google-map-marker>
+          <google-map-marker
+            latitude="[[item.latitude]]"
+            longitude="[[item.longitude]]"
+            title="[[item.title]]"
+            draggable="false">
+          </google-map-marker>
       </template>
     </google-map>
 
