@@ -11,7 +11,7 @@
     <style>
     google-map {
       height: 600px;
-      width: 500px;
+      width: 1000px;
       display: block;
     }
 
@@ -24,12 +24,13 @@
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
-    <paper-button raised class="indigo" on-tap="tap">tap me</paper-button>
-      <google-map latitude="37.77493" longitude="-122.41942" fit-to-markers map-type="satellite" api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
-        <google-map-marker latitude="37.779" longitude="-122.3892"
-            draggable="true" title="Go Giants!"></google-map-marker>
-        <!-- <google-map-marker latitude="37.777" longitude="-122.38911"></google-map-marker> -->
-      </google-map>
+    <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
+    <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
+    <google-map fit-to-markers map-type="satellite" api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
+      <template is="dom-repeat" items="[[markers]]">
+          <google-map-marker latitude="[[item.latitude]]" longitude="[[item.longitude]]" title="[[item.title]]" draggable="false"></google-map-marker>
+      </template>
+    </google-map>
 
 
 

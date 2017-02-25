@@ -20,7 +20,7 @@ export class WalkerApp {
     this.rootReducer = rootReducer;
   }
 
-  async tap(): Promise<void> {
+  async initMarkers(): Promise<void> {
     const ajax = this.querySelector('#handler');
     const request = ajax.generateRequest();
     await request.completes;
@@ -33,6 +33,10 @@ export class WalkerApp {
       markers[i] = JSON.parse(markers[i]);
     }
     Actions.setMarkers(this, markers);
+  }
+
+  async clearMarkers(): Promise<void> {
+    Actions.setMarkers(this, []);
   }
 
   mapStateToThis(e: any): void {
