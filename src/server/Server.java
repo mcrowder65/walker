@@ -12,13 +12,15 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
-import server.handlers.GetMarkersHandler;
+import server.handlers.marker.GetMarkersHandler;
+import server.handlers.marker.SetMarkerHandler;
 
 public class Server {
 
 	private final int MAX_WAITING_CONNECTIONS = 30;
 	private HttpServer httpServer;
 	private GetMarkersHandler getMarkersHandler;
+	private SetMarkerHandler setMarkerHandler;
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		new Server().run(args);
@@ -43,6 +45,9 @@ public class Server {
 		httpServer.setExecutor(null);
 		getMarkersHandler = new GetMarkersHandler();
 		httpServer.createContext("/getMarkers", getMarkersHandler);
+
+		setMarkerHandler = new SetMarkerHandler();
+		httpServer.createContext("/setMarker", setMarkerHandler);
 		httpServer.start();
 
 	}

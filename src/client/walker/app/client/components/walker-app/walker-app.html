@@ -18,12 +18,22 @@
     </style>
     <redux-store root-reducer="[[rootReducer]]" action="[[action]]" on-statechange="mapStateToThis"></redux-store>
     <iron-ajax
-      id="handler"
+      id="getMarkersAjax"
       url="http://localhost:8081/getMarkers"
       method="get"
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
+
+    <iron-ajax
+      id="setMarkerAjax"
+      url="http://localhost:8081/setMarker"
+      method="post"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+
+
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
     <google-map

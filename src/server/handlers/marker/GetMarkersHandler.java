@@ -1,4 +1,4 @@
-package server.handlers;
+package server.handlers.marker;
 
 import java.io.IOException;
 import java.util.ArrayList;

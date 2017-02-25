@@ -21,7 +21,7 @@ export class WalkerApp {
   }
 
   async initMarkers(): Promise<void> {
-    const ajax = this.querySelector('#handler');
+    const ajax = this.querySelector('#getMarkersAjax');
     const request = ajax.generateRequest();
     await request.completes;
     const response = request.response;
@@ -35,6 +35,18 @@ export class WalkerApp {
     Actions.setMarkers(this, markers);
   }
 
+  async setMarker(marker: Marker): Promise<void> {
+    const ajax = this.querySelector('#setMarkerAjax');
+
+    ajax.body = {
+      marker
+    };
+    const request = ajax.generateRequest();
+    await request.completes;
+    const response = request.response;
+    console.log(response);
+  }
+
   async clearMarkers(): Promise<void> {
     Actions.setMarkers(this, []);
   }
@@ -42,6 +54,13 @@ export class WalkerApp {
   async mapClicked(e: any): Promise<void> {
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
+    const marker: Marker = {
+      latitude,
+      longitude,
+      title: 'produced from client'
+    };
+
+    this.setMarker(marker);
   }
 
   mapStateToThis(e: any): void {
