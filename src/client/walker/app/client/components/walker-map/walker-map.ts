@@ -54,6 +54,7 @@ export class WalkerMap {
   }
 
   async mapClicked(e: any): Promise<void> {
+    this.querySelector('#walker-marker-modal').open();
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
     const marker: Marker = {

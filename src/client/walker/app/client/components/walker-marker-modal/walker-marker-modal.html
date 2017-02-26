@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 <dom-module id="walker-marker-modal">
   <template>
@@ -11,7 +12,9 @@
     }
 
     </style>
-
+    <paper-dialog id="modal" with-backdrop>
+      <paper-button noink dialog-dismiss>Done</paper-button>
+    </paper-dialog>
   </template>
 
   <script src="walker-marker-modal.ts"></script>

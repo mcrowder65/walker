@@ -17,7 +17,14 @@ const setMarkers = async (context: WalkerMap, markers: Marker[] ): Promise<void>
     context.action = {
       type: 'SET_MARKERS',
       markers
-    }
+    };
+}
+
+const setCurrentMarkerInState = async (context: WalkerMap, currentMarker: Marker): Promise<void> => {
+  context.action = {
+    type: 'SET_CURRENT_MARKER',
+    currentMarker
+  };
 }
 
 const setMarker = async (context: WalkerMarkerModal, marker: Marker): Promise<void> => {
