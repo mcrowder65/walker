@@ -13,10 +13,6 @@ export class WalkerApp {
   ready(): void {
     this.rootReducer = rootReducer;
   }
-
-  mapStateToThis(e: any): void {
-    console.log('state change walker-app!');
-  }
 }
 
 Polymer(WalkerApp);

@@ -17,7 +17,8 @@
     }
 
     </style>
-    <redux-store root-reducer="[[rootReducer]]" action="[[action]]" on-statechange="mapStateToThis"></redux-store>
+    <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
+
     <iron-ajax
       id="getMarkersAjax"
       url="http://localhost:8081/getMarkers"
@@ -43,7 +44,7 @@
       click-events="true"
       on-google-map-click="mapClicked"
       api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
-      <template is="dom-repeat" items="[[markers]]">
+      <template is="dom-repeat" items="{{markers}}">
           <google-map-marker
             latitude="[[item.latitude]]"
             longitude="[[item.longitude]]"

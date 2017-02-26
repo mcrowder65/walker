@@ -3,21 +3,17 @@ import {State} from '../../typings/state';
 import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
 import {Marker} from '../../typings/marker';
+import {StatechangeEvent} from '../../typings/statechange-event';
 
 export class WalkerMap {
   public is: string;
   public username: string;
-  public rootReducer: (state: State, action: Action) => State;
   public querySelector: any;
   public markers: Marker[];
   public action: Action;
 
   beforeRegister(): void {
     this.is = 'walker-map';
-  }
-
-  ready(): void {
-    this.rootReducer = rootReducer;
   }
 
   async initMarkers(): Promise<void> {
@@ -32,8 +28,8 @@ export class WalkerMap {
     for(let i: number = 0; i < markers.length; i++) {
       markers[i] = JSON.parse(markers[i]);
     }
-    console.log(markers);
     Actions.setMarkers(this, markers);
+
   }
 
   async setMarker(marker: Marker): Promise<void> {
@@ -67,8 +63,8 @@ export class WalkerMap {
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
-    console.log('mapStateToThis walker-map');
-    console.log(this.markers);
+    console.log('walker-map mapStateToThis');
+    console.log(state);
   }
 
 }
