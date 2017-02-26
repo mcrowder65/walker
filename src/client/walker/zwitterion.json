@@ -134,6 +134,12 @@
         },
         "redux/actions.ts": {
             "parentImport": false
+        },
+        "components/walker-map/walker-map.html": {
+            "parentImport": true
+        },
+        "components/walker-map/walker-map.ts": {
+            "parentImport": true
         }
     }
 }

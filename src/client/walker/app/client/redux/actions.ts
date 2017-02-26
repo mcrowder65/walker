@@ -1,4 +1,4 @@
-import {WalkerApp} from '../components/walker-app/walker-app';
+import {WalkerMap} from '../components/walker-map/walker-map';
 import {Marker} from '../typings/marker';
 
 const defaultAction = (context: any) => {
@@ -12,7 +12,7 @@ const showMainSpinner = (context: any) => {
     };
 };
 
-const setMarkers = async (context: WalkerApp, markers: Marker[] ): Promise<void> => {
+const setMarkers = async (context: WalkerMap, markers: Marker[] ): Promise<void> => {
     context.action = {
       type: 'SET_MARKERS',
       markers
