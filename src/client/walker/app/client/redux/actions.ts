@@ -20,10 +20,11 @@ const setMarkers = async (context: WalkerMap, markers: Marker[] ): Promise<void>
     };
 }
 
-const setCurrentMarkerInState = async (context: WalkerMap, currentMarker: Marker): Promise<void> => {
+const setLatitudeAndLongitude = async (context: WalkerMap, currentClickLatitude: number, currentClickLongitude: number): Promise<void> => {
   context.action = {
-    type: 'SET_CURRENT_MARKER',
-    currentMarker
+    type: 'SET_LATITUDE_AND_LONGITUDE',
+    currentClickLatitude,
+    currentClickLongitude
   };
 }
 
@@ -32,5 +33,6 @@ const setMarker = async (context: WalkerMarkerModal, marker: Marker): Promise<vo
 };
 export const Actions = {
     defaultAction,
-    setMarkers
+    setMarkers,
+    setLatitudeAndLongitude
 };

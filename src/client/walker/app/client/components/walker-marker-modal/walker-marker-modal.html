@@ -5,14 +5,15 @@
 <dom-module id="walker-marker-modal">
   <template>
     <style>
-    google-map {
-      height: 600px;
-      width: 1000px;
-      display: block;
+    #modal {
+      width: 300px;
     }
 
     </style>
+    <redux-store root-reducer="[[rootReducer]]" action="[[action]]" on-statechange="mapStateToThis"></redux-store>
     <paper-dialog id="modal" with-backdrop>
+      <paper-item>Latitude: [[latitude]]</paper-item>
+      <paper-item>Longitude: [[longitude]]</paper-item>
       <paper-button noink dialog-dismiss>Done</paper-button>
     </paper-dialog>
   </template>

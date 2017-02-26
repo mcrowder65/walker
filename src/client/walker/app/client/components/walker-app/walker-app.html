@@ -1,8 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
 <link rel="import" href="../walker-map/walker-map.html">
 
 <dom-module id="walker-app">
   <template>
+      <redux-store root-reducer="[[rootReducer]]">
       <walker-map></walker-map>
   </template>
 

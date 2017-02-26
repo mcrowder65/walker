@@ -26,6 +26,7 @@ public class GetMarkersHandler extends WalkerHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference("markers");
+		System.out.println("GetMarkersHandler");
 		getRequestBodyAndSetHeaders(exchange);
 		ref.addValueEventListener(new ValueEventListener() {
 

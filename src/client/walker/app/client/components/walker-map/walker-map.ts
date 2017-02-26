@@ -32,6 +32,7 @@ export class WalkerMap {
     for(let i: number = 0; i < markers.length; i++) {
       markers[i] = JSON.parse(markers[i]);
     }
+    console.log(markers);
     Actions.setMarkers(this, markers);
   }
 
@@ -54,21 +55,20 @@ export class WalkerMap {
   }
 
   async mapClicked(e: any): Promise<void> {
-    this.querySelector('#walker-marker-modal').open();
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
-    const marker: Marker = {
-      latitude,
-      longitude,
-      title: 'produced from client'
-    };
 
-    this.setMarker(marker);
+    Actions.setLatitudeAndLongitude(this, latitude, longitude);
+
+    this.querySelector('#walker-marker-modal').open();
+
   }
 
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
+    console.log('mapStateToThis walker-map');
+    console.log(this.markers);
   }
 
 }
