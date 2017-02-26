@@ -1,8 +1,8 @@
-package generic;
+package generic.objects;
 
 import server.JSONTools;
 
-public class Building {
+public class Building extends WalkerObject {
 	public String name;
 
 	@Override

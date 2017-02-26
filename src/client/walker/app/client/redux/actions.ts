@@ -1,5 +1,6 @@
-import {WalkerApp} from '../components/walker-app/walker-app';
+import {WalkerMap} from '../components/walker-map/walker-map';
 import {Marker} from '../typings/marker';
+import {WalkerMarkerModal} from '../components/walker-marker-modal/walker-marker-modal';
 
 const defaultAction = (context: any) => {
     context.action = {
@@ -12,13 +13,26 @@ const showMainSpinner = (context: any) => {
     };
 };
 
-const setMarkers = async (context: WalkerApp, markers: Marker[] ): Promise<void> => {
+const setMarkers = async (context: WalkerMap, markers: Marker[] ): Promise<void> => {
     context.action = {
       type: 'SET_MARKERS',
       markers
-    }
+    };
 }
+
+const setLatitudeAndLongitude = async (context: WalkerMap, currentClickLatitude: number, currentClickLongitude: number): Promise<void> => {
+  context.action = {
+    type: 'SET_LATITUDE_AND_LONGITUDE',
+    currentClickLatitude,
+    currentClickLongitude
+  };
+}
+
+const setMarker = async (context: WalkerMarkerModal, marker: Marker): Promise<void> => {
+
+};
 export const Actions = {
     defaultAction,
-    setMarkers
+    setMarkers,
+    setLatitudeAndLongitude
 };

@@ -12,6 +12,7 @@
   },
   "homepage": "https://github.com/mcrowder65/walker",
   "devDependencies": {
+    "@types/polymer": "^1.1.30",
     "systemjs": "^0.19.41",
     "zwitterion": "^0.7.0"
   },

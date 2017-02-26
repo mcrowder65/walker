@@ -9,9 +9,18 @@ export function rootReducer(state: State = InitialState, action: Action): State 
         const newState: State = {
           ...state,
           markers: action.markers
-        }
+        };
         return newState;
       }
+
+      case 'SET_LATITUDE_AND_LONGITUDE': {
+        return {
+          ...state,
+          currentClickLatitude: action.currentClickLatitude,
+          currentClickLongitude: action.currentClickLongitude
+        };
+      }
+
       default: {
           return state;
       }

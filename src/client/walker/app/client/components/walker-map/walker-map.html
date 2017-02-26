@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
+<link rel="import" href="../../bower_components/google-apis/google-apis.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../walker-marker-modal/walker-marker-modal.html">
+
+<dom-module id="walker-map">
+  <template>
+    <style>
+    google-map {
+      height: 600px;
+      width: 1000px;
+      display: block;
+    }
+
+    #walker-marker-modal {
+      width: 300px;
+    }
+    </style>
+    <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
+
+    <iron-ajax
+      id="getMarkersAjax"
+      url="http://localhost:8081/getMarkers"
+      method="get"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+
+    
+    <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
+    <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
+    <google-map
+      fit-to-markers
+      map-type="satellite"
+      click-events="true"
+      on-google-map-click="mapClicked"
+      api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
+      <template is="dom-repeat" items="{{markers}}">
+          <google-map-marker
+            latitude="[[item.latitude]]"
+            longitude="[[item.longitude]]"
+            title="[[item.title]]"
+            draggable="false">
+          </google-map-marker>
+      </template>
+    </google-map>
+
+    <walker-marker-modal id="walker-marker-modal"></walker-marker-modal>
+
+  </template>
+
+  <script src="walker-map.ts"></script>
+</dom-module>
