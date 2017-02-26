@@ -140,6 +140,12 @@
         },
         "components/walker-map/walker-map.ts": {
             "parentImport": true
+        },
+        "components/walker-marker-modal/walker-marker-modal.html": {
+            "parentImport": true
+        },
+        "components/walker-marker-modal/walker-marker-modal.ts": {
+            "parentImport": true
         }
     }
 }
