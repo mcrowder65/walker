@@ -1,8 +1,6 @@
 import {rootReducer} from '../../redux/reducers';
 import {State} from '../../typings/state';
 import {Action} from '../../typings/action';
-import {Actions} from '../../redux/actions';
-import {Marker} from '../../typings/marker';
 
 export class WalkerApp {
   public is: string;
@@ -11,9 +9,13 @@ export class WalkerApp {
   beforeRegister(): void {
     this.is = 'walker-app';
   }
-  
+
   ready(): void {
     this.rootReducer = rootReducer;
+  }
+
+  mapStateToThis(e: any): void {
+    console.log('state change walker-app!');
   }
 }
 
