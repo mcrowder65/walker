@@ -191,6 +191,36 @@
         },
         "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
             "parentImport": true
+        },
+        "bower_components/paper-input/paper-input.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-input/iron-input.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-form-element-behavior/iron-form-element-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-char-counter.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-container.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-error.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-a11y-announcer/iron-a11y-announcer.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-validatable-behavior/iron-validatable-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-addon-behavior.html": {
+            "parentImport": true
         }
     }
 }

@@ -1,8 +1,8 @@
-package generic;
+package generic.objects;
 
 import server.JSONTools;
 
-public class Marker {
+public class Marker extends WalkerObject {
 	private double latitude;
 	private double longitude;
 	private String title;
@@ -23,10 +23,16 @@ public class Marker {
 		this.longitude = longitude;
 	}
 
-	public Marker(double latitude, double longitude, String title) {
+	public Marker(double latitude, double longitude, String title, String id) {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.title = title;
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "Marker [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + ", id=" + id + "]";
 	}
 
 	public Marker(double latitude, double longitude) {
@@ -38,11 +44,6 @@ public class Marker {
 		return title;
 	}
 
-	@Override
-	public String toString() {
-		return "Marker [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + "]";
-	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -52,7 +53,6 @@ public class Marker {
 	}
 
 	public String toJson() {
-
 		String jsonString = JSONTools.g.toJson(this);
 		return jsonString;
 	}

@@ -16,6 +16,9 @@
       display: block;
     }
 
+    #walker-marker-modal {
+      width: 300px;
+    }
     </style>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
 
@@ -27,15 +30,7 @@
       handle-as="json">
     </iron-ajax>
 
-    <iron-ajax
-      id="setMarkerAjax"
-      url="http://localhost:8081/setMarker"
-      method="post"
-      content-type="application/json"
-      handle-as="json">
-    </iron-ajax>
-
-
+    
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
     <google-map

@@ -4,6 +4,7 @@ import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
 import {Marker} from '../../typings/marker';
 import {StatechangeEvent} from '../../typings/statechange-event';
+import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
 
 export class WalkerMap {
   public is: string;
@@ -16,6 +17,10 @@ export class WalkerMap {
     this.is = 'walker-map';
   }
 
+  ready(): void {
+    this.initMarkers();
+  }
+
   async initMarkers(): Promise<void> {
     const ajax = this.querySelector('#getMarkersAjax');
     const request = ajax.generateRequest();
@@ -24,26 +29,11 @@ export class WalkerMap {
 
     //markers is an array of Marker objects
     const markers = response;
-
     for(let i: number = 0; i < markers.length; i++) {
       markers[i] = JSON.parse(markers[i]);
     }
     Actions.setMarkers(this, markers);
 
-  }
-
-  async setMarker(marker: Marker): Promise<void> {
-    const ajax = this.querySelector('#setMarkerAjax');
-
-    ajax.body = {
-      latitude: marker.latitude,
-      longitude: marker.longitude,
-      title: marker.title
-    };
-    const request = ajax.generateRequest();
-    await request.completes;
-    const response = request.response;
-    console.log(response);
   }
 
   async clearMarkers(): Promise<void> {
@@ -53,18 +43,15 @@ export class WalkerMap {
   async mapClicked(e: any): Promise<void> {
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
-
     Actions.setLatitudeAndLongitude(this, latitude, longitude);
-
-    this.querySelector('#walker-marker-modal').open();
+    const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
+    walkerMarkerModal.open();
 
   }
 
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
-    console.log('walker-map mapStateToThis');
-    console.log(state);
   }
 
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import googlemaps.LatLng;
+import server.firebase.Firebase;
 
 public class Tools {
 
@@ -130,4 +131,6 @@ public class Tools {
 			System.out.println(list.get(i));
 		}
 	}
+
+	public static Firebase firebase = new Firebase();
 }
