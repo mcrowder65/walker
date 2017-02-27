@@ -21,29 +21,30 @@ public class Firebase {
 	}
 
 	/**
-	 * This sends json back to the client this is a getter
+	 * This sends this to the client.. I need to figure out a way to return this
+	 * with the server...
 	 * 
 	 * @param path
-	 *            String
 	 * @param desiredClass
-	 *            WalkerObject
 	 * @param exchange
-	 *            HttpExchange
+	 * @return
 	 */
-	public void sendAllToClientAsJSON(String path, WalkerObject desiredClass, HttpExchange exchange) {
+	public void getAll(String path, WalkerObject desiredClass, HttpExchange exchange) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
-
-		ref.addValueEventListener(new ValueEventListener() {
+		List<String> objects = new ArrayList<>();
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
+				// TODO Auto-generated method stub
+
 			}
 
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				try {
-					List<String> objects = new ArrayList<>();
+
 					for (DataSnapshot child : dataSnapshot.getChildren()) {
 						WalkerObject obj = child.getValue(desiredClass.getClass());
 						objects.add(obj.toJson());
@@ -57,6 +58,7 @@ public class Firebase {
 				}
 
 			}
+
 		});
 	}
 

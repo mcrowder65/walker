@@ -21,7 +21,7 @@ public class GetMarkersHandler extends WalkerHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		synchronized (lock) {
 			getRequestBodyAndSetHeaders(exchange);
-			Tools.firebase.sendAllToClientAsJSON("markers", marker, exchange);
+			Tools.firebase.getAll("markers", marker, exchange);
 		}
 
 	}
