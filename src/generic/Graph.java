@@ -1,5 +1,6 @@
 package generic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
@@ -24,6 +25,19 @@ public class Graph {
 
 	public List<Node> getNodes() {
 		return this.nodes;
+	}
+
+	public double getDistance(int startNode, int endNode) {
+		return distance[startNode][endNode];
+	}
+
+	public List<Double> getDistanceList(int startNode) {
+		List<Double> distances = new ArrayList();
+		for (int i = 0; i < distance.length; i++) {
+			double dist = getDistance(startNode, i);
+			distances.add(dist);
+		}
+		return distances;
 	}
 
 	public void addNode(Node n) {
