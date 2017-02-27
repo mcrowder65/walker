@@ -14,7 +14,14 @@
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
-  
+    <iron-ajax
+      id="getMarkersAjax"
+      url="http://localhost:8081/getMarkers"
+      method="get"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+
     <paper-dialog id="modal" with-backdrop>
       <paper-item>Latitude: [[latitude]]</paper-item>
       <paper-item>Longitude: [[longitude]]</paper-item>

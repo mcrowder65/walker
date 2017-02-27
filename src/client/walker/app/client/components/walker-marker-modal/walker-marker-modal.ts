@@ -41,14 +41,10 @@ export class WalkerMarkerModal {
 
     const request = ajax.generateRequest();
     await request.completes;
-    const response = request.response;
 
-
-    const getMarkerAjax = document.querySelector('#walker-map');
-    getMarkerAjax.initMarkers();//TODO abstract this...
-
+    const getMarkerAjax = this.querySelector('#walker-map');
+    Actions.initMarkersWithAjax(this, getMarkerAjax);
   }
-
   mapStateToThis(e: StatechangeEvent): void {
     const state: State = e.detail.state
     this.latitude = state.currentClickLatitude;

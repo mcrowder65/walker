@@ -17,10 +17,14 @@ public class SetMarkerHandler extends WalkerHandler {
 		String result = getRequestBodyAndSetHeaders(exchange);
 
 		if (!result.equals("")) {
+
 			Marker marker = JSONTools.g.fromJson(result, Marker.class);
-			// TODO set this in database now.
 			System.out.println(marker);
-			Tools.firebase.set("markers", marker, exchange);
+			if (!marker.getId().equals("")) {
+
+			} else {
+				Tools.firebase.set("markers", marker, exchange);
+			}
 
 		} else {
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);

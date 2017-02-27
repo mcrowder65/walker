@@ -23,16 +23,7 @@ export class WalkerMap {
 
   async initMarkers(): Promise<void> {
     const ajax = this.querySelector('#getMarkersAjax');
-    const request = ajax.generateRequest();
-    await request.completes;
-    const response = request.response;
-
-    //markers is an array of Marker objects
-    const markers = response;
-    for(let i: number = 0; i < markers.length; i++) {
-      markers[i] = JSON.parse(markers[i]);
-    }
-    Actions.setMarkers(this, markers);
+    Actions.initMarkersWithAjax(this, ajax);
 
   }
 
@@ -46,6 +37,12 @@ export class WalkerMap {
     Actions.setLatitudeAndLongitude(this, latitude, longitude);
     const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
     walkerMarkerModal.open();
+
+  }
+
+  async editMarker(e: any): Promise<void> {
+    const marker: any = e.model.__data__.item;
+    console.log(marker);
 
   }
 
