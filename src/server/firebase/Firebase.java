@@ -1,8 +1,8 @@
 package server.firebase;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -12,24 +12,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.sun.net.httpserver.HttpExchange;
 
 import generic.objects.WalkerObject;
-import server.JSONTools;
-import sun.net.www.protocol.http.HttpURLConnection;
 
 public class Firebase {
 
+	private Semaphore semaphore;
+
 	public Firebase() {
+		semaphore = new Semaphore(0);
 	}
 
-	/**
-	 * This sends this to the client.. I need to figure out a way to return this
-	 * with the server...
-	 * 
-	 * @param path
-	 * @param desiredClass
-	 * @param exchange
-	 * @return
-	 */
-	public void getAll(String path, WalkerObject desiredClass, HttpExchange exchange) {
+	public List<String> getAllAsJson(String path, WalkerObject desiredClass) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		List<String> objects = new ArrayList<>();
@@ -37,29 +29,58 @@ public class Firebase {
 
 			@Override
 			public void onCancelled(DatabaseError arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				try {
 
-					for (DataSnapshot child : dataSnapshot.getChildren()) {
-						WalkerObject obj = child.getValue(desiredClass.getClass());
-						objects.add(obj.toJson());
-					}
-					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-					String json = JSONTools.g.toJson(objects);
-					exchange.getResponseBody().write(json.getBytes());
-					exchange.getResponseBody().close();
-				} catch (IOException e) {
-					e.printStackTrace();
+				for (DataSnapshot child : dataSnapshot.getChildren()) {
+					WalkerObject obj = child.getValue(desiredClass.getClass());
+					objects.add(obj.toJson());
 				}
-
+				semaphore.release();
 			}
 
 		});
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return objects;
+
+	}
+
+	public List<WalkerObject> getAllAsObjects(String path, WalkerObject desiredClass) {
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		List<WalkerObject> objects = new ArrayList<>();
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+
+			}
+
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+
+				for (DataSnapshot child : dataSnapshot.getChildren()) {
+					WalkerObject obj = child.getValue(desiredClass.getClass());
+					objects.add(obj);
+				}
+				semaphore.release();
+			}
+
+		});
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return objects;
+
 	}
 
 	public void update(String path, WalkerObject obj, HttpExchange exchange) {
