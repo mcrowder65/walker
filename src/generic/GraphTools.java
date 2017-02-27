@@ -25,6 +25,17 @@ public class GraphTools {
 
 	}
 	
+	/**
+	 * Generates some number of nodes in a normal distribution around the existing nodes.
+	 * @param existingNodes
+	 * @param numToGen
+	 * @return
+	 */
+	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen)
+	{
+		return null;
+	}
+	
 	private static void bresenham2(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor)
 	{
 		int x1 = (int)start.x;
