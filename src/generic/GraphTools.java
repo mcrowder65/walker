@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
@@ -26,15 +27,39 @@ public class GraphTools {
 	}
 
 	
+	private static Random rand = new Random();
 	/**
 	 * Generates some number of nodes in a normal distribution around the existing nodes.
+	 * Uses the box-muller method
 	 * @param existingNodes
 	 * @param numToGen
 	 * @return
 	 */
 	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen)
 	{
-		return null;
+		double meanLat = 0;
+		double meanLon = 0;
+		for (Node n : existingNodes)
+		{
+			meanLat += n.getPosition().latitude;
+			meanLon += n.getPosition().longitude;
+		}
+		meanLat /= existingNodes.size();
+		meanLon /= existingNodes.size();
+		
+		List<Node> randomNodes = new ArrayList<Node>();
+		for (int n = 0; n < numToGen; n++)
+		{
+			double u = rand.nextDouble();
+			double v = rand.nextDouble();
+			double x = Math.sqrt(-2 * Math.log(u)) * Math.cos(2*Math.PI*v);
+			double y = Math.sqrt(-2 * Math.log(u)) * Math.sin(2*Math.PI*v);
+			double lat = meanLat + y;
+			double lon = meanLon + x;
+			Node node = new Node(new LatLng(lat, lon));
+			randomNodes.add(node);
+		}
+		return randomNodes;
 	}
 	
 	private static void bresenham2(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor)
