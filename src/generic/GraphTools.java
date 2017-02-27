@@ -96,6 +96,7 @@ public class GraphTools {
 		}
 		QueueArray qObj = new QueueArray(distance);
 		List<Integer> q = qObj.makeQ(g.getNumNodes());
+		int counter = 0;
 
 	}
 
