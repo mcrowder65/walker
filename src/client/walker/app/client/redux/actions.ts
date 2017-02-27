@@ -13,26 +13,85 @@ const showMainSpinner = (context: any) => {
     };
 };
 
-const setMarkers = async (context: WalkerMap, markers: Marker[] ): Promise<void> => {
+const setMarkers = async (context: WalkerMap | WalkerMarkerModal, markers: Marker[] ): Promise<void> => {
     context.action = {
       type: 'SET_MARKERS',
       markers
     };
 }
 
-const setLatitudeAndLongitude = async (context: WalkerMap, currentClickLatitude: number, currentClickLongitude: number): Promise<void> => {
+const initMarkersWithAjax = async (context: WalkerMap | WalkerMarkerModal, ajax: any): Promise<void> => {
+  const request = ajax.generateRequest();
+  await request.completes;
+  const response = request.response;
+
+  // markers is an array of Marker objects
+  const markers = response;
+  for(let i: number = 0; i < markers.length; i++) {
+    markers[i] = JSON.parse(markers[i]);
+  }
+  setMarkers(context, markers);
+};
+
+const setLatitudeAndLongitude = async (context: WalkerMap, currentMarker: Marker): Promise<void> => {
   context.action = {
     type: 'SET_LATITUDE_AND_LONGITUDE',
-    currentClickLatitude,
-    currentClickLongitude
+    currentMarker
   };
 }
 
-const setMarker = async (context: WalkerMarkerModal, marker: Marker): Promise<void> => {
+/**
+ * this set marker hits the server which sets the marker in firebase.
+ */
+const setMarker = async (marker: Marker, ajax: any): Promise<void> => {
+  ajax.body = {
+    latitude: marker.latitude,
+    longitude: marker.longitude,
+    title: marker.title,
+    id: marker.id
+  };
 
+  const request = ajax.generateRequest();
+  await request.completes;
 };
+
+const resetMarkerModal = async (context: WalkerMarkerModal): Promise<void> => {
+  context.action = {
+    type: 'RESET_MARKER_MODAL'
+  }
+};
+
+/**
+ * This set marker just sets the current marker in the state for the marker modal.
+ */
+const setCurrentMarker = async (context: WalkerMap, currentMarker: Marker): Promise<void> => {
+  context.action = {
+    type: 'SET_CURRENT_MARKER',
+    currentMarker
+  };
+};
+
+const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
+  ajax.body = {
+    id: marker.id,
+    longitude: marker.longitude,
+    latitude: marker.latitude,
+    title: marker.title
+  };
+
+  const request = ajax.generateRequest();
+  await request.completes;
+
+  
+};
+
 export const Actions = {
     defaultAction,
     setMarkers,
-    setLatitudeAndLongitude
+    setLatitudeAndLongitude,
+    initMarkersWithAjax,
+    setMarker,
+    setCurrentMarker,
+    resetMarkerModal,
+    deleteMarker
 };

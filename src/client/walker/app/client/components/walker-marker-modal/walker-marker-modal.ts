@@ -18,6 +18,9 @@ export class WalkerMarkerModal {
     this.is = 'walker-marker-modal';
   }
 
+  /**
+   * This gets called from walker-map
+   */
   open(): void {
     this.querySelector('#modal').open();
   }
@@ -30,30 +33,40 @@ export class WalkerMarkerModal {
       id: this.markerId || ''
     };
 
-    const ajax = this.querySelector('#setMarkerAjax');
+    const setMarkerAjax = this.querySelector('#setMarkerAjax');
+    Actions.setMarker(marker, setMarkerAjax);
 
-    ajax.body = {
-      latitude: marker.latitude,
-      longitude: marker.longitude,
-      title: marker.title,
-      id: marker.id
+    const getMarkerAjax = this.querySelector('#getMarkersAjax');
+    Actions.initMarkersWithAjax(this, getMarkerAjax);
+    Actions.resetMarkerModal(this);
+  }
+
+  async deleteMarker(e: any): Promise<void> {
+
+    const ajax = this.querySelector('#deleteMarkerAjax');
+    const marker: Marker = {
+      latitude: this.latitude,
+      longitude: this.longitude,
+      id: this.markerId,
+      title: this.title
     };
 
-    const request = ajax.generateRequest();
-    await request.completes;
-    const response = request.response;
+    await Actions.deleteMarker(marker, ajax);
 
-
-    const getMarkerAjax = document.querySelector('#walker-map');
-    getMarkerAjax.initMarkers();//TODO abstract this...
-
+    const getMarkerAjax = this.querySelector('#getMarkersAjax');
+    Actions.initMarkersWithAjax(this, getMarkerAjax);
+    Actions.resetMarkerModal(this);
   }
+
 
   mapStateToThis(e: StatechangeEvent): void {
     const state: State = e.detail.state
-    this.latitude = state.currentClickLatitude;
-    this.longitude = state.currentClickLongitude;
-    this.markerId = state.currentMarkerId;
+    if(state.currentMarker) {
+      this.latitude = state.currentMarker.latitude;
+      this.longitude = state.currentMarker.longitude;
+      this.markerId = state.currentMarker.id;
+      this.title = state.currentMarker.title;
+    }
   }
 
 }

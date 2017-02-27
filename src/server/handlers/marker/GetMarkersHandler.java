@@ -10,15 +10,20 @@ import server.handlers.WalkerHandler;
 
 public class GetMarkersHandler extends WalkerHandler {
 	Marker marker;
+	Object lock;
 
 	public GetMarkersHandler() {
 		marker = new Marker();
+		lock = new Object();
 	}
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		getRequestBodyAndSetHeaders(exchange);
-		Tools.firebase.sendAllToClientAsJSON("markers", marker, exchange);
+		synchronized (lock) {
+			getRequestBodyAndSetHeaders(exchange);
+			Tools.firebase.getAll("markers", marker, exchange);
+		}
+
 	}
 
 }

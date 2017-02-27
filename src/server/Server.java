@@ -12,6 +12,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
+import server.handlers.marker.DeleteMarkerHandler;
 import server.handlers.marker.GetMarkersHandler;
 import server.handlers.marker.SetMarkerHandler;
 
@@ -21,6 +22,7 @@ public class Server {
 	private HttpServer httpServer;
 	private GetMarkersHandler getMarkersHandler;
 	private SetMarkerHandler setMarkerHandler;
+	private DeleteMarkerHandler deleteMarkerHandler;
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		new Server().run(args);
@@ -34,7 +36,7 @@ public class Server {
 
 		int port = 8081;
 
-		System.out.println("Port =" + port);
+		System.out.println("Port = " + port);
 		try {
 			httpServer = HttpServer.create(new InetSocketAddress(port), MAX_WAITING_CONNECTIONS);
 		} catch (IOException e) {
@@ -48,6 +50,9 @@ public class Server {
 
 		setMarkerHandler = new SetMarkerHandler();
 		httpServer.createContext("/setMarker", setMarkerHandler);
+
+		deleteMarkerHandler = new DeleteMarkerHandler();
+		httpServer.createContext("/deleteMarker", deleteMarkerHandler);
 		httpServer.start();
 
 	}

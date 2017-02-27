@@ -23,16 +23,7 @@ export class WalkerMap {
 
   async initMarkers(): Promise<void> {
     const ajax = this.querySelector('#getMarkersAjax');
-    const request = ajax.generateRequest();
-    await request.completes;
-    const response = request.response;
-
-    //markers is an array of Marker objects
-    const markers = response;
-    for(let i: number = 0; i < markers.length; i++) {
-      markers[i] = JSON.parse(markers[i]);
-    }
-    Actions.setMarkers(this, markers);
+    Actions.initMarkersWithAjax(this, ajax);
 
   }
 
@@ -43,10 +34,34 @@ export class WalkerMap {
   async mapClicked(e: any): Promise<void> {
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
-    Actions.setLatitudeAndLongitude(this, latitude, longitude);
+    const marker: Marker = {
+      latitude,
+      longitude
+    }
+    Actions.setLatitudeAndLongitude(this, marker);
     const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
     walkerMarkerModal.open();
 
+  }
+
+  async editMarker(e: any): Promise<void> {
+    const marker: any = e.model.__data__.item;
+    Actions.setCurrentMarker(this, marker);
+    const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
+    walkerMarkerModal.open();
+  }
+
+  async markerDragDone(e: any): Promise<void> {
+    const oldMarker: any = e.model.__data__.item;
+    const latitude: number = e.detail.latLng.lat();
+    const longitude: number = e.detail.latLng.lng();
+    const newMarker: Marker = {
+      ...oldMarker,
+      latitude,
+      longitude
+    };
+    const setMarkerAjax = this.querySelector('#setMarkerAjax');
+    Actions.setMarker(newMarker, setMarkerAjax);
   }
 
   mapStateToThis(e: any): void {

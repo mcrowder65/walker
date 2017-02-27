@@ -6,18 +6,30 @@ import {Action} from '../typings/action';
 export function rootReducer(state: State = InitialState, action: Action): State {
     switch(action.type) {
       case 'SET_MARKERS': {
-        const newState: State = {
+        return {
           ...state,
           markers: action.markers
         };
-        return newState;
       }
 
       case 'SET_LATITUDE_AND_LONGITUDE': {
         return {
           ...state,
-          currentClickLatitude: action.currentClickLatitude,
-          currentClickLongitude: action.currentClickLongitude
+          currentMarker: action.currentMarker
+        };
+      }
+
+      case 'RESET_MARKER_MODAL': {
+        return {
+          ...state,
+          currentMarker: action.currentMarker
+        };
+      }
+
+      case 'SET_CURRENT_MARKER': {
+        return {
+          ...state,
+          currentMarker: action.currentMarker
         };
       }
 

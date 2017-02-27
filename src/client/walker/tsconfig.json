@@ -5,7 +5,7 @@
     "experimentalDecorators": true,
     "removeComments": true,
     "noImplicitAny": true,
-    "types": ["polymer"]
+    "types": ["polymer", "googlemaps"]
   },
   "exclude": [
       "node_modules",
