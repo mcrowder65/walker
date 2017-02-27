@@ -71,6 +71,20 @@ const setCurrentMarker = async (context: WalkerMap, currentMarker: Marker): Prom
   };
 };
 
+const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
+  ajax.body = {
+    id: marker.id,
+    longitude: marker.longitude,
+    latitude: marker.latitude,
+    title: marker.title
+  };
+
+  const request = ajax.generateRequest();
+  await request.completes;
+
+  
+};
+
 export const Actions = {
     defaultAction,
     setMarkers,
@@ -78,5 +92,6 @@ export const Actions = {
     initMarkersWithAjax,
     setMarker,
     setCurrentMarker,
-    resetMarkerModal
+    resetMarkerModal,
+    deleteMarker
 };

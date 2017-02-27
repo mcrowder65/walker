@@ -64,15 +64,10 @@ public class Firebase {
 
 	public void update(String path, WalkerObject obj, HttpExchange exchange) {
 
-		try {
-			final FirebaseDatabase database = FirebaseDatabase.getInstance();
-			DatabaseReference ref = database.getReference(path);
-			ref.setValue(obj);
-			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-			exchange.getResponseBody().close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		ref.setValue(obj);
+
 	}
 
 	/**
@@ -92,12 +87,13 @@ public class Firebase {
 		DatabaseReference idRef = database.getReference(path + "/" + id);
 		obj.setId(id);
 		idRef.setValue(obj);
-		try {
-			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-			exchange.getResponseBody().close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+	}
+
+	public void delete(String path, HttpExchange exchange) {
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		ref.setValue(null);
 
 	}
 }

@@ -41,6 +41,22 @@ export class WalkerMarkerModal {
     Actions.resetMarkerModal(this);
   }
 
+  async deleteMarker(e: any): Promise<void> {
+
+    const ajax = this.querySelector('#deleteMarkerAjax');
+    const marker: Marker = {
+      latitude: this.latitude,
+      longitude: this.longitude,
+      id: this.markerId,
+      title: this.title
+    };
+
+    await Actions.deleteMarker(marker, ajax);
+
+    const getMarkerAjax = this.querySelector('#getMarkersAjax');
+    Actions.initMarkersWithAjax(this, getMarkerAjax);
+    Actions.resetMarkerModal(this);
+  }
 
 
   mapStateToThis(e: StatechangeEvent): void {

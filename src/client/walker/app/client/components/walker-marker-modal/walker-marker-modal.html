@@ -14,10 +14,19 @@
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
+    
     <iron-ajax
       id="getMarkersAjax"
       url="http://localhost:8081/getMarkers"
       method="get"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+
+    <iron-ajax
+      id="deleteMarkerAjax"
+      url="http://localhost:8081/deleteMarker"
+      method="post"
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
@@ -27,6 +36,9 @@
       <paper-item>Longitude: [[longitude]]</paper-item>
       <paper-input label="Title" value="{{title}}"></paper-input>
       <paper-button noink dialog-dismiss>Cancel</paper-button>
+      <template is="dom-if" if="[[markerId]]">
+        <paper-button noink dialog-dismiss on-tap="deleteMarker">Delete</paper-button>
+      </template>
       <paper-button noink dialog-dismiss on-tap="setMarker">Done</paper-button>
     </paper-dialog>
   </template>

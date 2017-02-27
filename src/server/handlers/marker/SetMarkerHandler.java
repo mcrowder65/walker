@@ -31,6 +31,13 @@ public class SetMarkerHandler extends WalkerHandler {
 					Tools.firebase.update(path, marker, exchange);
 				} else {
 					Tools.firebase.set("markers", marker, exchange);
+
+				}
+				try {
+					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+					exchange.getResponseBody().close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 
 			} else {
