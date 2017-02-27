@@ -6,6 +6,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../walker-marker-modal/walker-marker-modal.html">
+<link rel="import" href="../walker-notification/walker-notification.html">
 
 <dom-module id="walker-map">
   <template>
@@ -35,7 +36,7 @@
       content-type="application/json"
       handle-as="json">
     </iron-ajax>
-
+    <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
     <google-map

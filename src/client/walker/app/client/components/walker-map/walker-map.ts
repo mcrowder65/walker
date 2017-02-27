@@ -12,6 +12,8 @@ export class WalkerMap {
   public querySelector: any;
   public markers: Marker[];
   public action: Action;
+  public successMessage: string;
+  public errorMessage: string;
 
   beforeRegister(): void {
     this.is = 'walker-map';
@@ -52,16 +54,24 @@ export class WalkerMap {
   }
 
   async markerDragDone(e: any): Promise<void> {
-    const oldMarker: any = e.model.__data__.item;
-    const latitude: number = e.detail.latLng.lat();
-    const longitude: number = e.detail.latLng.lng();
-    const newMarker: Marker = {
-      ...oldMarker,
-      latitude,
-      longitude
-    };
-    const setMarkerAjax = this.querySelector('#setMarkerAjax');
-    Actions.setMarker(newMarker, setMarkerAjax);
+    try {
+      const oldMarker: any = e.model.__data__.item;
+      const latitude: number = e.detail.latLng.lat();
+      const longitude: number = e.detail.latLng.lng();
+      const newMarker: Marker = {
+        ...oldMarker,
+        latitude,
+        longitude
+      };
+      const setMarkerAjax = this.querySelector('#setMarkerAjax');
+      Actions.setMarker(newMarker, setMarkerAjax);
+      this.successMessage = '';
+      this.successMessage = 'Marker set at new location.';
+    } catch(error) {
+      this.errorMessage = '';
+      this.errorMessage = error.message;
+    }
+
   }
 
   mapStateToThis(e: any): void {
