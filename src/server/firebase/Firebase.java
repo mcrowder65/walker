@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sun.net.httpserver.HttpExchange;
 
 import generic.objects.WalkerObject;
 
@@ -83,7 +82,7 @@ public class Firebase {
 
 	}
 
-	public void update(String path, WalkerObject obj, HttpExchange exchange) {
+	public void update(String path, WalkerObject obj) {
 
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
@@ -99,7 +98,7 @@ public class Firebase {
 	 * @param obj
 	 *            WalkerObject
 	 */
-	public void set(String path, WalkerObject obj, HttpExchange exchange) {
+	public void create(String path, WalkerObject obj) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		DatabaseReference pushedRef = ref.push();
@@ -111,7 +110,7 @@ public class Firebase {
 
 	}
 
-	public void delete(String path, HttpExchange exchange) {
+	public void delete(String path) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		ref.setValue(null);

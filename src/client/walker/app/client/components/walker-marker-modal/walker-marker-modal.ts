@@ -4,6 +4,7 @@ import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {Marker} from '../../typings/marker';
+import {Building} from '../../typings/building';
 
 export class WalkerMarkerModal {
   public is: string;
@@ -13,9 +14,10 @@ export class WalkerMarkerModal {
   public action: Action;
   public title: string;
   public markerId: string;
+  public openingTime: string;
+  public closingTime: string;
   public successMessage: string;
   public errorMessage: string;
-
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
   }
@@ -50,7 +52,7 @@ export class WalkerMarkerModal {
     }
 
   }
-
+  
   async deleteMarker(e: any): Promise<void> {
     try {
       const ajax = this.querySelector('#deleteMarkerAjax');
