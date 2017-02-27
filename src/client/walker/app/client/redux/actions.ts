@@ -21,16 +21,21 @@ const setMarkers = async (context: WalkerMap | WalkerMarkerModal, markers: Marke
 }
 
 const initMarkersWithAjax = async (context: WalkerMap | WalkerMarkerModal, ajax: any): Promise<void> => {
-  const request = ajax.generateRequest();
-  await request.completes;
-  const response = request.response;
+  try {
+    const request = ajax.generateRequest();
+    await request.completes;
+    const response = request.response;
 
-  // markers is an array of Marker objects
-  const markers = response;
-  for(let i: number = 0; i < markers.length; i++) {
-    markers[i] = JSON.parse(markers[i]);
+    // markers is an array of Marker objects
+    const markers = response;
+    for(let i: number = 0; i < markers.length; i++) {
+      markers[i] = JSON.parse(markers[i]);
+    }
+    setMarkers(context, markers);
+  } catch(error) {
+    throw error;
   }
-  setMarkers(context, markers);
+
 };
 
 const setLatitudeAndLongitude = async (context: WalkerMap, currentMarker: Marker): Promise<void> => {
@@ -44,15 +49,20 @@ const setLatitudeAndLongitude = async (context: WalkerMap, currentMarker: Marker
  * this set marker hits the server which sets the marker in firebase.
  */
 const setMarker = async (marker: Marker, ajax: any): Promise<void> => {
-  ajax.body = {
-    latitude: marker.latitude,
-    longitude: marker.longitude,
-    title: marker.title,
-    id: marker.id
-  };
+  try {
+    ajax.body = {
+      latitude: marker.latitude,
+      longitude: marker.longitude,
+      title: marker.title,
+      id: marker.id
+    };
 
-  const request = ajax.generateRequest();
-  await request.completes;
+    const request = ajax.generateRequest();
+    await request.completes;
+  } catch(error) {
+    throw error;
+  }
+
 };
 
 const resetMarkerModal = async (context: WalkerMarkerModal): Promise<void> => {
@@ -72,17 +82,22 @@ const setCurrentMarker = async (context: WalkerMap, currentMarker: Marker): Prom
 };
 
 const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
-  ajax.body = {
-    id: marker.id,
-    longitude: marker.longitude,
-    latitude: marker.latitude,
-    title: marker.title
-  };
+  try {
+    ajax.body = {
+      id: marker.id,
+      longitude: marker.longitude,
+      latitude: marker.latitude,
+      title: marker.title
+    };
 
-  const request = ajax.generateRequest();
-  await request.completes;
+    const request = ajax.generateRequest();
+    await request.completes;
+  } catch(error) {
+    throw error;
+  }
 
-  
+
+
 };
 
 export const Actions = {
