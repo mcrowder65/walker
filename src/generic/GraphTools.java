@@ -35,10 +35,14 @@ public class GraphTools {
 	 * @return
 	 */
 
-	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen)
+	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen, LatLng southwest, LatLng northeast)
 	{
 		double meanLat = 0;
 		double meanLon = 0;
+		double latRatio = (northeast.latitude - southwest.latitude) / 6;
+		double lonRatio = (northeast.longitude - southwest.longitude) / 6;
+		
+		
 		for (Node n : existingNodes)
 		{
 			meanLat += n.getPosition().latitude;
@@ -48,17 +52,37 @@ public class GraphTools {
 		meanLon /= existingNodes.size();
 		
 		List<Node> randomNodes = new ArrayList<Node>();
+		double maxX = -Double.MAX_VALUE;
+		double maxY = -Double.MAX_VALUE;
 		for (int n = 0; n < numToGen; n++)
 		{
 			double u = rand.nextDouble();
 			double v = rand.nextDouble();
 			double x = Math.sqrt(-2 * Math.log(u)) * Math.cos(2*Math.PI*v);
 			double y = Math.sqrt(-2 * Math.log(u)) * Math.sin(2*Math.PI*v);
-			double lat = meanLat + y;
-			double lon = meanLon + x;
+			if (Math.abs(x) >= 2 || Math.abs(y) >= 2)
+			{
+				n--;
+				continue;
+			}
+			double lat = meanLat + (y * latRatio);
+			double lon = meanLon + (x * lonRatio);
+			
+			if (lat < southwest.latitude || lat > northeast.latitude || lon < southwest.longitude || lon > northeast.longitude)
+			{
+				n--;
+				continue;
+			}
+			
+			
+			maxX = Math.max(maxX, x);
+			maxY = Math.max(maxY, y);
+			
+			
 			Node node = new Node(new LatLng(lat, lon));
 			randomNodes.add(node);
 		}
+		System.out.println("Max x: " + maxX + ", Max Y: " + maxY);
 		return randomNodes;
 
 	}
