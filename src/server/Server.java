@@ -34,7 +34,7 @@ public class Server {
 
 		int port = 8081;
 
-		System.out.println("Port =" + port);
+		System.out.println("Port = " + port);
 		try {
 			httpServer = HttpServer.create(new InetSocketAddress(port), MAX_WAITING_CONNECTIONS);
 		} catch (IOException e) {

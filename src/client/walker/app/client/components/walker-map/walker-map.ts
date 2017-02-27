@@ -34,7 +34,11 @@ export class WalkerMap {
   async mapClicked(e: any): Promise<void> {
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
-    Actions.setLatitudeAndLongitude(this, latitude, longitude);
+    const marker: Marker = {
+      latitude,
+      longitude
+    }
+    Actions.setLatitudeAndLongitude(this, marker);
     const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
     walkerMarkerModal.open();
 
@@ -42,8 +46,9 @@ export class WalkerMap {
 
   async editMarker(e: any): Promise<void> {
     const marker: any = e.model.__data__.item;
-    console.log(marker);
-
+    Actions.setCurrentMarker(this, marker);
+    const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
+    walkerMarkerModal.open();
   }
 
   mapStateToThis(e: any): void {
