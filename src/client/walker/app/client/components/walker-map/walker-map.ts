@@ -51,6 +51,19 @@ export class WalkerMap {
     walkerMarkerModal.open();
   }
 
+  async markerDragDone(e: any): Promise<void> {
+    const oldMarker: any = e.model.__data__.item;
+    const latitude: number = e.detail.latLng.lat();
+    const longitude: number = e.detail.latLng.lng();
+    const newMarker: Marker = {
+      ...oldMarker,
+      latitude,
+      longitude
+    };
+    const setMarkerAjax = this.querySelector('#setMarkerAjax');
+    Actions.setMarker(newMarker, setMarkerAjax);
+  }
+
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
