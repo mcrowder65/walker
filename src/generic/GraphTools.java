@@ -12,7 +12,7 @@ import server.APITools;
 
 public class GraphTools {
 
-	public static List<Node> CreateNodesFromPolyline(String[] polylinePieces, double density) {
+	public static List<Node> CreateNodesFromPolyline(String[] polylinePieces) {
 		ArrayList<LatLng> pivots = new ArrayList<LatLng>();
 		for (String poly : polylinePieces) {
 			pivots.addAll(PolyUtil.decode(poly));
@@ -25,6 +25,17 @@ public class GraphTools {
 
 	}
 
+	
+	/**
+	 * Generates some number of nodes in a normal distribution around the existing nodes.
+	 * @param existingNodes
+	 * @param numToGen
+	 * @return
+	 */
+	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen)
+	{
+		return null;
+	}
 	
 	private static void bresenham2(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor)
 	{
