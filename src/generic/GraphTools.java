@@ -12,7 +12,7 @@ import server.APITools;
 
 public class GraphTools {
 
-	public static List<Node> CreateNodesFromPolyline(String[] polylinePieces, double density) {
+	public static List<Node> CreateNodesFromPolyline(String[] polylinePieces) {
 		ArrayList<LatLng> pivots = new ArrayList<LatLng>();
 		for (String poly : polylinePieces) {
 			pivots.addAll(PolyUtil.decode(poly));
