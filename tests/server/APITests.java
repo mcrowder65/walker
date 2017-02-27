@@ -95,21 +95,23 @@ public class APITests {
 		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 50);
-		nodes.addAll(newNodes);
 		
-	    Graph g = new Graph(null, null, nodes);
-
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
 		
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
 		
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
+		nodes.addAll(newNodes);
 		
-		GraphTools.WriteGraphToImage(img, g, new Color(0,0,0), 1, southwest, northeast);
+	    Graph g = new Graph(null, null, nodes);
+
+		
+		
+		GraphTools.WriteGraphToImage(img, g, new Color(0,0,0), 2, southwest, northeast);
 		img = Tools.ClipLogo(img);
 		
-		Tools.WriteImage(img, "testImages/polytest5.png");
+		Tools.WriteImage(img, "testImages/polytest6.png");
 	}
 }
