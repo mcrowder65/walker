@@ -60,6 +60,8 @@ public class Firebase {
 			}
 
 		});
+		
+		
 	}
 
 	public void update(String path, WalkerObject obj, HttpExchange exchange) {

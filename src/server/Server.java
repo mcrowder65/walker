@@ -12,9 +12,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
-import server.handlers.marker.DeleteMarkerHandler;
-import server.handlers.marker.GetMarkersHandler;
-import server.handlers.marker.SetMarkerHandler;
+import server.handlers.marker.*;
+
 
 public class Server {
 
