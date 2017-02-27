@@ -119,6 +119,117 @@
         },
         "bower_components/iron-selector/iron-selection.html": {
             "parentImport": true
+        },
+        "bower_components/iron-ajax/iron-ajax.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-ajax/iron-request.html": {
+            "parentImport": true
+        },
+        "bower_components/promise-polyfill/promise-polyfill-lite.html": {
+            "parentImport": true
+        },
+        "bower_components/promise-polyfill/Promise.js": {
+            "parentImport": true
+        },
+        "redux/actions.ts": {
+            "parentImport": false
+        },
+        "components/walker-map/walker-map.html": {
+            "parentImport": true
+        },
+        "components/walker-map/walker-map.ts": {
+            "parentImport": true
+        },
+        "components/walker-marker-modal/walker-marker-modal.html": {
+            "parentImport": true
+        },
+        "components/walker-marker-modal/walker-marker-modal.ts": {
+            "parentImport": true
+        },
+        "bower_components/paper-dialog/paper-dialog.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-dialog-behavior/paper-dialog-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html": {
+            "parentImport": true
+        },
+        "bower_components/neon-animation/neon-animation-runner-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-overlay-behavior/iron-overlay-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-styles/default-theme.html": {
+            "parentImport": true
+        },
+        "bower_components/neon-animation/neon-animatable-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-meta/iron-meta.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-styles/typography.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-fit-behavior/iron-fit-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-overlay-behavior/iron-overlay-manager.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-overlay-behavior/iron-focusables-helper.html": {
+            "parentImport": true
+        },
+        "bower_components/font-roboto/roboto.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-styles/color.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-overlay-behavior/iron-overlay-backdrop.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-input/iron-input.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-form-element-behavior/iron-form-element-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-char-counter.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-container.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-error.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-a11y-announcer/iron-a11y-announcer.html": {
+            "parentImport": true
+        },
+        "bower_components/iron-validatable-behavior/iron-validatable-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-input/paper-input-addon-behavior.html": {
+            "parentImport": true
+        },
+        "components/walker-notification/walker-notification.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-toast/paper-toast.html": {
+            "parentImport": true
+        },
+        "components/walker-notification/walker-notification.ts": {
+            "parentImport": true
         }
     }
 }

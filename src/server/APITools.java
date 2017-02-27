@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import generic.Tools;
+import googlemaps.LatLng;
 
 import java.awt.Image;
 import java.awt.geom.Point2D;
@@ -52,6 +53,24 @@ public class APITools {
 		String encPolyline = overviewPolyline.getString("points");
 		return encPolyline;
 	}
+	public static String[] GetPolylinePieces(String apiJSONResponse)
+	{
+		
+		JSONObject rootObj = new JSONObject(apiJSONResponse);
+		JSONArray routes = rootObj.getJSONArray("routes");
+		JSONObject primaryRoute = routes.getJSONObject(0);
+		JSONArray legs = primaryRoute.getJSONArray("legs");
+		JSONObject singleLeg = legs.getJSONObject(0);
+		JSONArray steps = singleLeg.getJSONArray("steps");
+		String[] pieces = new String[steps.length()];
+		
+		for (int n = 0; n < steps.length(); n++)
+		{
+			JSONObject polylineWrapper = steps.getJSONObject(n).getJSONObject("polyline");
+			pieces[n] = polylineWrapper.getString("points");
+		}
+		return pieces;
+	}
 	
 	public static String polylineToURLParam(String polyline, int weight, String color)
 	{
@@ -63,24 +82,121 @@ public class APITools {
 		return "&visible=" + Tools.pointToString(pointA, false) + "%7C" + Tools.pointToString(pointB, false);
 	}
 	
-	public static BufferedImage DownloadStaticMapImage(Point2D.Double start, Point2D.Double end, int sizeX, int sizeY)
+
+	public static int getAppropriateZoom(LatLng start, LatLng end, int pixelWidth, int pixelHeight)
 	{
-		return DownloadStaticMapImage(start, end, sizeX, sizeY, null);
+		//TODO: Get polyline bounding box instead (because the path may be clipped)
+		double meterDistanceX = getLongitudeDifference(start, end);
+		double meterDistanceY = getLatitudeDifference(start, end);
+
+		LatLng center = Tools.getCenter(start, end);
+		
+		int bestIndex = -1;
+		for (int n = 10; n<= 20; n++)
+		{
+			double mpp = getMetersPerPixel(center.latitude, n);
+			double meterWidth = meterDistanceX * mpp;
+			double meterHeight = meterDistanceY * mpp;
+			if (meterDistanceX > meterWidth || meterDistanceY > meterHeight)
+				break;
+			else
+				bestIndex = n;
+		}
+		return bestIndex + 2;
+		
 	}
 	
-	public static BufferedImage DownloadStaticMapImage(Point2D.Double start, Point2D.Double end, int sizeX, int sizeY, String polyline)
+	public static double measureMeterDistance(double lat1, double lon1, double lat2, double lon2){  // generally used geo measurement function
+	    double R = 6378.137; // Radius of earth in KM
+	    double dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+	    double dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+	    double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+	    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+	    Math.sin(dLon/2) * Math.sin(dLon/2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+	    double d = R * c;
+	    return d * 1000; // meters
+	}
+	
+	public static double getMetersPerPixel(double latitude, int zoom)
+	{
+		return 156543.03392 * Math.cos(latitude * Math.PI / 180) / Math.pow(2, zoom);
+	}
+	private static double toMetersLat(double latDiff)
+	{
+		return latDiff / 0.0000089;
+	}
+	private static double toMetersLon(double lonDiff, double latitude)
+	{
+		return (lonDiff * Math.cos(latitude * 0.018) )/ 0.0000089;
+	}
+	public static double getLatitudeDifference(LatLng a, LatLng b)
+	{
+		return Math.abs(toMetersLat(a.latitude - b.latitude));
+	}
+	public static double getLongitudeDifference(LatLng a, LatLng b)
+	{
+		
+		return Math.abs(toMetersLon(a.longitude - b.longitude, a.latitude));
+	}
+	public static LatLng getNortheast(LatLng center, double metersPerPixel, int sizeX, int sizeY)
+	{
+		double metersX = (metersPerPixel * sizeX) / 2;
+		double metersY = (metersPerPixel * sizeY) / 2;
+		double coefX = metersX * 0.0000089;
+		double coefY = metersY * 0.0000089;
+		double new_lat = center.latitude + coefY;
+		double new_lon = center.longitude + coefX / Math.cos(center.latitude * 0.018);
+		return new LatLng(new_lat, new_lon);
+		
+	
+	}
+	public static LatLng getSouthwest(LatLng center, double metersPerPixel, int sizeX, int sizeY)
+	{
+		double metersX = (metersPerPixel * sizeX) / 2;
+		double metersY = (metersPerPixel * sizeY) / 2;
+		double coefX = metersX * 0.0000089;
+		double coefY = metersY * 0.0000089;
+		double new_lat = center.latitude - coefY;
+		double new_lon = center.longitude - coefX / Math.cos(center.latitude * 0.018);
+		return new LatLng(new_lat, new_lon);
+	}
+	public static Point2D.Double getImagePointFromLatLng(LatLng location, LatLng southwest, LatLng northeast, int sizeX, int sizeY)
+	{
+		if (location.latitude > northeast.latitude || location.longitude > northeast.longitude || location.latitude < southwest.latitude || location.longitude < southwest.longitude)
+		{
+			System.err.println("Error: LatLng could not be mapped to point - it is not visible.");
+			return null;
+		}
+		double lonProportion = (location.longitude - southwest.longitude) /(northeast.longitude - southwest.longitude);
+		double latProportion = (location.latitude - southwest.latitude) / (northeast.latitude - southwest.latitude);
+		return new Point2D.Double(sizeX * lonProportion, sizeY - ( sizeY * latProportion));
+	}
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY)
+	{
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), null);
+	}
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, String polyline)
+	{
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), polyline);
+	}
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom)
+	{
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, null);
+	}
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom, String polyline)
 	{
 		try {
 			URL url;
-			Point2D.Double center = Tools.getCenter(start, end);
+			LatLng center = Tools.getCenter(start, end);
 			
 			if (polyline == null)
-				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" +
-					center.x + "," + center.y + pointsToVisibleURLParam(start,end) + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
+				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&zoom="+zoom+"&center=" +
+					Tools.latlngToString(center, false) + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
 					);
 			else
 				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" +
-						center.x + "," + center.y +pointsToVisibleURLParam(start,end) + "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "orange") +"&key=" + generic.Config.STATICMAP_KEY
+						Tools.latlngToString(center, false)+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
 						);
 		
 			BufferedImage image = ImageIO.read(url);
@@ -91,6 +207,5 @@ public class APITools {
 			return null;
 		}
 	}
-	
 	
 }

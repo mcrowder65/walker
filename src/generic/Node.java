@@ -2,17 +2,36 @@ package generic;
 
 import java.awt.geom.Point2D;
 
+import generic.objects.Building;
+import googlemaps.LatLng;
+
 public class Node {
 
-	private Point2D.Double position;
-	private Building building;
-
-	public Node(double x, double y) {
-		this.position = new Point2D.Double(x, y);
+	public LatLng getPosition() {
+		return position;
 	}
 
-	public Node(double x, double y, Building building) {
-		this.position = new Point2D.Double(x, y);
+	public void setPosition(LatLng position) {
+		this.position = position;
+	}
+
+	public Building getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
+
+	private LatLng position;
+	private Building building;
+
+	public Node(LatLng position) {
+		this.position = position;
+	}
+
+	public Node(LatLng position, Building building) {
+		this.position = position;
 		this.building = building;
 	}
 }

@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../walker-notification/walker-notification.html">
+
+<dom-module id="walker-marker-modal">
+  <template>
+    <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
+    <iron-ajax
+      id="setMarkerAjax"
+      url="http://localhost:8081/setMarker"
+      method="post"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+
+    <iron-ajax
+      id="getMarkersAjax"
+      url="http://localhost:8081/getMarkers"
+      method="get"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+
+    <iron-ajax
+      id="deleteMarkerAjax"
+      url="http://localhost:8081/deleteMarker"
+      method="post"
+      content-type="application/json"
+      handle-as="json">
+    </iron-ajax>
+    <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
+    <paper-dialog id="modal" with-backdrop>
+      <paper-item>Latitude: [[latitude]]</paper-item>
+      <paper-item>Longitude: [[longitude]]</paper-item>
+      <paper-input label="Title" value="{{title}}"></paper-input>
+      <paper-button noink dialog-dismiss>Cancel</paper-button>
+      <template is="dom-if" if="[[markerId]]">
+        <paper-button noink dialog-dismiss on-tap="deleteMarker">Delete</paper-button>
+      </template>
+      <paper-button noink dialog-dismiss on-tap="setMarker">Done</paper-button>
+    </paper-dialog>
+  </template>
+
+  <script src="walker-marker-modal.ts"></script>
+</dom-module>
