@@ -107,65 +107,7 @@ public class GraphTools {
 	
 	
 
-	/**
-	 * Expected: start.x < end.x
-	 * 
-	 * @param img
-	 * @param start
-	 * @param end
-	 * @param lineColor
-	 */
-
-	private static void DrawLineBetween(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor) {
-		double deltax = (int) (end.x - start.x);
-		double deltay = (int) (end.y - start.y);
-		int y = (int) start.y;
-		if (deltax == 0) {
-			int minY = (int) Math.min(start.y, end.y);
-			int maxY = (int) Math.max(start.y, end.y);
-
-	private static void DrawLineBetween(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor)
-	{
-		double deltax = (end.x - start.x);
-		double deltay = (end.y - start.y);
-		int y = (int)start.y;
-		if (deltax == 0)
-		{
-			int minY = (int)Math.min(start.y, end.y);
-			int maxY = (int)Math.max(start.y, end.y);
-
-			for (y = minY; y <= maxY; y++)
-				img.setRGB((int) start.x, y, lineColor.getRGB());
-			return;
-		}
-		double deltaerr = Math.abs(deltay / deltax);
-		double error = deltaerr - 0.5;
-
-
-		for (int x = (int) start.x; x <= (int) end.x; x++) {
-			img.setRGB(x, y, lineColor.getRGB());
-			error += deltaerr;
-			if (error >= 0.5) {
-				y++;
-				error -= 1;
-
-		
-		
-		for (int x = (int)start.x; x <= (int)end.x; x++)
-			{
-				img.setRGB(x, y, lineColor.getRGB());
-				error += deltaerr;
-				while (error >= 0.5) {
-					y++;
-					error -= 1;
-				}
-						
-
-			}
-
-		}
-
-	}
+	
 
 	public static void WriteGraphToImage(BufferedImage img, Graph g, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast) {
@@ -188,10 +130,6 @@ public class GraphTools {
 
 			if (lineColor != null && prevPoint != null) {
 				Point2D.Double minX = p.x < prevPoint.x ? p : prevPoint;
-
-				Point2D.Double maxX = p.x > prevPoint.x ? p : prevPoint;
-				DrawLineBetween(img, minX, maxX, lineColor);
-
 				Point2D.Double maxX = minX == prevPoint ? p : prevPoint;
 				bresenham2(img, minX, maxX, lineColor );
 			}
