@@ -212,7 +212,6 @@ public class GraphTools {
 				}
 			}
 		}
-
 		List<Integer> path = new ArrayList();
 		int end = endNodeIndex;
 		while (end != startNodeIndex) {
