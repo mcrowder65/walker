@@ -188,7 +188,7 @@ public class GraphTools {
 		}
 	}
 
-	public void dijkstra(int startNodeIndex, Graph g) {
+	public DijkstraWrapper dijkstra(int startNodeIndex, Graph g) {
 		List<Double> distances = g.getDistanceList(startNodeIndex);
 		List<Integer> prev = new ArrayList();
 		for (int i = 0; i < g.getNumNodes(); i++) {
@@ -211,6 +211,7 @@ public class GraphTools {
 			}
 		}
 
+		return new DijkstraWrapper(distances, prev);
 	}
 
 }
