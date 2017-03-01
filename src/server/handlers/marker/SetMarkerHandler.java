@@ -28,9 +28,9 @@ public class SetMarkerHandler extends WalkerHandler {
 				System.out.println(marker);
 				if (!marker.getId().equals("")) {
 					String path = "markers/" + marker.getId();
-					Tools.firebase.update(path, marker, exchange);
+					Tools.firebase.update(path, marker);
 				} else {
-					Tools.firebase.set("markers", marker, exchange);
+					Tools.firebase.create("markers", marker);
 
 				}
 				try {
