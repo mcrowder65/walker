@@ -3,6 +3,8 @@ package generic;
 import java.util.ArrayList;
 import java.util.List;
 
+import googlemaps.LatLng;
+
 public class Graph {
 
 	private double[][] distance;
@@ -21,6 +23,27 @@ public class Graph {
 
 	public void setNodes(List<Node> nodes) {
 		this.nodes = nodes;
+	}
+
+	public void setDistancesFromNodes() {
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int z = 0; z < nodes.size(); z++) {
+				if (i == z) {
+					distance[i][z] = 0;
+				} else {
+					Node startNode = nodes.get(i);
+					Node endNode = nodes.get(z);
+					LatLng locStartNode = startNode.getPosition();
+					LatLng locEndNode = endNode.getPosition();
+					double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+					double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+					double longSqr = longDiff * longDiff;
+					double latSqr = latDiff * latDiff;
+					double res = Math.sqrt(longSqr + latSqr);
+					distance[i][z] = res;
+				}
+			}
+		}
 	}
 
 	public List<Node> getNodes() {
