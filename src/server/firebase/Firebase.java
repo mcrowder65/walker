@@ -73,12 +73,14 @@ public class Firebase {
 			}
 
 		});
+
 		try {
 			semaphore.acquire();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return objects;
+
 
 	}
 

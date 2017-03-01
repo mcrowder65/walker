@@ -4,7 +4,6 @@ import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {Marker} from '../../typings/marker';
-import {Building} from '../../typings/building';
 
 export class WalkerMarkerModal {
   public is: string;
@@ -18,8 +17,19 @@ export class WalkerMarkerModal {
   public closingTime: string;
   public successMessage: string;
   public errorMessage: string;
+  public showDropdown: boolean;
+
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
+    this.showDropdown = false;
+  }
+
+  showDropDown(): void {
+    this.showDropdown = true;
+  }
+
+  hideDropDown(): void {
+    this.showDropdown = false;
   }
 
   /**
@@ -35,7 +45,9 @@ export class WalkerMarkerModal {
         latitude: this.latitude,
         longitude: this.longitude,
         title: this.title,
-        id: this.markerId || ''
+        id: this.markerId || '',
+        openingTime: this.openingTime,
+        closingTime: this.closingTime
       };
 
       const setMarkerAjax = this.querySelector('#setMarkerAjax');
@@ -52,7 +64,7 @@ export class WalkerMarkerModal {
     }
 
   }
-  
+
   async deleteMarker(e: any): Promise<void> {
     try {
       const ajax = this.querySelector('#deleteMarkerAjax');
@@ -60,7 +72,9 @@ export class WalkerMarkerModal {
         latitude: this.latitude,
         longitude: this.longitude,
         id: this.markerId,
-        title: this.title
+        title: this.title,
+        openingTime: this.openingTime,
+        closingTime: this.closingTime
       };
 
       await Actions.deleteMarker(marker, ajax);
@@ -85,6 +99,8 @@ export class WalkerMarkerModal {
       this.longitude = state.currentMarker.longitude;
       this.markerId = state.currentMarker.id;
       this.title = state.currentMarker.title;
+      this.openingTime = state.currentMarker.openingTime;
+      this.closingTime = state.currentMarker.closingTime;
     }
   }
 

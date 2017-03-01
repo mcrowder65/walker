@@ -8,17 +8,15 @@ public class QueueArray {
 	private List<Integer> queue;
 	private List<Double> dist;
 
-	public QueueArray() {
+	public QueueArray(List<Double> dist) {
 		queue = new ArrayList();
-		dist = new ArrayList();
+		this.dist = dist;
 	}
 
-	public List makeQ(List pnts, int startIndex) {
-		for (int i = 0; i < pnts.size(); i++) {
+	public List<Integer> makeQ(int size) {
+		for (int i = 0; i < size; i++) {
 			queue.add(i);
-			dist.add(Double.MAX_VALUE);
 		}
-		dist.set(startIndex, (double) 0);
 		return queue;
 	}
 
