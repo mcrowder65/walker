@@ -99,13 +99,13 @@ public class GraphTools {
 			if (ddy > 0) {
 				cy = y1;
 				do
-					img.setRGB(x1, cy++, lineColor.getRGB());
+					Tools.setImageRGB(img, x1, cy++, lineColor);
 				while (cy <= y2);
 				return;
 			} else {
 				cy = y2;
 				do
-					img.setRGB(x1, cy++, lineColor.getRGB());
+					Tools.setImageRGB(img, x1, cy++, lineColor);
 				while (cy <= y1);
 				return;
 			}
@@ -114,13 +114,13 @@ public class GraphTools {
 			if (ddx > 0) {
 				cx = x1;
 				do
-					img.setRGB(cx, y1, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, y1, lineColor);
 				while (++cx <= x2);
 				return;
 			} else {
 				cx = x2;
 				do
-					img.setRGB(cx, y1, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, y1, lineColor);
 				while (++cx <= x1);
 				return;
 			}
@@ -144,7 +144,7 @@ public class GraphTools {
 			do {
 				dx -= ddy;
 				do {
-					img.setRGB(cx, cy, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, cy, lineColor);
 					cy += iy;
 					dy -= ddx;
 				} while (dy >= dx);
@@ -154,7 +154,7 @@ public class GraphTools {
 			do {
 				dy -= ddx;
 				do {
-					img.setRGB(cx, cy, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, cy, lineColor);
 					cx += ix;
 					dx -= ddy;
 				} while (dx >= dy);
@@ -178,7 +178,7 @@ public class GraphTools {
 			int startY = (int) p.getY() - nodePixelRadius;
 			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
 				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
-					img.setRGB(x, y, nodeColor.getRGB());
+					Tools.setImageRGB(img, x, y, nodeColor);
 				}
 			}
 
