@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
+
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
 import server.APITools;
@@ -188,7 +190,7 @@ public class GraphTools {
 		}
 	}
 
-	public DijkstraWrapper dijkstra(int startNodeIndex, Graph g) {
+	public List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
 		List<Double> distances = g.getDistanceList(startNodeIndex);
 		List<Integer> prev = new ArrayList();
 		for (int i = 0; i < g.getNumNodes(); i++) {
@@ -210,8 +212,15 @@ public class GraphTools {
 				}
 			}
 		}
-		
-		return new DijkstraWrapper(distances, prev);
+		List<Integer> path = new ArrayList();
+		int end = endNodeIndex;
+		while (end != startNodeIndex) {
+			path.add(end);
+			end = prev.get(end);
+		}
+		path.add(startNodeIndex);
+		List<Integer> finalPath = Lists.reverse(path);
+		return finalPath;
 	}
 
 }
