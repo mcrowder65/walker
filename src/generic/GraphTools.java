@@ -27,58 +27,54 @@ public class GraphTools {
 	}
 
 	private static Random rand = new Random();
+
 	/**
-	 * Generates some number of nodes in a normal distribution around the existing nodes.
-	 * Uses the box-muller method
+	 * Generates some number of nodes in a normal distribution around the
+	 * existing nodes. Uses the box-muller method
+	 * 
 	 * @param existingNodes
 	 * @param numToGen
 	 * @return
 	 */
 
-	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen, LatLng southwest, LatLng northeast)
-	{
+	public static List<Node> GenerateRandomNodes(List<Node> existingNodes, int numToGen, LatLng southwest,
+			LatLng northeast) {
 		double meanLat = 0;
 		double meanLon = 0;
 		double latRatio = (northeast.latitude - southwest.latitude) / 6;
 		double lonRatio = (northeast.longitude - southwest.longitude) / 6;
-		
-		
-		for (Node n : existingNodes)
-		{
+
+		for (Node n : existingNodes) {
 			meanLat += n.getPosition().latitude;
 			meanLon += n.getPosition().longitude;
 		}
 		meanLat /= existingNodes.size();
 		meanLon /= existingNodes.size();
-		
+
 		List<Node> randomNodes = new ArrayList<Node>();
 		double maxX = -Double.MAX_VALUE;
 		double maxY = -Double.MAX_VALUE;
-		for (int n = 0; n < numToGen; n++)
-		{
+		for (int n = 0; n < numToGen; n++) {
 			double u = rand.nextDouble();
 			double v = rand.nextDouble();
-			double x = Math.sqrt(-2 * Math.log(u)) * Math.cos(2*Math.PI*v);
-			double y = Math.sqrt(-2 * Math.log(u)) * Math.sin(2*Math.PI*v);
-			if (Math.abs(x) >= 2 || Math.abs(y) >= 2)
-			{
+			double x = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+			double y = Math.sqrt(-2 * Math.log(u)) * Math.sin(2 * Math.PI * v);
+			if (Math.abs(x) >= 2 || Math.abs(y) >= 2) {
 				n--;
 				continue;
 			}
 			double lat = meanLat + (y * latRatio);
 			double lon = meanLon + (x * lonRatio);
-			
-			if (lat < southwest.latitude || lat > northeast.latitude || lon < southwest.longitude || lon > northeast.longitude)
-			{
+
+			if (lat < southwest.latitude || lat > northeast.latitude || lon < southwest.longitude
+					|| lon > northeast.longitude) {
 				n--;
 				continue;
 			}
-			
-			
+
 			maxX = Math.max(maxX, x);
 			maxY = Math.max(maxY, y);
-			
-			
+
 			Node node = new Node(new LatLng(lat, lon));
 			randomNodes.add(node);
 		}
@@ -193,17 +189,26 @@ public class GraphTools {
 	}
 
 	public void dijkstra(int startNodeIndex, Graph g) {
-		List<Double> distance = g.getDistanceList(startNodeIndex);
+		List<Double> distances = g.getDistanceList(startNodeIndex);
 		List<Integer> prev = new ArrayList();
 		for (int i = 0; i < g.getNumNodes(); i++) {
 			prev.add(i);
 		}
-		QueueArray qObj = new QueueArray(distance);
+		QueueArray qObj = new QueueArray(distances);
 		List<Integer> q = qObj.makeQ(g.getNumNodes());
 		int counter = 0;
 		while (counter < q.size()) {
 			int u = qObj.deleteMin();
-			// List <Integer> edges = g.getNodes();
+			counter++;
+			int size = g.getNumNodes();
+			for (int i = 0; i < size; i++) {
+				if (distances.get(i) > (distances.get(u) + g.getDistance(u, i))) {
+					double newDistance = distances.get(u) + g.getDistance(u, i);
+					distances.set(i, newDistance);
+					prev.set(i, u);
+					qObj.decreaseKey(i, newDistance);
+				}
+			}
 		}
 
 	}
