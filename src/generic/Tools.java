@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -86,13 +87,31 @@ public class Tools {
 		else
 			return p.x + "," + p.y;
 	}
-
-	public static String latlngToString(LatLng p, boolean spaced) {
-		if (spaced)
-			return p.latitude + ", " + p.longitude;
-		else
-			return p.latitude + "," + p.longitude;
+	public static String latlngsToString(char delimiter, LatLng... ps)
+	{
+		StringBuilder strBld = new StringBuilder();
+		for (int n = 0; n < ps.length; n++)
+		{
+			if (n == 0)
+				strBld.append(ps[n].toUrlValue());
+			else
+				strBld.append(delimiter + ps[n].toUrlValue());
+		}
+		return strBld.toString();
 	}
+	public static String nodesToString(char delimiter, List<Node> nodes)
+	{
+		StringBuilder strBld = new StringBuilder();
+		for (int n = 0; n < nodes.size(); n++)
+		{
+			if (n == 0)
+				strBld.append(nodes.get(n).getPosition().toUrlValue());
+			else
+				strBld.append(delimiter + nodes.get(n).getPosition().toUrlValue());
+		}
+		return strBld.toString();
+	}
+	
 
 	public static void WriteImage(BufferedImage img, String path) {
 		File file = new File(path);
