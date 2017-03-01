@@ -25,6 +25,7 @@ import java.util.Locale;
  */
 public class LatLng implements UrlValue {
 
+	public static final double EPSILON = 0.0000001;
   /**
    * The latitude of this location.
    */
@@ -57,5 +58,9 @@ public class LatLng implements UrlValue {
   public String toUrlValue() {
     // Enforce Locale to English for double to string conversion
     return String.format(Locale.ENGLISH, "%.8f,%.8f", latitude, longitude);
+  }
+  public static boolean closeEnoughLatLng(LatLng a, LatLng b)
+  {
+	 return Math.abs(a.latitude - b.latitude) < EPSILON && Math.abs(a.longitude - b.longitude) < EPSILON;	
   }
 }

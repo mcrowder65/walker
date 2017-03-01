@@ -210,7 +210,7 @@ public class GraphTools {
 				}
 			}
 		}
-
+		
 		return new DijkstraWrapper(distances, prev);
 	}
 

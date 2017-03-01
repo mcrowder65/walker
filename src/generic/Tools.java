@@ -86,6 +86,18 @@ public class Tools {
 		else
 			return p.x + "," + p.y;
 	}
+	public static String latlngsToString(boolean spaced, char delimiter, LatLng... ps)
+	{
+		StringBuilder strBld = new StringBuilder();
+		for (int n = 0; n < ps.length; n++)
+		{
+			if (n == 0)
+				strBld.append(latlngToString(ps[n], spaced));
+			else
+				strBld.append(delimiter + latlngToString(ps[n], spaced));
+		}
+		return strBld.toString();
+	}
 
 	public static String latlngToString(LatLng p, boolean spaced) {
 		if (spaced)

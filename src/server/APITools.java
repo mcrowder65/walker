@@ -3,6 +3,7 @@ package server;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import generic.Config;
 import generic.Tools;
 import googlemaps.LatLng;
 
@@ -32,6 +33,9 @@ import javax.imageio.ImageIO;
 
 public class APITools {
 
+	
+	
+	
 	public static String GetDirectionsResponse(String origin, String destination)
 	{
 		try {
@@ -43,8 +47,57 @@ public class APITools {
 		}
 	}
 	
-
+	public static String GetElevationResponse(LatLng... points)
+	{
+		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="+Tools.latlngsToString(false, '|', points)+"&key=" + Config.ELEVATION_KEY);
+	}
 	
+	
+	
+	public static double[] GetElevations(String apiJSONResponse, LatLng... points)
+	{
+		JSONObject rootObj = new JSONObject(apiJSONResponse);
+		JSONArray results = rootObj.getJSONArray("results");
+		double[] elevations = new double[results.length()];
+		if (elevations.length != points.length) {
+			System.err.println("ERROR: Request and Response did not have the same length!!");
+		}
+		for (int n = 0; n < results.length(); n++)
+		{
+			//The response might be in the same order as the request, but just to be safe...
+			JSONObject result = results.getJSONObject(n);
+			JSONObject location = result.getJSONObject("location");
+			LatLng resultLatLng=  new LatLng(location.getDouble("lat"), location.getDouble("lng"));
+			double elev = result.getDouble("elevation");
+			if (LatLng.closeEnoughLatLng(resultLatLng, points[n]))
+			{
+				elevations[n] = elev;
+			}
+			else
+			{
+				for (int m = 0; m < points.length; m++)
+				{
+					if (LatLng.closeEnoughLatLng(resultLatLng, points[m])){
+						elevations[m] = elev;
+						break;
+					}
+				}
+			
+			}
+			
+			
+		}
+		
+		
+		for (int n = 0; n < elevations.length; n++)
+		{
+			if (elevations[n] == 0) {
+				System.err.println("ERROR: Elevation index " + n + " was not initialized!!");
+
+			}
+		}
+		return elevations;
+	}
 	
 	public static String GetOverviewPolyline(String apiJSONResponse)
 	{
