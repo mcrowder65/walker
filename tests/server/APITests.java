@@ -109,9 +109,9 @@ public class APITests {
 
 		
 		
-		GraphTools.WriteGraphToImage(img, g, new Color(0,0,0), 2, southwest, northeast);
+		GraphTools.WriteGraphToImage(img, g, new Color(255,0,0), 2, southwest, northeast);
 		img = Tools.ClipLogo(img);
 		
-		Tools.WriteImage(img, "testImages/polytest6.png");
+		Tools.WriteImage(img, "testImages/polytest7.png");
 	}
 }

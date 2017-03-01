@@ -7,8 +7,10 @@ import generic.Tools;
 import googlemaps.LatLng;
 
 import java.awt.Image;
+import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -201,7 +203,8 @@ public class APITools {
 		
 			BufferedImage image = ImageIO.read(url);
 			
-			return image;
+			BufferedImage rgbImage = Tools.convertICCToRGB(image);
+			return rgbImage;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
