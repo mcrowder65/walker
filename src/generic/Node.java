@@ -1,7 +1,5 @@
 package generic;
 
-import java.awt.geom.Point2D;
-
 import generic.objects.Building;
 import googlemaps.LatLng;
 
@@ -33,5 +31,8 @@ public class Node {
 	public Node(LatLng position, Building building) {
 		this.position = position;
 		this.building = building;
+	}
+
+	public Node() {
 	}
 }

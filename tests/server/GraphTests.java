@@ -2,6 +2,7 @@ package server;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -35,7 +36,26 @@ public class GraphTests {
 	}
 
 	@Test
-	public void testDijkstra() {
+	public void testDijkstraFakeNodes() {
+		double[][] distance = new double[5][5];
+		for (int i = 0; i < distance.length; i++) {
+			for (int z = 0; z < distance.length; z++) {
+				if (i == z) {
+					distance[i][z] = 0;
+				} else {
+					double min = 0;
+					double max = 10;
+					Random r = new Random();
+					double randomValue = min + (max - min) * r.nextDouble();
+					distance[i][z] = randomValue;
+				}
+			}
+		}
+
+	}
+
+	@Test
+	public void testDijkstraRealNodes() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
