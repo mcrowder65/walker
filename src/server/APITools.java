@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import generic.Config;
+import generic.Node;
 import generic.Tools;
 import googlemaps.LatLng;
 
@@ -49,11 +50,20 @@ public class APITools {
 	
 	public static String GetElevationResponse(LatLng... points)
 	{
-		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="+Tools.latlngsToString(false, '|', points)+"&key=" + Config.ELEVATION_KEY);
+		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="+Tools.latlngsToString('|', points)+"&key=" + Config.ELEVATION_KEY);
+	}
+	public static String GetElevationResponse(List<Node> points)
+	{
+		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="+Tools.nodesToString('|', points)+"&key=" + Config.ELEVATION_KEY);
 	}
 	
-	
-	
+	public static double[] GetElevations(String apiJSONResponse, List<Node> nodes)
+	{
+		LatLng[] lls = new LatLng[nodes.size()];
+		for (int n = 0; n < nodes.size(); n++)
+			lls[n] = nodes.get(n).getPosition();
+		return GetElevations(apiJSONResponse, lls);
+	}
 	public static double[] GetElevations(String apiJSONResponse, LatLng... points)
 	{
 		JSONObject rootObj = new JSONObject(apiJSONResponse);
@@ -247,11 +257,11 @@ public class APITools {
 			
 			if (polyline == null)
 				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&zoom="+zoom+"&center=" +
-					Tools.latlngToString(center, false) + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
+					center.toUrlValue() + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
 					);
 			else
 				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" +
-						Tools.latlngToString(center, false)+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
+						center.toUrlValue()+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
 						);
 		
 			BufferedImage image = ImageIO.read(url);

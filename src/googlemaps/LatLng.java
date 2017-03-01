@@ -59,6 +59,7 @@ public class LatLng implements UrlValue {
     // Enforce Locale to English for double to string conversion
     return String.format(Locale.ENGLISH, "%.8f,%.8f", latitude, longitude);
   }
+
   public static boolean closeEnoughLatLng(LatLng a, LatLng b)
   {
 	 return Math.abs(a.latitude - b.latitude) < EPSILON && Math.abs(a.longitude - b.longitude) < EPSILON;	
