@@ -1,9 +1,13 @@
+<link rel="import" href="../walker-notification/walker-notification.html">
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../walker-notification/walker-notification.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 
 <dom-module id="walker-marker-modal">
   <template>
@@ -35,7 +39,31 @@
     <paper-dialog id="modal" with-backdrop>
       <paper-item>Latitude: [[latitude]]</paper-item>
       <paper-item>Longitude: [[longitude]]</paper-item>
+      <br>
+
+
+
+      Is this a building?
+      <paper-radio-group>
+        <paper-radio-button name="yes" on-tap="showDropDown">Yes</paper-radio-button>
+        <paper-radio-button name="no" on-tap="hideDropDown">No</paper-radio-button>
+      </paper-radio-group>
+      <br>
+      <template is="dom-if" if="[[showDropdown]]">
+        Which building does this entrance belong to?
+        <paper-dropdown-menu label="Buildings">
+          <paper-listbox class="dropdown-content">
+            <paper-item>JKB</paper-item>
+            <paper-item>JSB</paper-item>
+            <paper-item>HBLL</paper-item>
+          </paper-listbox>
+        </paper-dropdown-menu>
+      </template>
       <paper-input label="Title" value="{{title}}"></paper-input>
+      <template is="dom-if" if="[[showDropdown]]">
+        <paper-input label="Opening time" value="{{openingTime}}"></paper-input>
+        <paper-input label="Closing time" value="{{closingTime}}"></paper-input>
+      </template>
       <paper-button noink dialog-dismiss>Cancel</paper-button>
       <template is="dom-if" if="[[markerId]]">
         <paper-button noink dialog-dismiss on-tap="deleteMarker">Delete</paper-button>

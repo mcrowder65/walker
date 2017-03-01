@@ -54,7 +54,9 @@ const setMarker = async (marker: Marker, ajax: any): Promise<void> => {
       latitude: marker.latitude,
       longitude: marker.longitude,
       title: marker.title,
-      id: marker.id
+      id: marker.id,
+      openingTime: marker.openingTime,
+      closingTime: marker.closingTime
     };
 
     const request = ajax.generateRequest();
@@ -87,7 +89,9 @@ const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
       id: marker.id,
       longitude: marker.longitude,
       latitude: marker.latitude,
-      title: marker.title
+      title: marker.title,
+      openingTime: marker.openingTime,
+      closingTime: marker.closingTime
     };
 
     const request = ajax.generateRequest();
