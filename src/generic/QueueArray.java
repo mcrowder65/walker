@@ -13,10 +13,12 @@ public class QueueArray {
 		this.dist = dist;
 	}
 
-	public List<Integer> makeQ(int size) {
+	public List<Integer> makeQ(int size, int start) {
 		for (int i = 0; i < size; i++) {
 			queue.add(i);
+			dist.add(Double.MAX_VALUE);
 		}
+		dist.set(start, (double) 0);
 		return queue;
 	}
 
