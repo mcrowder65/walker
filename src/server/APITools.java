@@ -3,12 +3,16 @@ package server;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import generic.Config;
+import generic.Node;
 import generic.Tools;
 import googlemaps.LatLng;
 
 import java.awt.Image;
+import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +34,9 @@ import javax.imageio.ImageIO;
 
 public class APITools {
 
+	
+	
+	
 	public static String GetDirectionsResponse(String origin, String destination)
 	{
 		try {
@@ -41,8 +48,66 @@ public class APITools {
 		}
 	}
 	
-
+	public static String GetElevationResponse(LatLng... points)
+	{
+		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="+Tools.latlngsToString('|', points)+"&key=" + Config.ELEVATION_KEY);
+	}
+	public static String GetElevationResponse(List<Node> points)
+	{
+		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="+Tools.nodesToString('|', points)+"&key=" + Config.ELEVATION_KEY);
+	}
 	
+	public static double[] GetElevations(String apiJSONResponse, List<Node> nodes)
+	{
+		LatLng[] lls = new LatLng[nodes.size()];
+		for (int n = 0; n < nodes.size(); n++)
+			lls[n] = nodes.get(n).getPosition();
+		return GetElevations(apiJSONResponse, lls);
+	}
+	public static double[] GetElevations(String apiJSONResponse, LatLng... points)
+	{
+		JSONObject rootObj = new JSONObject(apiJSONResponse);
+		JSONArray results = rootObj.getJSONArray("results");
+		double[] elevations = new double[results.length()];
+		if (elevations.length != points.length) {
+			System.err.println("ERROR: Request and Response did not have the same length!!");
+		}
+		for (int n = 0; n < results.length(); n++)
+		{
+			//The response might be in the same order as the request, but just to be safe...
+			JSONObject result = results.getJSONObject(n);
+			JSONObject location = result.getJSONObject("location");
+			LatLng resultLatLng=  new LatLng(location.getDouble("lat"), location.getDouble("lng"));
+			double elev = result.getDouble("elevation");
+			if (LatLng.closeEnoughLatLng(resultLatLng, points[n]))
+			{
+				elevations[n] = elev;
+			}
+			else
+			{
+				for (int m = 0; m < points.length; m++)
+				{
+					if (LatLng.closeEnoughLatLng(resultLatLng, points[m])){
+						elevations[m] = elev;
+						break;
+					}
+				}
+			
+			}
+			
+			
+		}
+		
+		
+		for (int n = 0; n < elevations.length; n++)
+		{
+			if (elevations[n] == 0) {
+				System.err.println("ERROR: Elevation index " + n + " was not initialized!!");
+
+			}
+		}
+		return elevations;
+	}
 	
 	public static String GetOverviewPolyline(String apiJSONResponse)
 	{
@@ -192,16 +257,17 @@ public class APITools {
 			
 			if (polyline == null)
 				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&zoom="+zoom+"&center=" +
-					Tools.latlngToString(center, false) + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
+					center.toUrlValue() + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
 					);
 			else
 				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" +
-						Tools.latlngToString(center, false)+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
+						center.toUrlValue()+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
 						);
 		
 			BufferedImage image = ImageIO.read(url);
 			
-			return image;
+			BufferedImage rgbImage = Tools.convertICCToRGB(image);
+			return rgbImage;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

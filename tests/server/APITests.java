@@ -1,7 +1,6 @@
 package server;
 
 import java.awt.Color;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -16,13 +15,11 @@ import googlemaps.LatLng;
 
 public class APITests {
 
-
-	//@Test
+	// @Test
 	@SuppressWarnings("unused")
-	public void polylineTest()
-	{
-		//Point2D.Double start = new Point2D.Double(40.249403, -111.650154);
-		//Point2D.Double end = new Point2D.Double(40.249218, -111.648338);
+	public void polylineTest() {
+		// Point2D.Double start = new Point2D.Double(40.249403, -111.650154);
+		// Point2D.Double end = new Point2D.Double(40.249218, -111.648338);
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.638338);
 		LatLng center = Tools.getCenter(start, end);
@@ -32,86 +29,118 @@ public class APITests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+<<<<<<< HEAD
 		
 		
-		String resp = APITools.GetDirectionsResponse(Tools.latlngToString(start, true), Tools.latlngToString(end, true));
+		String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+=======
+
+		String resp = APITools.GetDirectionsResponse(Tools.latlngToString(start, true),
+				Tools.latlngToString(end, true));
+>>>>>>> 27ef92260472e4c3671494bcf3de47486a8cabdf
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, poly);
 		Tools.WriteImage(img, "testImages/polytest2.png");
 	}
-	
+
 	@SuppressWarnings("unused")
-	//@Test
-	public void nodesFromPolylineTest()
-	{
+	// @Test
+	public void nodesFromPolylineTest() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
 		int sizeY = 640;
 		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-		
-		
+
 		String resp;
 		if (Config.USE_MOCK)
 			resp = Tools.readMock("BYU_ShortPath");
 		else
-			resp = APITools.GetDirectionsResponse(Tools.latlngToString(start, true), Tools.latlngToString(end, true));
+			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+
 		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-	    Graph g = new Graph(null, null, nodes);
+		Graph g = new Graph(null, null, nodes);
 
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
-		
+
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		
-		
-		GraphTools.WriteGraphToImage(img, g, new Color(0,0,0), 1, southwest, northeast, new Color(255,255,255));
+
+		GraphTools.WriteGraphToImage(img, g, new Color(0, 0, 0), 1, southwest, northeast, new Color(255, 255, 255));
 		img = Tools.ClipLogo(img);
-		
+
 		Tools.WriteImage(img, "testImages/polytest5.png");
 	}
-	
+
 	@SuppressWarnings("unused")
 	@Test
-	public void genNodesTest()
-	{
+	public void genNodesTest() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
 		int sizeY = 640;
 		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-		
-		
+
 		String resp;
 		if (Config.USE_MOCK)
 			resp = Tools.readMock("BYU_ShortPath");
 		else
-			resp = APITools.GetDirectionsResponse(Tools.latlngToString(start, true), Tools.latlngToString(end, true));
+			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
 		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-		
+
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
-		
+
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		
+
 		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
 		nodes.addAll(newNodes);
-		
-	    Graph g = new Graph(null, null, nodes);
 
-		
-		
-		GraphTools.WriteGraphToImage(img, g, new Color(0,0,0), 2, southwest, northeast);
+		Graph g = new Graph(null, null, nodes);
+
+		GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2, southwest, northeast);
 		img = Tools.ClipLogo(img);
-		
-		Tools.WriteImage(img, "testImages/polytest6.png");
+
+		Tools.WriteImage(img, "testImages/polytest7.png");
+	}
+
+	@SuppressWarnings("unused")
+	@Test
+	public void elevationTest() {
+		LatLng start = new LatLng(40.249403, -111.650154);
+		LatLng end = new LatLng(40.249218, -111.648338);
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+
+		String resp;
+		if (Config.USE_MOCK)
+			resp = Tools.readMock("BYU_ShortPath");
+		else
+			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+		String poly = server.APITools.GetOverviewPolyline(resp);
+		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
+
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
+		nodes.addAll(newNodes);
+		String elevResp = APITools.GetElevationResponse(nodes);
+		double[] elevs = APITools.GetElevations(elevResp, nodes);
+
 	}
 }

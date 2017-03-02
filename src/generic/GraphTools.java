@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.common.collect.Lists;
+
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
 import server.APITools;
@@ -95,13 +97,13 @@ public class GraphTools {
 			if (ddy > 0) {
 				cy = y1;
 				do
-					img.setRGB(x1, cy++, lineColor.getRGB());
+					Tools.setImageRGB(img, x1, cy++, lineColor);
 				while (cy <= y2);
 				return;
 			} else {
 				cy = y2;
 				do
-					img.setRGB(x1, cy++, lineColor.getRGB());
+					Tools.setImageRGB(img, x1, cy++, lineColor);
 				while (cy <= y1);
 				return;
 			}
@@ -110,13 +112,13 @@ public class GraphTools {
 			if (ddx > 0) {
 				cx = x1;
 				do
-					img.setRGB(cx, y1, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, y1, lineColor);
 				while (++cx <= x2);
 				return;
 			} else {
 				cx = x2;
 				do
-					img.setRGB(cx, y1, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, y1, lineColor);
 				while (++cx <= x1);
 				return;
 			}
@@ -140,7 +142,7 @@ public class GraphTools {
 			do {
 				dx -= ddy;
 				do {
-					img.setRGB(cx, cy, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, cy, lineColor);
 					cy += iy;
 					dy -= ddx;
 				} while (dy >= dx);
@@ -150,7 +152,7 @@ public class GraphTools {
 			do {
 				dy -= ddx;
 				do {
-					img.setRGB(cx, cy, lineColor.getRGB());
+					Tools.setImageRGB(img, cx, cy, lineColor);
 					cx += ix;
 					dx -= ddy;
 				} while (dx >= dy);
@@ -174,7 +176,7 @@ public class GraphTools {
 			int startY = (int) p.getY() - nodePixelRadius;
 			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
 				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
-					img.setRGB(x, y, nodeColor.getRGB());
+					Tools.setImageRGB(img, x, y, nodeColor);
 				}
 			}
 
@@ -188,14 +190,17 @@ public class GraphTools {
 		}
 	}
 
-	public DijkstraWrapper dijkstra(int startNodeIndex, Graph g) {
-		List<Double> distances = g.getDistanceList(startNodeIndex);
+	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
+		// List<Double> distances = g.getDistanceList(startNodeIndex);
+		List<Double> distances = new ArrayList();
 		List<Integer> prev = new ArrayList();
 		for (int i = 0; i < g.getNumNodes(); i++) {
+			distances.add(Double.MAX_VALUE);
 			prev.add(i);
 		}
+		distances.set(startNodeIndex, (double) 0);
 		QueueArray qObj = new QueueArray(distances);
-		List<Integer> q = qObj.makeQ(g.getNumNodes());
+		List<Integer> q = qObj.makeQ(g.getNumNodes(), startNodeIndex);
 		int counter = 0;
 		while (counter < q.size()) {
 			int u = qObj.deleteMin();
@@ -210,8 +215,15 @@ public class GraphTools {
 				}
 			}
 		}
-
-		return new DijkstraWrapper(distances, prev);
+		List<Integer> path = new ArrayList();
+		int end = endNodeIndex;
+		while (end != startNodeIndex) {
+			path.add(end);
+			end = prev.get(end);
+		}
+		path.add(startNodeIndex);
+		List<Integer> finalPath = Lists.reverse(path);
+		return finalPath;
 	}
 
 }
