@@ -79,6 +79,7 @@ export class WalkerMap {
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
+    console.log(this.markers);
   }
 
 }
