@@ -26,7 +26,6 @@ public class SetMarkerHandler extends WalkerHandler {
 			if (!result.equals("")) {
 
 				Marker marker = JSONTools.g.fromJson(result, Marker.class);
-				System.out.println(marker);
 				if (!marker.getId().equals("")) {
 					if (marker.isBuilding()) {
 						String path = "buildings/" + marker.getId();
@@ -37,9 +36,10 @@ public class SetMarkerHandler extends WalkerHandler {
 						String path = "entrances/" + marker.getId();
 						Entrance entrance = new Entrance(marker);
 						Tools.firebase.update(path, entrance);
+						Tools.firebase.update(
+								"buildings/" + entrance.getBuildingId() + "/entrances/" + entrance.getId(),
+								entrance.getId());
 					}
-					// String path = "markers/" + marker.getId();
-					// Tools.firebase.update(path, marker);
 				} else {
 					if (marker.isBuilding()) {
 						String path = "buildings" + marker.getId();
@@ -50,9 +50,11 @@ public class SetMarkerHandler extends WalkerHandler {
 						String path = "entrances";
 						Entrance entrance = new Entrance(marker);
 						Tools.firebase.create(path, entrance);
+						Tools.firebase.update(
+								"buildings/" + entrance.getBuildingId() + "/entrances/" + entrance.getId(),
+								entrance.getId());
 
 					}
-					// Tools.firebase.create("markers", marker);
 
 				}
 				try {

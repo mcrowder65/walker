@@ -1,5 +1,7 @@
 package generic.objects;
 
+import java.util.List;
+
 import server.JSONTools;
 
 public class Building extends WalkerObject {
@@ -8,6 +10,26 @@ public class Building extends WalkerObject {
 	private String title;
 	private String openingTime;
 	private String closingTime;
+	// private List<String> entrances;
+
+	public Building(double latitude, double longitude, String title, String openingTime, String closingTime,
+			List<String> entrances) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.title = title;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+		// this.entrances = entrances;
+	}
+
+	// public List<String> getEntrances() {
+	// return entrances;
+	// }
+	//
+	// public void setEntrances(List<String> entrances) {
+	// this.entrances = entrances;
+	// }
 
 	public Building(Marker marker) {
 		this.latitude = marker.getLatitude();

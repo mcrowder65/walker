@@ -100,7 +100,13 @@ public class Firebase {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		ref.setValue(obj);
+	}
 
+	public void update(String path, String str) {
+
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		ref.setValue(str);
 	}
 
 	/**
