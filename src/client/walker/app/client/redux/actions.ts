@@ -67,7 +67,7 @@ const setMarker = async (marker: Marker, ajax: any): Promise<void> => {
 
 const resetMarkerModal = async (context: WalkerMarkerModal): Promise<void> => {
   context.action = {
-    type: 'RESET_MARKER_MODAL'
+    type: 'RESET_MARKER_MODAL',
   }
 };
 
@@ -79,32 +79,6 @@ const setCurrentMarker = async (context: WalkerMap, currentMarker: Marker): Prom
     type: 'SET_CURRENT_MARKER',
     currentMarker
   };
-};
-
-const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
-  try {
-    ajax.body = {
-      id: marker.id,
-      longitude: marker.longitude,
-      latitude: marker.latitude,
-      title: marker.title,
-      openingTime: marker.openingTime,
-      closingTime: marker.closingTime
-    };
-
-    const request = ajax.generateRequest();
-    await request.completes;
-  } catch(error) {
-    throw error;
-  }
-};
-
-const ajax = async (options: Options): Promise<any> => {
-  let xhr: XMLHttpRequest = new XMLHttpRequest();
-  xhr.open(options.method, options.url, false );
-  await xhr.send(JSON.stringify(options.body));
-  const response = await xhr.response
-  console.log('response ', response);
 };
 
 /**
@@ -140,7 +114,5 @@ export const Actions = {
     setMarker,
     setCurrentMarker,
     resetMarkerModal,
-    deleteMarker,
-    ajax,
     POST
 };

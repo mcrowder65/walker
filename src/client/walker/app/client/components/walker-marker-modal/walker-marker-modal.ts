@@ -19,10 +19,16 @@ export class WalkerMarkerModal {
   public successMessage: string;
   public errorMessage: string;
   public isBuilding: boolean;
+  public properties: any;
+  public isBuildingSelection: 'yes' | 'no' | 'neither';
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
-    this.isBuilding = false;
+    this.properties = {
+      isBuilding: {
+        observer: 'changeIsBuildingSelection'
+      }
+    }
   }
 
   thisIsABuilding(): void {
@@ -33,11 +39,16 @@ export class WalkerMarkerModal {
     this.isBuilding = false;
   }
 
+  changeIsBuildingSelection(): void {
+    this.isBuildingSelection = this.isBuilding ? 'yes' : 'no';
+  }
+
   /**
    * This gets called from walker-map
    */
   open(): void {
     this.querySelector('#modal').open();
+    
   }
 
   async setMarker(): Promise<void> {
@@ -48,10 +59,12 @@ export class WalkerMarkerModal {
         title: this.title,
         id: this.markerId || '',
         openingTime: this.openingTime,
-        closingTime: this.closingTime
+        closingTime: this.closingTime,
+        isBuilding: this.isBuilding
       };
 
-      Actions.POST('setMarker', JSON.stringify(marker));
+      await Actions.POST('setMarker', JSON.stringify(marker));
+      await Actions.initMarkers(this, 'getMarkers');
       Actions.resetMarkerModal(this);
       this.successMessage = '';
       this.successMessage = 'Marker set';
@@ -64,20 +77,17 @@ export class WalkerMarkerModal {
 
   async deleteMarker(e: any): Promise<void> {
     try {
-      const ajax = this.querySelector('#deleteMarkerAjax');
       const marker: Marker = {
         latitude: this.latitude,
         longitude: this.longitude,
         id: this.markerId,
         title: this.title,
         openingTime: this.openingTime,
-        closingTime: this.closingTime
+        closingTime: this.closingTime,
+        isBuilding: this.isBuilding
       };
-
-      await Actions.deleteMarker(marker, ajax);
-
-      const getMarkerAjax = this.querySelector('#getMarkersAjax');
-      await Actions.initMarkersWithAjax(this, getMarkerAjax);
+      await Actions.POST('deleteMarker', JSON.stringify(marker));
+      await Actions.initMarkers(this, 'getMarkers');
       await Actions.resetMarkerModal(this);
       this.successMessage = '';
       this.successMessage = 'Marker deleted';
@@ -98,6 +108,7 @@ export class WalkerMarkerModal {
       this.title = state.currentMarker.title;
       this.openingTime = state.currentMarker.openingTime;
       this.closingTime = state.currentMarker.closingTime;
+      this.isBuilding = state.currentMarker.isBuilding;
     }
   }
 

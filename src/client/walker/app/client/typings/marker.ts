@@ -5,4 +5,5 @@ export interface Marker {
   id?: string;
   openingTime?: string;
   closingTime?: string;
+  isBuilding?: boolean;
 }
