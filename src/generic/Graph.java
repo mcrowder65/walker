@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import googlemaps.LatLng;
+import server.APITools;
 
 public class Graph {
 
@@ -42,6 +43,18 @@ public class Graph {
 					double res = Math.sqrt(longSqr + latSqr);
 					distance[i][z] = res;
 				}
+			}
+		}
+	}
+	
+	public void setElevationsFromNodes() {
+		String elevResp = APITools.GetElevationResponse(nodes);
+	    double[] elevs = APITools.GetElevations(elevResp, nodes);
+		
+		
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int z = 0; z < nodes.size(); z++) {
+			    elevation[i][z] = Math.abs(elevs[i] - elevs[z]);
 			}
 		}
 	}

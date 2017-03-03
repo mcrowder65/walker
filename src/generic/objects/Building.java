@@ -1,7 +1,9 @@
 package generic.objects;
 
 import java.util.HashMap;
+import java.util.List;
 
+import generic.Tools;
 import server.JSONTools;
 
 public class Building extends WalkerObject {
@@ -11,6 +13,7 @@ public class Building extends WalkerObject {
 	private String openingTime;
 	private String closingTime;
 	private HashMap<String, String> entrances;
+	transient private List<Entrance> resolvedEntrances;
 
 	public Building(double latitude, double longitude, String title, String openingTime, String closingTime,
 			HashMap<String, String> entrances) {
@@ -21,6 +24,17 @@ public class Building extends WalkerObject {
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
 		this.entrances = entrances;
+
+	}
+
+	public List<Entrance> getResolvedEntrances() {
+		if (resolvedEntrances == null && entrances != null) {
+			for (String key : entrances.keySet()) {
+				Entrance entrance = (Entrance) Tools.firebase.get("entrances/" + key, new Entrance());
+				resolvedEntrances.add(entrance);
+			}
+		}
+		return resolvedEntrances;
 	}
 
 	public HashMap<String, String> getEntrances() {
