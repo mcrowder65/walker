@@ -36,7 +36,7 @@ public class APITests {
 		// APITools.GetDirectionsResponse(Tools.latlngToString(start, true),
 		// Tools.latlngToString(end, true));
 		String poly = server.APITools.GetOverviewPolyline(resp);
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, poly);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false, poly);
 		Tools.WriteImage(img, "testImages/polytest2.png");
 	}
 
@@ -61,7 +61,7 @@ public class APITests {
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 		Graph g = new Graph(null, null, nodes);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
@@ -92,7 +92,7 @@ public class APITests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
@@ -128,7 +128,7 @@ public class APITests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
