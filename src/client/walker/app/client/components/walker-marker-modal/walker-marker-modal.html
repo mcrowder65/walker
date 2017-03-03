@@ -45,11 +45,11 @@
 
       Is this a building?
       <paper-radio-group>
-        <paper-radio-button name="yes" on-tap="showDropDown">Yes</paper-radio-button>
-        <paper-radio-button name="no" on-tap="hideDropDown">No</paper-radio-button>
+        <paper-radio-button name="yes" on-tap="thisIsABuilding">Yes</paper-radio-button>
+        <paper-radio-button name="no" on-tap="thisIsNotABuilding">No</paper-radio-button>
       </paper-radio-group>
       <br>
-      <template is="dom-if" if="[[showDropdown]]">
+      <template is="dom-if" if="[[!isBuilding]]">
         Which building does this entrance belong to?
         <paper-dropdown-menu label="Buildings">
           <paper-listbox class="dropdown-content">
@@ -60,7 +60,7 @@
         </paper-dropdown-menu>
       </template>
       <paper-input label="Title" value="{{title}}"></paper-input>
-      <template is="dom-if" if="[[showDropdown]]">
+      <template is="dom-if" if="[[isBuilding]]">
         <paper-input label="Opening time" value="{{openingTime}}"></paper-input>
         <paper-input label="Closing time" value="{{closingTime}}"></paper-input>
       </template>

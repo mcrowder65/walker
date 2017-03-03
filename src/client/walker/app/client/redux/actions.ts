@@ -1,6 +1,7 @@
 import {WalkerMap} from '../components/walker-map/walker-map';
 import {Marker} from '../typings/marker';
 import {WalkerMarkerModal} from '../components/walker-marker-modal/walker-marker-modal';
+import {Options} from '../typings/options';
 
 const defaultAction = (context: any) => {
     context.action = {
@@ -99,11 +100,49 @@ const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
   } catch(error) {
     throw error;
   }
-
-
-
 };
 
+const ajax = async (options: Options): Promise<any> => {
+  let xhr: XMLHttpRequest = new XMLHttpRequest();
+  xhr.open(options.method, options.url, false );
+  await xhr.send(JSON.stringify(options.body));
+  const response = await xhr.response
+  console.log('response ', response);
+};
+
+function httpGet(url) {
+    return new Promise(function (resolve, reject) {
+        // do the usual Http request
+        let request = new XMLHttpRequest();
+        request.open('GET', url);
+
+        request.onload = function () {
+            if (request.status == 200) {
+                resolve(request.response);
+            } else {
+                reject(Error(request.statusText));
+            }
+        };
+
+        request.onerror = function () {
+            reject(Error('Network Error'));
+        };
+
+        request.send();
+    });
+}
+
+async function httpGetJson(url) {
+    // check if the URL looks like a JSON file and call httpGet.
+    let regex = /\.(json)$/i;
+
+    if (regex.test(url)) {
+        // call the async function, wait for the result
+        return await httpGet(url);
+    } else {
+        throw Error('Bad Url Format');
+    }
+}
 export const Actions = {
     defaultAction,
     setMarkers,
@@ -112,5 +151,6 @@ export const Actions = {
     setMarker,
     setCurrentMarker,
     resetMarkerModal,
-    deleteMarker
+    deleteMarker,
+    ajax
 };

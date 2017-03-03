@@ -6,6 +6,33 @@ public class Marker extends WalkerObject {
 	private double latitude;
 	private double longitude;
 	private String title;
+	private String openingTime;
+	private String closingTime;
+
+	public String getOpeningTime() {
+		return openingTime;
+	}
+
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
+	}
+
+	public String getClosingTime() {
+		return closingTime;
+	}
+
+	public void setClosingTime(String closingTime) {
+		this.closingTime = closingTime;
+	}
+
+	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.title = title;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+	}
 
 	public double getLatitude() {
 		return latitude;

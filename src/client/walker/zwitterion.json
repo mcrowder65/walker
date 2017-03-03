@@ -329,6 +329,9 @@
         },
         "bower_components/iron-dropdown/iron-dropdown-scroll-manager.html": {
             "parentImport": true
+        },
+        "node_modules/jquery/src/jquery.js": {
+            "parentImport": true
         }
     }
 }

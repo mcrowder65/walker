@@ -5,6 +5,7 @@ import {Actions} from '../../redux/actions';
 import {Marker} from '../../typings/marker';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
+import {Options} from '../../typings/options';
 
 export class WalkerMap {
   public is: string;
@@ -26,7 +27,14 @@ export class WalkerMap {
   async initMarkers(): Promise<void> {
     const ajax = this.querySelector('#getMarkersAjax');
     Actions.initMarkersWithAjax(this, ajax);
-
+    const options: Options = {
+      url: 'http://localhost:8081/setMarker',
+      method: 'post',
+      contentType: 'application/json',
+      handleAs: 'json',
+      body: {}
+    };
+    Actions.ajax(options);
   }
 
   async clearMarkers(): Promise<void> {
