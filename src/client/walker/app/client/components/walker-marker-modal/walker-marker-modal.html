@@ -21,20 +21,16 @@
         <paper-item>Latitude: [[latitude]]</paper-item>
         <paper-item>Longitude: [[longitude]]</paper-item>
         <br>
-
-
-
         Is this a building?
         <paper-radio-group selected="[[isBuildingSelection]]">
           <paper-radio-button name="yes" on-tap="thisIsABuilding">Yes</paper-radio-button>
           <paper-radio-button name="no" on-tap="thisIsNotABuilding">No</paper-radio-button>
-
         </paper-radio-group>
         <br>
         <template is="dom-if" if="[[!building]]">
           Which building does this entrance belong to?
           <paper-dropdown-menu label="Buildings">
-            <paper-listbox class="dropdown-content">
+            <paper-listbox class="dropdown-content" selected="[[selectedBuildingIndex]]">
               <template is="dom-repeat" items="[[buildings]]">
                 <paper-item id="[[item.id]]" on-tap="setBuilding">[[item.title]]</paper-item>
               </template>

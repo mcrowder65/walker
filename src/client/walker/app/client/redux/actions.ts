@@ -46,7 +46,7 @@ const setLatitudeAndLongitude = async (context: WalkerMap, currentMarker: Marker
 
 const resetMarkerModal = async (context: WalkerMarkerModal): Promise<void> => {
   context.action = {
-    type: 'RESET_MARKER_MODAL',
+    type: 'RESET_MARKER_MODAL'
   }
 };
 

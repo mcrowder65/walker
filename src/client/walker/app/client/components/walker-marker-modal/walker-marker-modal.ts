@@ -23,6 +23,7 @@ export class WalkerMarkerModal {
   public isBuildingSelection: 'yes' | 'no' | 'neither';
   public buildings: Marker[];
   public buildingId: string;
+  public selectedBuildingIndex: number;
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
@@ -48,10 +49,18 @@ export class WalkerMarkerModal {
   async getBuildings(): Promise<void> {
     const buildings = await Actions.POST('getBuildings');
     const buildingsArray = JSON.parse(buildings);
+    let wasIndexSet: boolean = false;
     for(let i: number = 0; i < buildingsArray.length; i++) {
       buildingsArray[i] = JSON.parse(buildingsArray[i]);
+      if(buildingsArray[i].id === this.buildingId) {
+        this.selectedBuildingIndex = i;
+        wasIndexSet = true;
+      }
     }
     this.buildings = buildingsArray;
+    if(!wasIndexSet) {
+      this.selectedBuildingIndex = -1;
+    }
   }
 
   setBuilding(e: any): void {
@@ -127,6 +136,7 @@ export class WalkerMarkerModal {
       this.building = this.openingTime !== undefined || this.closingTime !== undefined || this.title !== undefined;
       this.buildingId = !this.building ? state.currentMarker.buildingId : this.buildingId;
       this.getBuildings();
+
     }
   }
 
