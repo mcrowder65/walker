@@ -21,6 +21,8 @@ export class WalkerMarkerModal {
   public building: boolean;
   public properties: any;
   public isBuildingSelection: 'yes' | 'no' | 'neither';
+  public buildings: Marker[];
+  public buildingId: string;
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
@@ -43,6 +45,19 @@ export class WalkerMarkerModal {
     this.isBuildingSelection = this.building ? 'yes' : 'no';
   }
 
+  async getBuildings(): Promise<void> {
+    const buildings = await Actions.POST('getBuildings');
+    const buildingsArray = JSON.parse(buildings);
+    for(let i: number = 0; i < buildingsArray.length; i++) {
+      buildingsArray[i] = JSON.parse(buildingsArray[i]);
+    }
+    this.buildings = buildingsArray;
+  }
+
+  setBuilding(e: any): void {
+    const buildingId: string = e.target.id;
+    this.buildingId = buildingId;
+  }
   /**
    * This gets called from walker-map
    */
@@ -60,7 +75,8 @@ export class WalkerMarkerModal {
         id: this.markerId || '',
         openingTime: this.openingTime,
         closingTime: this.closingTime,
-        building: this.building
+        building: this.building,
+        buildingId: this.buildingId
       };
 
       await Actions.POST('setMarker', JSON.stringify(marker));
@@ -109,7 +125,8 @@ export class WalkerMarkerModal {
       this.openingTime = state.currentMarker.openingTime;
       this.closingTime = state.currentMarker.closingTime;
       this.building = this.openingTime !== undefined || this.closingTime !== undefined || this.title !== undefined;
-      
+      this.buildingId = !this.building ? state.currentMarker.buildingId : this.buildingId;
+      this.getBuildings();
     }
   }
 

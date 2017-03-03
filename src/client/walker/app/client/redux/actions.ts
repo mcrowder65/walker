@@ -44,27 +44,6 @@ const setLatitudeAndLongitude = async (context: WalkerMap, currentMarker: Marker
   };
 }
 
-/**
- * this set marker hits the server which sets the marker in firebase.
- */
-const setMarker = async (marker: Marker, ajax: any): Promise<void> => {
-  try {
-    ajax.body = {
-      latitude: marker.latitude,
-      longitude: marker.longitude,
-      title: marker.title,
-      id: marker.id,
-      openingTime: marker.openingTime,
-      closingTime: marker.closingTime
-    };
-    const request = ajax.generateRequest();
-    await request.completes;
-  } catch(error) {
-    throw error;
-  }
-
-};
-
 const resetMarkerModal = async (context: WalkerMarkerModal): Promise<void> => {
   context.action = {
     type: 'RESET_MARKER_MODAL',
@@ -111,7 +90,6 @@ export const Actions = {
     setMarkers,
     setLatitudeAndLongitude,
     initMarkers,
-    setMarker,
     setCurrentMarker,
     resetMarkerModal,
     POST

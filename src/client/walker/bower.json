@@ -23,6 +23,7 @@
     "paper-radio-group": "^1.2.1",
     "paper-dropdown-menu": "^1.5.0",
     "paper-listbox": "^1.1.2",
-    "paper-dialog-scrollable": "^1.1.5"
+    "paper-dialog-scrollable": "^1.1.5",
+    "paper-item": "^1.2.1"
   }
 }

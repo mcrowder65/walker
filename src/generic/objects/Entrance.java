@@ -56,6 +56,8 @@ public class Entrance extends WalkerObject {
 	public Entrance(Marker marker) {
 		this.latitude = marker.getLatitude();
 		this.longitude = marker.getLongitude();
+		this.id = marker.getId();
+		this.buildingId = marker.getBuildingId();
 	}
 
 	public Entrance() {

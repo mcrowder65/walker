@@ -8,6 +8,8 @@
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
 <dom-module id="walker-marker-modal">
   <template>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
@@ -33,9 +35,9 @@
           Which building does this entrance belong to?
           <paper-dropdown-menu label="Buildings">
             <paper-listbox class="dropdown-content">
-              <paper-item>JKB</paper-item>
-              <paper-item>JSB</paper-item>
-              <paper-item>HBLL</paper-item>
+              <template is="dom-repeat" items="[[buildings]]">
+                <paper-item id="[[item.id]]" on-tap="setBuilding">[[item.title]]</paper-item>
+              </template>
             </paper-listbox>
           </paper-dropdown-menu>
         </template>

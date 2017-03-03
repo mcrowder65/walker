@@ -6,4 +6,5 @@ export interface Marker {
   openingTime?: string;
   closingTime?: string;
   building?: boolean;
+  buildingId?: string;
 }

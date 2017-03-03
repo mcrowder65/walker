@@ -15,6 +15,7 @@ public class Building extends WalkerObject {
 		this.title = marker.getTitle();
 		this.openingTime = marker.getOpeningTime();
 		this.closingTime = marker.getClosingTime();
+		this.id = marker.getId();
 	}
 
 	public double getLatitude() {
