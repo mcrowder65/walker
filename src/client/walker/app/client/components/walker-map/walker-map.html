@@ -19,13 +19,22 @@
     #walker-marker-modal {
       width: 300px;
     }
+    .indigo {
+      background-color: pink;
+    }
+
+    .marker {
+      background-color: blue;
+      color: blue;
+    }
     </style>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
 
     <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
-
+    <paper-button raised class="indigo" on-tap="setStartMarker">[[startPointButtonText]]</paper-button>
+    [[setStartMarkerMessage]]
     <google-map
       fit-to-markers
       map-type="satellite"
@@ -43,7 +52,8 @@
             click-events="true"
             drag-events="true"
             on-google-map-marker-click="editMarker"
-            on-google-map-marker-dragend="markerDragDone">
+            on-google-map-marker-dragend="markerDragDone"
+            class="marker">
           </google-map-marker>
       </template>
     </google-map>

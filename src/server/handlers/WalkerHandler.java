@@ -10,7 +10,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 public abstract class WalkerHandler implements HttpHandler {
 
-	public abstract void handle(HttpExchange arg0) throws IOException;
+	public abstract void handle(HttpExchange exchange) throws IOException;
 
 	public String getRequestBodyAndSetHeaders(HttpExchange exchange) {
 		StringWriter writer = new StringWriter();
