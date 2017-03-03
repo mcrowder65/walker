@@ -191,13 +191,36 @@ public class GraphTools {
 	}
 
 	public static void DrawLine(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
-			LatLng southwest, LatLng northeast, Color lineColor) {
+			LatLng southwest, LatLng northeast, Color lineColor, Graph g) {
 		List<Point2D.Double> points = new ArrayList();
-		for (Node n : nodes) {
+		for (Node n : g.getNodes()) {
 			Point2D.Double p = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast, img.getWidth(),
 					img.getHeight());
-			points.add(p);
+			int startX = (int) p.getX() - nodePixelRadius;
+			int startY = (int) p.getY() - nodePixelRadius;
+			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
+				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
+					Tools.setImageRGB(img, x, y, nodeColor);
+				}
+			}
 		}
+
+		Point2D.Double prevPoint = APITools.getImagePointFromLatLng(nodes.get(0).getPosition(), southwest, northeast,
+				img.getWidth(), img.getHeight());
+
+		for (int i = 1; i < nodes.size(); i++) {
+			Point2D.Double p = APITools.getImagePointFromLatLng(nodes.get(i).getPosition(), southwest, northeast,
+					img.getWidth(), img.getHeight());
+
+			if (lineColor != null && prevPoint != null) {
+				Point2D.Double minX = p.x < prevPoint.x ? p : prevPoint;
+				Point2D.Double maxX = minX == prevPoint ? p : prevPoint;
+				bresenham2(img, minX, maxX, lineColor);
+			}
+
+			prevPoint = p;
+		}
+
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
