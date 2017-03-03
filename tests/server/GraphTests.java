@@ -86,7 +86,7 @@ public class GraphTests {
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
 
-		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 5, southwest, northeast);
 		nodes.addAll(newNodes);
 
 		Graph g = new Graph(null, null, nodes);
@@ -97,10 +97,12 @@ public class GraphTests {
 		// img = Tools.ClipLogo(img);
 
 		// Tools.WriteImage(img, "testImages/polytest7.png");
-		List<Integer> path = GraphTools.dijkstra(0, g, newNodes.size() - 1);
+		List<Integer> path = GraphTools.dijkstra(0, g, nodes.size() - 1);
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
 
+		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
+		// southwest, northeast);
 		img = Tools.ClipLogo(img);
 
 		Tools.WriteImage(img, "testImages/dTest1.png");

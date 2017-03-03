@@ -27,6 +27,7 @@ public class Graph {
 	}
 
 	public void setDistancesFromNodes() {
+		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int z = 0; z < nodes.size(); z++) {
 				if (i == z) {
@@ -46,16 +47,21 @@ public class Graph {
 			}
 		}
 	}
-	
+
 	public void setElevationsFromNodes() {
 		String elevResp = APITools.GetElevationResponse(nodes);
+<<<<<<< HEAD
 	    double[] elevs = APITools.GetElevations(elevResp, nodes);
 		
 		elevation = new double[nodes.size()][];
+=======
+		double[] elevs = APITools.GetElevations(elevResp, nodes);
+
+>>>>>>> 36bdc71a47b9580debfca5d5192a96a15dad2337
 		for (int i = 0; i < nodes.size(); i++) {
 			elevation[i] = new double[nodes.size()];
 			for (int z = 0; z < nodes.size(); z++) {
-			    elevation[i][z] = Math.abs(elevs[i] - elevs[z]);
+				elevation[i][z] = Math.abs(elevs[i] - elevs[z]);
 			}
 		}
 	}
@@ -67,7 +73,7 @@ public class Graph {
 	public List<Node> getNodesFromPath(List<Integer> path) {
 		List<Node> pathNodes = new ArrayList();
 		for (int i = 0; i < path.size(); i++) {
-			Node n = this.nodes.get(i);
+			Node n = this.nodes.get(path.get(i));
 			pathNodes.add(n);
 		}
 		return pathNodes;
