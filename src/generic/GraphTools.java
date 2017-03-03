@@ -191,7 +191,6 @@ public class GraphTools {
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		// List<Double> distances = g.getDistanceList(startNodeIndex);
 		List<Double> distances = new ArrayList();
 		List<Integer> prev = new ArrayList();
 		for (int i = 0; i < g.getNumNodes(); i++) {

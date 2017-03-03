@@ -50,6 +50,15 @@ public class Graph {
 		return this.nodes;
 	}
 
+	public List<Node> getNodesFromPath(List<Integer> path) {
+		List<Node> pathNodes = new ArrayList();
+		for (int i = 0; i < path.size(); i++) {
+			Node n = this.nodes.get(i);
+			pathNodes.add(n);
+		}
+		return pathNodes;
+	}
+
 	public double getDistance(int startNode, int endNode) {
 		return distance[startNode][endNode];
 	}

@@ -1,6 +1,5 @@
 package server;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,8 @@ public class GraphTests {
 
 		Graph g = new Graph(null, null, nodes);
 
-		GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2, southwest, northeast);
+		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
+		// southwest, northeast);
 		// img = Tools.ClipLogo(img);
 
 		// Tools.WriteImage(img, "testImages/polytest7.png");
