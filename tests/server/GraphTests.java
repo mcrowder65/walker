@@ -16,6 +16,7 @@ import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.Tools;
+import generic.UserPrefs;
 import googlemaps.LatLng;
 
 public class GraphTests {
@@ -57,7 +58,7 @@ public class GraphTests {
 			nodes.add(new Node());
 		}
 		Graph g = new Graph(distance, null, nodes);
-		List<Integer> path = GraphTools.dijkstra(0, g, 4);
+		List<Integer> path = GraphTools.dijkstra(0, g, 4, UserPrefs.DISTANCE_ONLY);
 		System.out.println(path);
 
 	}
@@ -80,7 +81,7 @@ public class GraphTests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
@@ -91,6 +92,7 @@ public class GraphTests {
 
 		Graph g = new Graph(null, null, nodes);
 		g.setDistancesFromNodes();
+		g.setElevationsFromNodes();
 
 		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
 		// southwest, northeast);

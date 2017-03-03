@@ -235,15 +235,20 @@ public class GraphTools {
 		}
 
 	}
-
+	
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		List<Double> distances = new ArrayList();
-		List<Integer> prev = new ArrayList();
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5,.5,0,0,0,0,0));
+	
+	}
+
+	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
+		List<Double> costs = new ArrayList<Double>();
+		List<Integer> prev = new ArrayList<Integer>();
 		for (int i = 0; i < g.getNumNodes(); i++) {
-			distances.add(Double.MAX_VALUE);
+			costs.add(Double.MAX_VALUE);
 			prev.add(i);
 		}
-		distances.set(startNodeIndex, (double) 0);
+		costs.set(startNodeIndex, (double) 0);
 		QueueArray qObj = new QueueArray();
 		List<Integer> q = qObj.makeQ(g.getNumNodes(), startNodeIndex);
 		int counter = 0;
@@ -252,15 +257,15 @@ public class GraphTools {
 			counter++;
 			int size = g.getNumNodes();
 			for (int i = 0; i < size; i++) {
-				if (distances.get(i) > (distances.get(u) + g.getDistance(u, i))) {
-					double newDistance = distances.get(u) + g.getDistance(u, i);
-					distances.set(i, newDistance);
+				if (costs.get(i) > (costs.get(u) + g.getCost(u, i, prefs))) {
+					double newCost = costs.get(u) + g.getCost(u, i, prefs);
+					costs.set(i, newCost);
 					prev.set(i, u);
-					qObj.decreaseKey(i, newDistance);
+					qObj.decreaseKey(i, newCost);
 				}
 			}
 		}
-		List<Integer> path = new ArrayList();
+		List<Integer> path = new ArrayList<Integer>();
 		int end = endNodeIndex;
 		while (end != startNodeIndex) {
 			path.add(end);

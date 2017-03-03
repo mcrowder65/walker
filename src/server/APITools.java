@@ -237,32 +237,44 @@ public class APITools {
 		double latProportion = (location.latitude - southwest.latitude) / (northeast.latitude - southwest.latitude);
 		return new Point2D.Double(sizeX * lonProportion, sizeY - ( sizeY * latProportion));
 	}
-	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY)
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, boolean isSatellite)
 	{
-		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), null);
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY),isSatellite,  null);
 	}
-	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, String polyline)
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, boolean isSatellite, String polyline)
 	{
-		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), polyline);
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start,end,sizeX,sizeY), isSatellite, polyline);
 	}
-	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom)
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom, boolean isSatellite)
 	{
-		return DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, null);
+		return DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, isSatellite, null);
 	}
-	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom, String polyline)
+	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY, int zoom, boolean isSatellite, String polyline)
 	{
 		try {
 			URL url;
 			LatLng center = Tools.getCenter(start, end);
 			
-			if (polyline == null)
-				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&zoom="+zoom+"&center=" +
-					center.toUrlValue() + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
-					);
-			else
-				url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" +
+			if (polyline == null) {
+				if (isSatellite)
+					url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&zoom="+zoom+"&center=" +
+							center.toUrlValue() + "&size="+ sizeX + "x" + sizeY +"&key=" + generic.Config.STATICMAP_KEY
+							);
+				else
+					url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off&zoom="+zoom+"&center=" +
+							center.toUrlValue() + "&size="+ sizeX + "x" + sizeY + "&key=" + generic.Config.STATICMAP_KEY
+							);
+			}
+			else {
+				if (isSatellite)
+					url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=satellite&center=" +
 						center.toUrlValue()+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
-						);
+					);
+				else
+					url = new URL("https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off&center=" +
+						center.toUrlValue()+ "&size="+ sizeX + "x" + sizeY + polylineToURLParam(polyline, 3, "red") +"&key=" + generic.Config.STATICMAP_KEY
+					);
+			}
 		
 			BufferedImage image = ImageIO.read(url);
 			
