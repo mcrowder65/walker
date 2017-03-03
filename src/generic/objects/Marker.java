@@ -1,5 +1,7 @@
 package generic.objects;
 
+import java.util.HashMap;
+
 import server.JSONTools;
 
 public class Marker extends WalkerObject {
@@ -10,6 +12,28 @@ public class Marker extends WalkerObject {
 	private String closingTime;
 	private boolean building;
 	private String buildingId;
+	private HashMap<String, String> entrances;
+
+	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime,
+			boolean building, String buildingId, HashMap<String, String> entrances) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.title = title;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+		this.building = building;
+		this.buildingId = buildingId;
+		this.entrances = entrances;
+	}
+
+	public HashMap<String, String> getEntrances() {
+		return entrances;
+	}
+
+	public void setEntrances(HashMap<String, String> entrances) {
+		this.entrances = entrances;
+	}
 
 	public String getBuildingId() {
 		return buildingId;

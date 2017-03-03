@@ -1,6 +1,6 @@
 package generic.objects;
 
-import java.util.List;
+import java.util.HashMap;
 
 import server.JSONTools;
 
@@ -10,26 +10,26 @@ public class Building extends WalkerObject {
 	private String title;
 	private String openingTime;
 	private String closingTime;
-	// private List<String> entrances;
+	private HashMap<String, String> entrances;
 
 	public Building(double latitude, double longitude, String title, String openingTime, String closingTime,
-			List<String> entrances) {
+			HashMap<String, String> entrances) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.title = title;
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
-		// this.entrances = entrances;
+		this.entrances = entrances;
 	}
 
-	// public List<String> getEntrances() {
-	// return entrances;
-	// }
-	//
-	// public void setEntrances(List<String> entrances) {
-	// this.entrances = entrances;
-	// }
+	public HashMap<String, String> getEntrances() {
+		return entrances;
+	}
+
+	public void setEntrances(HashMap<String, String> entrances) {
+		this.entrances = entrances;
+	}
 
 	public Building(Marker marker) {
 		this.latitude = marker.getLatitude();
@@ -97,5 +97,11 @@ public class Building extends WalkerObject {
 
 		String jsonString = JSONTools.g.toJson(this);
 		return jsonString;
+	}
+
+	@Override
+	public String toString() {
+		return "Building [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + ", openingTime="
+				+ openingTime + ", closingTime=" + closingTime + ", entrances=" + entrances + "]";
 	}
 }

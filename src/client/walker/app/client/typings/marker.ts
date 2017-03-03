@@ -7,4 +7,5 @@ export interface Marker {
   closingTime?: string;
   building?: boolean;
   buildingId?: string;
+  entrances?: { [entranceId: string]: string } | string[];
 }

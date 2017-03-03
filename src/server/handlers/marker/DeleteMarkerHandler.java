@@ -5,6 +5,8 @@ import java.io.IOException;
 import com.sun.net.httpserver.HttpExchange;
 
 import generic.Tools;
+import generic.objects.Building;
+import generic.objects.Entrance;
 import generic.objects.Marker;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
@@ -24,11 +26,18 @@ public class DeleteMarkerHandler extends WalkerHandler {
 			if (!json.equals("")) {
 				Marker marker = JSONTools.g.fromJson(json, Marker.class);
 				if (marker.isBuilding()) {
+
+					Building building = (Building) Tools.firebase.get("buildings/" + marker.getId(), new Building());
 					Tools.firebase.delete("buildings/" + marker.getId());
+					for (String key : building.getEntrances().keySet()) {
+						Tools.firebase.delete("entrances/" + key);
+					}
+
 				} else if (!marker.isBuilding()) {
+					Entrance entrance = new Entrance(marker);
 					Tools.firebase.delete("entrances/" + marker.getId());
+					Tools.firebase.delete("buildings/" + entrance.getBuildingId() + "/entrances/" + entrance.getId());
 				}
-				// Tools.firebase.delete("markers/" + marker.getId());
 
 			}
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);

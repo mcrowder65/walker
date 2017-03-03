@@ -12,6 +12,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
+import server.handlers.building.GetBuildingHandler;
 import server.handlers.building.GetBuildingsHandler;
 import server.handlers.marker.DeleteMarkerHandler;
 import server.handlers.marker.GetMarkersHandler;
@@ -25,6 +26,7 @@ public class Server {
 	private SetMarkerHandler setMarkerHandler;
 	private DeleteMarkerHandler deleteMarkerHandler;
 	private GetBuildingsHandler getBuildingsHandler;
+	private GetBuildingHandler getBuildingHandler;
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		new Server().run(args);
@@ -58,6 +60,9 @@ public class Server {
 
 		getBuildingsHandler = new GetBuildingsHandler();
 		httpServer.createContext("/getBuildings", getBuildingsHandler);
+
+		getBuildingHandler = new GetBuildingHandler();
+		httpServer.createContext("/getBuilding", getBuildingHandler);
 
 		httpServer.start();
 

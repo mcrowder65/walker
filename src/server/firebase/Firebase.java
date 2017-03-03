@@ -95,6 +95,35 @@ public class Firebase {
 
 	}
 
+	public WalkerObject get(String path, WalkerObject obj) {
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		List<WalkerObject> objects = new ArrayList<>();
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+
+			}
+
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				WalkerObject object = dataSnapshot.getValue(obj.getClass());
+				objects.add(object);
+
+				semaphore.release();
+			}
+
+		});
+
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return objects.get(0);
+	}
+
 	public void update(String path, WalkerObject obj) {
 
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();

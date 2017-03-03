@@ -114,9 +114,12 @@ export class WalkerMarkerModal {
         title: this.title,
         openingTime: this.openingTime,
         closingTime: this.closingTime,
-        building: this.building
+        building: this.building,
+        buildingId: this.buildingId
       };
+
       await Actions.POST('deleteMarker', JSON.stringify(marker));
+
       await Actions.initMarkers(this, 'getMarkers');
       await Actions.resetMarkerModal(this);
       this.successMessage = '';
