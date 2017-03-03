@@ -10,7 +10,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import generic.objects.Building;
 import generic.objects.WalkerObject;
 
 public class Firebase {
@@ -50,17 +49,6 @@ public class Firebase {
 		}
 		return objects;
 
-	}
-
-	public String getBuildingIdByTitle(String buildingTitle) {
-		List<WalkerObject> buildings = this.getAllAsObjects("buildings", new Building());
-		for (int i = 0; i < buildings.size(); i++) {
-			Building building = (Building) buildings.get(i);
-			if (building.getTitle().equals(buildingTitle)) {
-				return building.getId();
-			}
-		}
-		return null;
 	}
 
 	public List<WalkerObject> getAllAsObjects(String path, final WalkerObject desiredClass) {
