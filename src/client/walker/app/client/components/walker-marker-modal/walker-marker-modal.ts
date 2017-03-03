@@ -46,6 +46,9 @@ export class WalkerMarkerModal {
     this.isBuildingSelection = this.building ? 'yes' : 'no';
   }
 
+  /**
+   * This gets the building names and sets the index of the chosen building
+   */
   async getBuildings(): Promise<void> {
     const buildings = await Actions.POST('getBuildings');
     const buildingsArray = JSON.parse(buildings);
@@ -59,6 +62,8 @@ export class WalkerMarkerModal {
     }
     this.buildings = buildingsArray;
     if(!wasIndexSet) {
+      // had to hack this so that it will always change
+      this.selectedBuildingIndex = -2;
       this.selectedBuildingIndex = -1;
     }
   }
