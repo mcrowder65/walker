@@ -76,6 +76,15 @@ public class Graph {
 	public double getDistance(int startNode, int endNode) {
 		return distance[startNode][endNode];
 	}
+	public double getElevation(int startNode, int endNode) {
+		return elevation[startNode][endNode];
+	}
+	
+	public double getCost(int startNode, int endNode, UserPrefs prefs)
+	{
+		return getDistance(startNode, endNode) * prefs.getDistanceWeight() +
+			   getElevation(startNode, endNode) * prefs.getElevationWeight();
+	}
 
 	public List<Double> getDistanceList(int startNode) {
 		List<Double> distances = new ArrayList();
