@@ -190,6 +190,16 @@ public class GraphTools {
 		}
 	}
 
+	public static void DrawLine(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
+			LatLng southwest, LatLng northeast, Color lineColor) {
+		List<Point2D.Double> points = new ArrayList();
+		for (Node n : nodes) {
+			Point2D.Double p = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast, img.getWidth(),
+					img.getHeight());
+			points.add(p);
+		}
+	}
+
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
 		List<Double> distances = new ArrayList();
 		List<Integer> prev = new ArrayList();
