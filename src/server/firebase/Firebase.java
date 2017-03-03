@@ -1,7 +1,5 @@
 package server.firebase;
 
-import generic.objects.WalkerObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -12,6 +10,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import generic.objects.Building;
+import generic.objects.WalkerObject;
+
 public class Firebase {
 
 	private Semaphore semaphore;
@@ -20,8 +21,7 @@ public class Firebase {
 		semaphore = new Semaphore(0);
 	}
 
-	public List<String> getAllAsJson(String path,
-			final WalkerObject desiredClass) {
+	public List<String> getAllAsJson(String path, final WalkerObject desiredClass) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		final List<String> objects = new ArrayList<>();
@@ -52,8 +52,18 @@ public class Firebase {
 
 	}
 
-	public List<WalkerObject> getAllAsObjects(String path,
-			final WalkerObject desiredClass) {
+	public String getBuildingIdByTitle(String buildingTitle) {
+		List<WalkerObject> buildings = this.getAllAsObjects("buildings", new Building());
+		for (int i = 0; i < buildings.size(); i++) {
+			Building building = (Building) buildings.get(i);
+			if (building.getTitle().equals(buildingTitle)) {
+				return building.getId();
+			}
+		}
+		return null;
+	}
+
+	public List<WalkerObject> getAllAsObjects(String path, final WalkerObject desiredClass) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		final List<WalkerObject> objects = new ArrayList<>();
@@ -85,12 +95,47 @@ public class Firebase {
 
 	}
 
+	public WalkerObject get(String path, WalkerObject obj) {
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		List<WalkerObject> objects = new ArrayList<>();
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+
+			}
+
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				WalkerObject object = dataSnapshot.getValue(obj.getClass());
+				objects.add(object);
+
+				semaphore.release();
+			}
+
+		});
+
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return objects.get(0);
+	}
+
 	public void update(String path, WalkerObject obj) {
 
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		ref.setValue(obj);
+	}
 
+	public void update(String path, String str) {
+
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		DatabaseReference ref = database.getReference(path);
+		ref.setValue(str);
 	}
 
 	/**

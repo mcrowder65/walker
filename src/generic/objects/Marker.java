@@ -1,5 +1,7 @@
 package generic.objects;
 
+import java.util.HashMap;
+
 import server.JSONTools;
 
 public class Marker extends WalkerObject {
@@ -8,25 +10,68 @@ public class Marker extends WalkerObject {
 	private String title;
 	private String openingTime;
 	private String closingTime;
-	private boolean isBuilding;
+	private boolean building;
+	private String buildingId;
+	private HashMap<String, String> entrances;
 
-	public Marker(double latitude, double longitude, String title,
-			String openingTime, String closingTime, boolean isBuilding) {
+	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime,
+			boolean building, String buildingId, HashMap<String, String> entrances) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.title = title;
 		this.openingTime = openingTime;
 		this.closingTime = closingTime;
-		this.isBuilding = isBuilding;
+		this.building = building;
+		this.buildingId = buildingId;
+		this.entrances = entrances;
+	}
+
+	public HashMap<String, String> getEntrances() {
+		return entrances;
+	}
+
+	public void setEntrances(HashMap<String, String> entrances) {
+		this.entrances = entrances;
+	}
+
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime,
+			boolean building, String buildingId) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.title = title;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+		this.building = building;
+		this.buildingId = buildingId;
+	}
+
+	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime,
+			boolean building) {
+		super();
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.title = title;
+		this.openingTime = openingTime;
+		this.closingTime = closingTime;
+		this.building = building;
 	}
 
 	public boolean isBuilding() {
-		return isBuilding;
+		return building;
 	}
 
-	public void setBuilding(boolean isBuilding) {
-		this.isBuilding = isBuilding;
+	public void setBuilding(boolean building) {
+		this.building = building;
 	}
 
 	public String getOpeningTime() {
@@ -45,8 +90,7 @@ public class Marker extends WalkerObject {
 		this.closingTime = closingTime;
 	}
 
-	public Marker(double latitude, double longitude, String title,
-			String openingTime, String closingTime) {
+	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -80,8 +124,7 @@ public class Marker extends WalkerObject {
 
 	@Override
 	public String toString() {
-		return "Marker [latitude=" + latitude + ", longitude=" + longitude
-				+ ", title=" + title + ", id=" + id + "]";
+		return "Marker [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + ", id=" + id + "]";
 	}
 
 	public Marker(double latitude, double longitude) {

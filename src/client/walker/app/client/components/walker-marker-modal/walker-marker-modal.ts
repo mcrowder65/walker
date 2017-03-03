@@ -18,37 +18,66 @@ export class WalkerMarkerModal {
   public closingTime: string;
   public successMessage: string;
   public errorMessage: string;
-  public isBuilding: boolean;
+  public building: boolean;
   public properties: any;
   public isBuildingSelection: 'yes' | 'no' | 'neither';
+  public buildings: Marker[];
+  public buildingId: string;
+  public selectedBuildingIndex: number;
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
     this.properties = {
-      isBuilding: {
+      building: {
         observer: 'changeIsBuildingSelection'
       }
     }
   }
 
   thisIsABuilding(): void {
-    this.isBuilding = true;
+    this.building = true;
   }
 
   thisIsNotABuilding(): void {
-    this.isBuilding = false;
+    this.building = false;
   }
 
   changeIsBuildingSelection(): void {
-    this.isBuildingSelection = this.isBuilding ? 'yes' : 'no';
+    this.isBuildingSelection = this.building ? 'yes' : 'no';
   }
 
+  /**
+   * This gets the building names and sets the index of the chosen building
+   */
+  async getBuildings(): Promise<void> {
+    const buildings = await Actions.POST('getBuildings');
+    const buildingsArray = JSON.parse(buildings);
+    let wasIndexSet: boolean = false;
+    for(let i: number = 0; i < buildingsArray.length; i++) {
+      buildingsArray[i] = JSON.parse(buildingsArray[i]);
+      if(buildingsArray[i].id === this.buildingId) {
+        this.selectedBuildingIndex = i;
+        wasIndexSet = true;
+      }
+    }
+    this.buildings = buildingsArray;
+    if(!wasIndexSet) {
+      // had to hack this so that it will always change
+      this.selectedBuildingIndex = -2;
+      this.selectedBuildingIndex = -1;
+    }
+  }
+
+  setBuilding(e: any): void {
+    const buildingId: string = e.target.id;
+    this.buildingId = buildingId;
+  }
   /**
    * This gets called from walker-map
    */
   open(): void {
     this.querySelector('#modal').open();
-    
+
   }
 
   async setMarker(): Promise<void> {
@@ -60,7 +89,8 @@ export class WalkerMarkerModal {
         id: this.markerId || '',
         openingTime: this.openingTime,
         closingTime: this.closingTime,
-        isBuilding: this.isBuilding
+        building: this.building,
+        buildingId: this.buildingId
       };
 
       await Actions.POST('setMarker', JSON.stringify(marker));
@@ -84,9 +114,12 @@ export class WalkerMarkerModal {
         title: this.title,
         openingTime: this.openingTime,
         closingTime: this.closingTime,
-        isBuilding: this.isBuilding
+        building: this.building,
+        buildingId: this.buildingId
       };
+
       await Actions.POST('deleteMarker', JSON.stringify(marker));
+
       await Actions.initMarkers(this, 'getMarkers');
       await Actions.resetMarkerModal(this);
       this.successMessage = '';
@@ -108,7 +141,10 @@ export class WalkerMarkerModal {
       this.title = state.currentMarker.title;
       this.openingTime = state.currentMarker.openingTime;
       this.closingTime = state.currentMarker.closingTime;
-      this.isBuilding = state.currentMarker.isBuilding;
+      this.building = this.openingTime !== undefined || this.closingTime !== undefined || this.title !== undefined;
+      this.buildingId = !this.building ? state.currentMarker.buildingId : this.buildingId;
+      this.getBuildings();
+
     }
   }
 
