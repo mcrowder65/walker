@@ -191,7 +191,6 @@ public class GraphTools {
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		// List<Double> distances = g.getDistanceList(startNodeIndex);
 		List<Double> distances = new ArrayList();
 		List<Integer> prev = new ArrayList();
 		for (int i = 0; i < g.getNumNodes(); i++) {
@@ -199,7 +198,7 @@ public class GraphTools {
 			prev.add(i);
 		}
 		distances.set(startNodeIndex, (double) 0);
-		QueueArray qObj = new QueueArray(distances);
+		QueueArray qObj = new QueueArray();
 		List<Integer> q = qObj.makeQ(g.getNumNodes(), startNodeIndex);
 		int counter = 0;
 		while (counter < q.size()) {
