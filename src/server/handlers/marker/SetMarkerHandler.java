@@ -1,15 +1,16 @@
 package server.handlers.marker;
 
-import generic.Tools;
-import generic.objects.Marker;
-
 import java.io.IOException;
 
+import com.sun.net.httpserver.HttpExchange;
+
+import generic.Tools;
+import generic.objects.Building;
+import generic.objects.Entrance;
+import generic.objects.Marker;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
-
-import com.sun.net.httpserver.HttpExchange;
 
 public class SetMarkerHandler extends WalkerHandler {
 	Object lock;
@@ -27,10 +28,31 @@ public class SetMarkerHandler extends WalkerHandler {
 				Marker marker = JSONTools.g.fromJson(result, Marker.class);
 				System.out.println(marker);
 				if (!marker.getId().equals("")) {
-					String path = "markers/" + marker.getId();
-					Tools.firebase.update(path, marker);
+					if (marker.isBuilding()) {
+						String path = "buildings/" + marker.getId();
+						Building building = new Building(marker);
+						Tools.firebase.update(path, building);
+
+					} else if (!marker.isBuilding()) {
+						String path = "entrances/" + marker.getId();
+						Entrance entrance = new Entrance(marker);
+						Tools.firebase.update(path, entrance);
+					}
+					// String path = "markers/" + marker.getId();
+					// Tools.firebase.update(path, marker);
 				} else {
-					Tools.firebase.create("markers", marker);
+					if (marker.isBuilding()) {
+						String path = "buildings" + marker.getId();
+						Building building = new Building(marker);
+						Tools.firebase.create(path, building);
+
+					} else if (!marker.isBuilding()) {
+						String path = "entrances";
+						Entrance entrance = new Entrance(marker);
+						Tools.firebase.create(path, entrance);
+
+					}
+					// Tools.firebase.create("markers", marker);
 
 				}
 				try {

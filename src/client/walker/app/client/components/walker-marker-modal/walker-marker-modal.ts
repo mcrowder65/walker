@@ -18,29 +18,29 @@ export class WalkerMarkerModal {
   public closingTime: string;
   public successMessage: string;
   public errorMessage: string;
-  public isBuilding: boolean;
+  public building: boolean;
   public properties: any;
   public isBuildingSelection: 'yes' | 'no' | 'neither';
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
     this.properties = {
-      isBuilding: {
+      building: {
         observer: 'changeIsBuildingSelection'
       }
     }
   }
 
   thisIsABuilding(): void {
-    this.isBuilding = true;
+    this.building = true;
   }
 
   thisIsNotABuilding(): void {
-    this.isBuilding = false;
+    this.building = false;
   }
 
   changeIsBuildingSelection(): void {
-    this.isBuildingSelection = this.isBuilding ? 'yes' : 'no';
+    this.isBuildingSelection = this.building ? 'yes' : 'no';
   }
 
   /**
@@ -48,7 +48,7 @@ export class WalkerMarkerModal {
    */
   open(): void {
     this.querySelector('#modal').open();
-    
+
   }
 
   async setMarker(): Promise<void> {
@@ -60,7 +60,7 @@ export class WalkerMarkerModal {
         id: this.markerId || '',
         openingTime: this.openingTime,
         closingTime: this.closingTime,
-        isBuilding: this.isBuilding
+        building: this.building
       };
 
       await Actions.POST('setMarker', JSON.stringify(marker));
@@ -84,7 +84,7 @@ export class WalkerMarkerModal {
         title: this.title,
         openingTime: this.openingTime,
         closingTime: this.closingTime,
-        isBuilding: this.isBuilding
+        building: this.building
       };
       await Actions.POST('deleteMarker', JSON.stringify(marker));
       await Actions.initMarkers(this, 'getMarkers');
@@ -108,7 +108,8 @@ export class WalkerMarkerModal {
       this.title = state.currentMarker.title;
       this.openingTime = state.currentMarker.openingTime;
       this.closingTime = state.currentMarker.closingTime;
-      this.isBuilding = state.currentMarker.isBuilding;
+      this.building = this.openingTime !== undefined || this.closingTime !== undefined || this.title !== undefined;
+      
     }
   }
 

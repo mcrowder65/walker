@@ -23,7 +23,12 @@ public class DeleteMarkerHandler extends WalkerHandler {
 			String json = this.getRequestBodyAndSetHeaders(exchange);
 			if (!json.equals("")) {
 				Marker marker = JSONTools.g.fromJson(json, Marker.class);
-				Tools.firebase.delete("markers/" + marker.getId());
+				if (marker.isBuilding()) {
+					Tools.firebase.delete("buildings/" + marker.getId());
+				} else if (!marker.isBuilding()) {
+					Tools.firebase.delete("entrances/" + marker.getId());
+				}
+				// Tools.firebase.delete("markers/" + marker.getId());
 
 			}
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);

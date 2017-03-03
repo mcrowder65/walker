@@ -329,6 +329,9 @@
         },
         "services/constants-service.ts": {
             "parentImport": false
+        },
+        "bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html": {
+            "parentImport": true
         }
     }
 }
