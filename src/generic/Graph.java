@@ -50,14 +50,8 @@ public class Graph {
 
 	public void setElevationsFromNodes() {
 		String elevResp = APITools.GetElevationResponse(nodes);
-<<<<<<< HEAD
 	    double[] elevs = APITools.GetElevations(elevResp, nodes);
-		
 		elevation = new double[nodes.size()][];
-=======
-		double[] elevs = APITools.GetElevations(elevResp, nodes);
-
->>>>>>> 36bdc71a47b9580debfca5d5192a96a15dad2337
 		for (int i = 0; i < nodes.size(); i++) {
 			elevation[i] = new double[nodes.size()];
 			for (int z = 0; z < nodes.size(); z++) {
