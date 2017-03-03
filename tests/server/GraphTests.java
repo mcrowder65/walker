@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,11 @@ public class GraphTests {
 		// Tools.WriteImage(img, "testImages/polytest7.png");
 		List<Integer> path = GraphTools.dijkstra(0, g, newNodes.size() - 1);
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
+		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+
+		img = Tools.ClipLogo(img);
+
+		Tools.WriteImage(img, "testImages/dTest1.png");
 	}
 
 }

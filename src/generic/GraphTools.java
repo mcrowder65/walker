@@ -190,7 +190,7 @@ public class GraphTools {
 		}
 	}
 
-	public static void DrawLine(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
+	public static void DrawLines(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor, Graph g) {
 		List<Point2D.Double> points = new ArrayList();
 		for (Node n : g.getNodes()) {
