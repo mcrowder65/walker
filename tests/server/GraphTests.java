@@ -80,7 +80,7 @@ public class GraphTests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
