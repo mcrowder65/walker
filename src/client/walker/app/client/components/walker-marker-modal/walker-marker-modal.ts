@@ -4,6 +4,7 @@ import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {Marker} from '../../typings/marker';
+import {Options} from '../../typings/options';
 
 export class WalkerMarkerModal {
   public is: string;
@@ -17,19 +18,29 @@ export class WalkerMarkerModal {
   public closingTime: string;
   public successMessage: string;
   public errorMessage: string;
-  public showDropdown: boolean;
+  public isBuilding: boolean;
+  public properties: any;
+  public isBuildingSelection: 'yes' | 'no' | 'neither';
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
-    this.showDropdown = false;
+    this.properties = {
+      isBuilding: {
+        observer: 'changeIsBuildingSelection'
+      }
+    }
   }
 
-  showDropDown(): void {
-    this.showDropdown = true;
+  thisIsABuilding(): void {
+    this.isBuilding = true;
   }
 
-  hideDropDown(): void {
-    this.showDropdown = false;
+  thisIsNotABuilding(): void {
+    this.isBuilding = false;
+  }
+
+  changeIsBuildingSelection(): void {
+    this.isBuildingSelection = this.isBuilding ? 'yes' : 'no';
   }
 
   /**
@@ -37,6 +48,7 @@ export class WalkerMarkerModal {
    */
   open(): void {
     this.querySelector('#modal').open();
+    
   }
 
   async setMarker(): Promise<void> {
@@ -47,14 +59,12 @@ export class WalkerMarkerModal {
         title: this.title,
         id: this.markerId || '',
         openingTime: this.openingTime,
-        closingTime: this.closingTime
+        closingTime: this.closingTime,
+        isBuilding: this.isBuilding
       };
 
-      const setMarkerAjax = this.querySelector('#setMarkerAjax');
-      Actions.setMarker(marker, setMarkerAjax);
-
-      const getMarkerAjax = this.querySelector('#getMarkersAjax');
-      Actions.initMarkersWithAjax(this, getMarkerAjax);
+      await Actions.POST('setMarker', JSON.stringify(marker));
+      await Actions.initMarkers(this, 'getMarkers');
       Actions.resetMarkerModal(this);
       this.successMessage = '';
       this.successMessage = 'Marker set';
@@ -67,20 +77,17 @@ export class WalkerMarkerModal {
 
   async deleteMarker(e: any): Promise<void> {
     try {
-      const ajax = this.querySelector('#deleteMarkerAjax');
       const marker: Marker = {
         latitude: this.latitude,
         longitude: this.longitude,
         id: this.markerId,
         title: this.title,
         openingTime: this.openingTime,
-        closingTime: this.closingTime
+        closingTime: this.closingTime,
+        isBuilding: this.isBuilding
       };
-
-      await Actions.deleteMarker(marker, ajax);
-
-      const getMarkerAjax = this.querySelector('#getMarkersAjax');
-      await Actions.initMarkersWithAjax(this, getMarkerAjax);
+      await Actions.POST('deleteMarker', JSON.stringify(marker));
+      await Actions.initMarkers(this, 'getMarkers');
       await Actions.resetMarkerModal(this);
       this.successMessage = '';
       this.successMessage = 'Marker deleted';
@@ -101,6 +108,7 @@ export class WalkerMarkerModal {
       this.title = state.currentMarker.title;
       this.openingTime = state.currentMarker.openingTime;
       this.closingTime = state.currentMarker.closingTime;
+      this.isBuilding = state.currentMarker.isBuilding;
     }
   }
 

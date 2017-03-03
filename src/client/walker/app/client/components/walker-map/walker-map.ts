@@ -5,6 +5,7 @@ import {Actions} from '../../redux/actions';
 import {Marker} from '../../typings/marker';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
+import {Options} from '../../typings/options';
 
 export class WalkerMap {
   public is: string;
@@ -23,10 +24,11 @@ export class WalkerMap {
     this.initMarkers();
   }
 
-  async initMarkers(): Promise<void> {
-    const ajax = this.querySelector('#getMarkersAjax');
-    Actions.initMarkersWithAjax(this, ajax);
-
+  /**
+   * This is needed here because the html calls it as well.
+   */
+  initMarkers(): void {
+    Actions.initMarkers(this, 'getMarkers');
   }
 
   async clearMarkers(): Promise<void> {
@@ -63,8 +65,8 @@ export class WalkerMap {
         latitude,
         longitude
       };
-      const setMarkerAjax = this.querySelector('#setMarkerAjax');
-      Actions.setMarker(newMarker, setMarkerAjax);
+      Actions.POST('setMarker', JSON.stringify(newMarker));
+      Actions.initMarkers(this, 'getMarkers');
       this.successMessage = '';
       this.successMessage = 'Marker set at new location.';
     } catch(error) {
@@ -77,6 +79,7 @@ export class WalkerMap {
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
+    console.log(this.markers);
   }
 
 }

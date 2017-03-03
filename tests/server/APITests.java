@@ -29,15 +29,12 @@ public class APITests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-<<<<<<< HEAD
-		
-		
-		String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
-=======
 
-		String resp = APITools.GetDirectionsResponse(Tools.latlngToString(start, true),
-				Tools.latlngToString(end, true));
->>>>>>> 27ef92260472e4c3671494bcf3de47486a8cabdf
+		String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+
+		// String resp =
+		// APITools.GetDirectionsResponse(Tools.latlngToString(start, true),
+		// Tools.latlngToString(end, true));
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, poly);
 		Tools.WriteImage(img, "testImages/polytest2.png");
