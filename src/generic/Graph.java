@@ -51,8 +51,9 @@ public class Graph {
 		String elevResp = APITools.GetElevationResponse(nodes);
 	    double[] elevs = APITools.GetElevations(elevResp, nodes);
 		
-		
+		elevation = new double[nodes.size()][];
 		for (int i = 0; i < nodes.size(); i++) {
+			elevation[i] = new double[nodes.size()];
 			for (int z = 0; z < nodes.size(); z++) {
 			    elevation[i][z] = Math.abs(elevs[i] - elevs[z]);
 			}
