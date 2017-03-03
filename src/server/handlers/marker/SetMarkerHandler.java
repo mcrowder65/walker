@@ -1,14 +1,15 @@
 package server.handlers.marker;
 
-import java.io.IOException;
-
-import com.sun.net.httpserver.HttpExchange;
-
 import generic.Tools;
 import generic.objects.Marker;
+
+import java.io.IOException;
+
 import server.JSONTools;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
+
+import com.sun.net.httpserver.HttpExchange;
 
 public class SetMarkerHandler extends WalkerHandler {
 	Object lock;
@@ -21,7 +22,6 @@ public class SetMarkerHandler extends WalkerHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		synchronized (lock) {
 			String result = getRequestBodyAndSetHeaders(exchange);
-
 			if (!result.equals("")) {
 
 				Marker marker = JSONTools.g.fromJson(result, Marker.class);
@@ -42,7 +42,7 @@ public class SetMarkerHandler extends WalkerHandler {
 
 			} else {
 				exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-				String json = "working on some things...";
+				String json = "This set marker request asked for empty things :(";
 				exchange.getResponseBody().write(json.getBytes());
 				exchange.getResponseBody().close();
 			}

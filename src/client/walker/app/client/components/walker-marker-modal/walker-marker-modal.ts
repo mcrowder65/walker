@@ -51,18 +51,7 @@ export class WalkerMarkerModal {
         closingTime: this.closingTime
       };
 
-      const setMarkerAjax = this.querySelector('#setMarkerAjax');
-      // Actions.setMarker(marker, setMarkerAjax);
-      const options: Options = {
-        url: 'http://localhost:8081/setMarker',
-        method: 'post',
-        contentType: 'application/json',
-        handleAs: 'json',
-        body: marker
-      };
-      Actions.ajax(options);
-      const getMarkerAjax = this.querySelector('#getMarkersAjax');
-      Actions.initMarkersWithAjax(this, getMarkerAjax);
+      Actions.POST('setMarker', JSON.stringify(marker));
       Actions.resetMarkerModal(this);
       this.successMessage = '';
       this.successMessage = 'Marker set';

@@ -13,7 +13,6 @@
     "tests"
   ],
   "dependencies": {
-    "iron-ajax": "^1.4.3",
     "redux-store-element": "^0.4.2",
     "polymer": "^1.7.1",
     "paper-button": "^1.0.14",

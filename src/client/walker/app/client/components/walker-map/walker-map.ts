@@ -24,17 +24,11 @@ export class WalkerMap {
     this.initMarkers();
   }
 
-  async initMarkers(): Promise<void> {
-    const ajax = this.querySelector('#getMarkersAjax');
-    Actions.initMarkersWithAjax(this, ajax);
-    const options: Options = {
-      url: 'http://localhost:8081/setMarker',
-      method: 'post',
-      contentType: 'application/json',
-      handleAs: 'json',
-      body: {}
-    };
-    Actions.ajax(options);
+  /**
+   * This is needed here because the html calls it as well.
+   */
+  initMarkers(): void {
+    Actions.initMarkers(this, 'getMarkers');
   }
 
   async clearMarkers(): Promise<void> {
@@ -71,8 +65,8 @@ export class WalkerMap {
         latitude,
         longitude
       };
-      const setMarkerAjax = this.querySelector('#setMarkerAjax');
-      Actions.setMarker(newMarker, setMarkerAjax);
+      Actions.POST('setMarker', JSON.stringify(newMarker));
+      Actions.initMarkers(this, 'getMarkers');
       this.successMessage = '';
       this.successMessage = 'Marker set at new location.';
     } catch(error) {

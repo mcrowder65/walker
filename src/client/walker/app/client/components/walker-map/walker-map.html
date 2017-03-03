@@ -4,7 +4,6 @@
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../walker-marker-modal/walker-marker-modal.html">
 <link rel="import" href="../walker-notification/walker-notification.html">
 
@@ -22,20 +21,7 @@
     }
     </style>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
-    <iron-ajax
-      id="setMarkerAjax"
-      url="http://localhost:8081/setMarker"
-      method="post"
-      content-type="application/json"
-      handle-as="json">
-    </iron-ajax>
-    <iron-ajax
-      id="getMarkersAjax"
-      url="http://localhost:8081/getMarkers"
-      method="get"
-      content-type="application/json"
-      handle-as="json">
-    </iron-ajax>
+
     <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
