@@ -8,9 +8,9 @@ public class QueueArray {
 	private List<Integer> queue;
 	private List<Double> dist;
 
-	public QueueArray(List<Double> dist) {
+	public QueueArray() {
 		queue = new ArrayList();
-		this.dist = dist;
+		dist = new ArrayList();
 	}
 
 	public List<Integer> makeQ(int size, int start) {

@@ -199,7 +199,7 @@ public class GraphTools {
 			prev.add(i);
 		}
 		distances.set(startNodeIndex, (double) 0);
-		QueueArray qObj = new QueueArray(distances);
+		QueueArray qObj = new QueueArray();
 		List<Integer> q = qObj.makeQ(g.getNumNodes(), startNodeIndex);
 		int counter = 0;
 		while (counter < q.size()) {
