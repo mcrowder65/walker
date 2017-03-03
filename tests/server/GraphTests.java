@@ -89,6 +89,7 @@ public class GraphTests {
 		nodes.addAll(newNodes);
 
 		Graph g = new Graph(null, null, nodes);
+		g.setDistancesFromNodes();
 
 		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
 		// southwest, northeast);
@@ -96,7 +97,7 @@ public class GraphTests {
 
 		// Tools.WriteImage(img, "testImages/polytest7.png");
 		List<Integer> path = GraphTools.dijkstra(0, g, newNodes.size() - 1);
-
+		List<Node> nodesToDraw = g.getNodesFromPath(path);
 	}
 
 }
