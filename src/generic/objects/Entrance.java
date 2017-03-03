@@ -4,6 +4,12 @@ import server.JSONTools;
 
 public class Entrance extends WalkerObject {
 
+	@Override
+	public String toString() {
+		return "Entrance [latitude=" + latitude + ", longitude=" + longitude + ", buildingId=" + buildingId + ", id="
+				+ id + "]";
+	}
+
 	private double latitude;
 	private double longitude;
 	private String buildingId;
