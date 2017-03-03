@@ -82,8 +82,8 @@ public class Graph {
 	
 	public double getCost(int startNode, int endNode, UserPrefs prefs)
 	{
-		return getDistance(startNode, endNode) * prefs.getDistanceWeight() +
-			   getElevation(startNode, endNode) * prefs.getElevationWeight();
+		return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) * prefs.getDistanceWeight() : 0) +
+			   (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) * prefs.getElevationWeight() : 0);
 	}
 
 	public List<Double> getDistanceList(int startNode) {

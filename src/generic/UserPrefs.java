@@ -25,6 +25,8 @@ public class UserPrefs {
 		this.stairsWeight = stairsWeight;
 		this.elevatorWeight = elevatorWeight;
 	}
+	public static UserPrefs DISTANCE_ONLY = new UserPrefs(1,0,0,0,0,0,0);
+	
 	private boolean validateWeight(double weight) {
 		if (weight >= 0 && weight <= 1)
 			return true;
