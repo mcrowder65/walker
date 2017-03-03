@@ -28,7 +28,7 @@ public class Building extends WalkerObject {
 	}
 
 	public List<Entrance> getResolvedEntrances() {
-		if (resolvedEntrances == null) {
+		if (resolvedEntrances == null && entrances != null) {
 			for (String key : entrances.keySet()) {
 				Entrance entrance = (Entrance) Tools.firebase.get("entrances/" + key, new Entrance());
 				resolvedEntrances.add(entrance);
