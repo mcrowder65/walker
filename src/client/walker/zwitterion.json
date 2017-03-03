@@ -329,6 +329,18 @@
         },
         "services/constants-service.ts": {
             "parentImport": false
+        },
+        "bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-item/paper-item.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-item/paper-item-behavior.html": {
+            "parentImport": true
+        },
+        "bower_components/paper-item/paper-item-shared-styles.html": {
+            "parentImport": true
         }
     }
 }

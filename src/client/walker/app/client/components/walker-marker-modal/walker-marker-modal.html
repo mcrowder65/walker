@@ -7,46 +7,49 @@
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
 
 <dom-module id="walker-marker-modal">
   <template>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
 
     <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
+
     <paper-dialog id="modal" with-backdrop>
-      <paper-item>Latitude: [[latitude]]</paper-item>
-      <paper-item>Longitude: [[longitude]]</paper-item>
-      <br>
+      <paper-dialog-scrollable>
+        <paper-item>Latitude: [[latitude]]</paper-item>
+        <paper-item>Longitude: [[longitude]]</paper-item>
+        <br>
+        Is this a building?
+        <paper-radio-group selected="[[isBuildingSelection]]">
+          <paper-radio-button name="yes" on-tap="thisIsABuilding">Yes</paper-radio-button>
+          <paper-radio-button name="no" on-tap="thisIsNotABuilding">No</paper-radio-button>
+        </paper-radio-group>
+        <br>
+        <template is="dom-if" if="[[!building]]">
+          Which building does this entrance belong to?
+          <paper-dropdown-menu label="Buildings">
+            <paper-listbox class="dropdown-content" selected="[[selectedBuildingIndex]]">
+              <template is="dom-repeat" items="[[buildings]]">
+                <paper-item id="[[item.id]]" on-tap="setBuilding">[[item.title]]</paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </template>
 
+        <template is="dom-if" if="[[building]]">
+          <paper-input label="Title" value="{{title}}"></paper-input>
+          <paper-input label="Opening time" value="{{openingTime}}"></paper-input>
+          <paper-input label="Closing time" value="{{closingTime}}"></paper-input>
+        </template>
+        <paper-button noink dialog-dismiss>Cancel</paper-button>
+        <template is="dom-if" if="[[markerId]]">
+          <paper-button noink dialog-dismiss on-tap="deleteMarker">Delete</paper-button>
+        </template>
+        <paper-button noink dialog-dismiss on-tap="setMarker">Done</paper-button>
 
-
-      Is this a building?
-      <paper-radio-group selected="[[isBuildingSelection]]">
-        <paper-radio-button name="yes" on-tap="thisIsABuilding">Yes</paper-radio-button>
-        <paper-radio-button name="no" on-tap="thisIsNotABuilding">No</paper-radio-button>
-
-      </paper-radio-group>
-      <br>
-      <template is="dom-if" if="[[!isBuilding]]">
-        Which building does this entrance belong to?
-        <paper-dropdown-menu label="Buildings">
-          <paper-listbox class="dropdown-content">
-            <paper-item>JKB</paper-item>
-            <paper-item>JSB</paper-item>
-            <paper-item>HBLL</paper-item>
-          </paper-listbox>
-        </paper-dropdown-menu>
-      </template>
-      <paper-input label="Title" value="{{title}}"></paper-input>
-      <template is="dom-if" if="[[isBuilding]]">
-        <paper-input label="Opening time" value="{{openingTime}}"></paper-input>
-        <paper-input label="Closing time" value="{{closingTime}}"></paper-input>
-      </template>
-      <paper-button noink dialog-dismiss>Cancel</paper-button>
-      <template is="dom-if" if="[[markerId]]">
-        <paper-button noink dialog-dismiss on-tap="deleteMarker">Delete</paper-button>
-      </template>
-      <paper-button noink dialog-dismiss on-tap="setMarker">Done</paper-button>
+      </paper-dialog-scrollable>
     </paper-dialog>
   </template>
 

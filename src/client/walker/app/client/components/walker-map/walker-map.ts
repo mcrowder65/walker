@@ -60,10 +60,14 @@ export class WalkerMap {
       const oldMarker: any = e.model.__data__.item;
       const latitude: number = e.detail.latLng.lat();
       const longitude: number = e.detail.latLng.lng();
+      const building: boolean = oldMarker.closingTime !== undefined
+                             || oldMarker.openingTime !== undefined
+                             || oldMarker.title !== undefined;
       const newMarker: Marker = {
         ...oldMarker,
         latitude,
-        longitude
+        longitude,
+        building
       };
       Actions.POST('setMarker', JSON.stringify(newMarker));
       Actions.initMarkers(this, 'getMarkers');
@@ -79,7 +83,6 @@ export class WalkerMap {
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
-    console.log(this.markers);
   }
 
 }
