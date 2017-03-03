@@ -4,6 +4,7 @@ import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {Marker} from '../../typings/marker';
+import {Options} from '../../typings/options';
 
 export class WalkerMarkerModal {
   public is: string;
@@ -17,19 +18,19 @@ export class WalkerMarkerModal {
   public closingTime: string;
   public successMessage: string;
   public errorMessage: string;
-  public showDropdown: boolean;
+  public isBuilding: boolean;
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
-    this.showDropdown = false;
+    this.isBuilding = false;
   }
 
-  showDropDown(): void {
-    this.showDropdown = true;
+  thisIsABuilding(): void {
+    this.isBuilding = true;
   }
 
-  hideDropDown(): void {
-    this.showDropdown = false;
+  thisIsNotABuilding(): void {
+    this.isBuilding = false;
   }
 
   /**
@@ -50,11 +51,7 @@ export class WalkerMarkerModal {
         closingTime: this.closingTime
       };
 
-      const setMarkerAjax = this.querySelector('#setMarkerAjax');
-      Actions.setMarker(marker, setMarkerAjax);
-
-      const getMarkerAjax = this.querySelector('#getMarkersAjax');
-      Actions.initMarkersWithAjax(this, getMarkerAjax);
+      Actions.POST('setMarker', JSON.stringify(marker));
       Actions.resetMarkerModal(this);
       this.successMessage = '';
       this.successMessage = 'Marker set';

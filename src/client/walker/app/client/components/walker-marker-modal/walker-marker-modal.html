@@ -3,7 +3,6 @@
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
@@ -12,29 +11,7 @@
 <dom-module id="walker-marker-modal">
   <template>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
-    <iron-ajax
-      id="setMarkerAjax"
-      url="http://localhost:8081/setMarker"
-      method="post"
-      content-type="application/json"
-      handle-as="json">
-    </iron-ajax>
 
-    <iron-ajax
-      id="getMarkersAjax"
-      url="http://localhost:8081/getMarkers"
-      method="get"
-      content-type="application/json"
-      handle-as="json">
-    </iron-ajax>
-
-    <iron-ajax
-      id="deleteMarkerAjax"
-      url="http://localhost:8081/deleteMarker"
-      method="post"
-      content-type="application/json"
-      handle-as="json">
-    </iron-ajax>
     <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
     <paper-dialog id="modal" with-backdrop>
       <paper-item>Latitude: [[latitude]]</paper-item>
@@ -45,11 +22,11 @@
 
       Is this a building?
       <paper-radio-group>
-        <paper-radio-button name="yes" on-tap="showDropDown">Yes</paper-radio-button>
-        <paper-radio-button name="no" on-tap="hideDropDown">No</paper-radio-button>
+        <paper-radio-button name="yes" on-tap="thisIsABuilding">Yes</paper-radio-button>
+        <paper-radio-button name="no" on-tap="thisIsNotABuilding">No</paper-radio-button>
       </paper-radio-group>
       <br>
-      <template is="dom-if" if="[[showDropdown]]">
+      <template is="dom-if" if="[[!isBuilding]]">
         Which building does this entrance belong to?
         <paper-dropdown-menu label="Buildings">
           <paper-listbox class="dropdown-content">
@@ -60,7 +37,7 @@
         </paper-dropdown-menu>
       </template>
       <paper-input label="Title" value="{{title}}"></paper-input>
-      <template is="dom-if" if="[[showDropdown]]">
+      <template is="dom-if" if="[[isBuilding]]">
         <paper-input label="Opening time" value="{{openingTime}}"></paper-input>
         <paper-input label="Closing time" value="{{closingTime}}"></paper-input>
       </template>

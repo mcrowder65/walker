@@ -1,6 +1,8 @@
 import {WalkerMap} from '../components/walker-map/walker-map';
 import {Marker} from '../typings/marker';
 import {WalkerMarkerModal} from '../components/walker-marker-modal/walker-marker-modal';
+import {Options} from '../typings/options';
+import {ConstantsService} from '../services/constants-service';
 
 const defaultAction = (context: any) => {
     context.action = {
@@ -20,14 +22,11 @@ const setMarkers = async (context: WalkerMap | WalkerMarkerModal, markers: Marke
     };
 }
 
-const initMarkersWithAjax = async (context: WalkerMap | WalkerMarkerModal, ajax: any): Promise<void> => {
+const initMarkers = async (context: WalkerMap | WalkerMarkerModal, url: string): Promise<void> => {
   try {
-    const request = ajax.generateRequest();
-    await request.completes;
-    const response = request.response;
-
-    // markers is an array of Marker objects
-    const markers = response;
+    const response = await POST(url);
+    // markers will become an array of marker objects.
+    const markers = JSON.parse(response);
     for(let i: number = 0; i < markers.length; i++) {
       markers[i] = JSON.parse(markers[i]);
     }
@@ -58,7 +57,6 @@ const setMarker = async (marker: Marker, ajax: any): Promise<void> => {
       openingTime: marker.openingTime,
       closingTime: marker.closingTime
     };
-
     const request = ajax.generateRequest();
     await request.completes;
   } catch(error) {
@@ -99,18 +97,50 @@ const deleteMarker = async (marker: Marker, ajax: any): Promise<void> => {
   } catch(error) {
     throw error;
   }
+};
 
+const ajax = async (options: Options): Promise<any> => {
+  let xhr: XMLHttpRequest = new XMLHttpRequest();
+  xhr.open(options.method, options.url, false );
+  await xhr.send(JSON.stringify(options.body));
+  const response = await xhr.response
+  console.log('response ', response);
+};
 
+/**
+ * pass data in as a json represented as a string.
+ */
+const POST = async (url: string, data?: string): Promise<any> => {
+  return new Promise(function (resolve, reject) {
+      // do the usual Http request
+      let request: XMLHttpRequest = new XMLHttpRequest();
+      request.open('POST', ConstantsService.baseUrl + url);
 
+      request.onload = function () {
+          if (request.status == 200) {
+              resolve(request.response);
+          } else {
+              reject(Error(request.statusText));
+          }
+      };
+
+      request.onerror = function () {
+          reject(Error('Network Error'));
+      };
+
+      request.send(data);
+  });
 };
 
 export const Actions = {
     defaultAction,
     setMarkers,
     setLatitudeAndLongitude,
-    initMarkersWithAjax,
+    initMarkers,
     setMarker,
     setCurrentMarker,
     resetMarkerModal,
-    deleteMarker
+    deleteMarker,
+    ajax,
+    POST
 };

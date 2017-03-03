@@ -1,5 +1,7 @@
 package server.firebase;
 
+import generic.objects.WalkerObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -10,8 +12,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import generic.objects.WalkerObject;
-
 public class Firebase {
 
 	private Semaphore semaphore;
@@ -20,10 +20,11 @@ public class Firebase {
 		semaphore = new Semaphore(0);
 	}
 
-	public List<String> getAllAsJson(String path, WalkerObject desiredClass) {
+	public List<String> getAllAsJson(String path,
+			final WalkerObject desiredClass) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
-		List<String> objects = new ArrayList<>();
+		final List<String> objects = new ArrayList<>();
 		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
@@ -51,10 +52,11 @@ public class Firebase {
 
 	}
 
-	public List<WalkerObject> getAllAsObjects(String path, WalkerObject desiredClass) {
+	public List<WalkerObject> getAllAsObjects(String path,
+			final WalkerObject desiredClass) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
-		List<WalkerObject> objects = new ArrayList<>();
+		final List<WalkerObject> objects = new ArrayList<>();
 		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
 			@Override
@@ -80,7 +82,6 @@ public class Firebase {
 			e.printStackTrace();
 		}
 		return objects;
-
 
 	}
 

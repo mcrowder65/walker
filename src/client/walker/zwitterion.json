@@ -120,12 +120,6 @@
         "bower_components/iron-selector/iron-selection.html": {
             "parentImport": true
         },
-        "bower_components/iron-ajax/iron-ajax.html": {
-            "parentImport": true
-        },
-        "bower_components/iron-ajax/iron-request.html": {
-            "parentImport": true
-        },
         "bower_components/promise-polyfill/promise-polyfill-lite.html": {
             "parentImport": true
         },
@@ -329,6 +323,12 @@
         },
         "bower_components/iron-dropdown/iron-dropdown-scroll-manager.html": {
             "parentImport": true
+        },
+        "node_modules/jquery/src/jquery.js": {
+            "parentImport": true
+        },
+        "services/constants-service.ts": {
+            "parentImport": false
         }
     }
 }
