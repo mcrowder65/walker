@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import googlemaps.LatLng;
+import server.APITools;
 
 public class Graph {
 
@@ -26,6 +27,7 @@ public class Graph {
 	}
 
 	public void setDistancesFromNodes() {
+		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int z = 0; z < nodes.size(); z++) {
 				if (i == z) {
@@ -46,6 +48,18 @@ public class Graph {
 		}
 	}
 
+	public void setElevationsFromNodes() {
+		String elevResp = APITools.GetElevationResponse(nodes);
+	    double[] elevs = APITools.GetElevations(elevResp, nodes);
+		elevation = new double[nodes.size()][];
+		for (int i = 0; i < nodes.size(); i++) {
+			elevation[i] = new double[nodes.size()];
+			for (int z = 0; z < nodes.size(); z++) {
+				elevation[i][z] = Math.abs(elevs[i] - elevs[z]);
+			}
+		}
+	}
+
 	public List<Node> getNodes() {
 		return this.nodes;
 	}
@@ -53,7 +67,7 @@ public class Graph {
 	public List<Node> getNodesFromPath(List<Integer> path) {
 		List<Node> pathNodes = new ArrayList();
 		for (int i = 0; i < path.size(); i++) {
-			Node n = this.nodes.get(i);
+			Node n = this.nodes.get(path.get(i));
 			pathNodes.add(n);
 		}
 		return pathNodes;
@@ -61,6 +75,15 @@ public class Graph {
 
 	public double getDistance(int startNode, int endNode) {
 		return distance[startNode][endNode];
+	}
+	public double getElevation(int startNode, int endNode) {
+		return elevation[startNode][endNode];
+	}
+	
+	public double getCost(int startNode, int endNode, UserPrefs prefs)
+	{
+		return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) * prefs.getDistanceWeight() : 0) +
+			   (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) * prefs.getElevationWeight() : 0);
 	}
 
 	public List<Double> getDistanceList(int startNode) {

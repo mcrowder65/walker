@@ -190,7 +190,7 @@ public class GraphTools {
 		}
 	}
 
-	public static void DrawLine(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
+	public static void DrawLines(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor, Graph g) {
 		List<Point2D.Double> points = new ArrayList();
 		for (Node n : g.getNodes()) {
@@ -207,11 +207,24 @@ public class GraphTools {
 
 		Point2D.Double prevPoint = APITools.getImagePointFromLatLng(nodes.get(0).getPosition(), southwest, northeast,
 				img.getWidth(), img.getHeight());
+		int startX = (int) prevPoint.getX() - nodePixelRadius;
+		int startY = (int) prevPoint.getY() - nodePixelRadius;
+		for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
+			for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
+				Tools.setImageRGB(img, x, y, Color.RED);
+			}
+		}
 
 		for (int i = 1; i < nodes.size(); i++) {
 			Point2D.Double p = APITools.getImagePointFromLatLng(nodes.get(i).getPosition(), southwest, northeast,
 					img.getWidth(), img.getHeight());
-
+			startX = (int) p.getX() - nodePixelRadius;
+			startY = (int) p.getY() - nodePixelRadius;
+			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
+				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
+					Tools.setImageRGB(img, x, y, Color.RED);
+				}
+			}
 			if (lineColor != null && prevPoint != null) {
 				Point2D.Double minX = p.x < prevPoint.x ? p : prevPoint;
 				Point2D.Double maxX = minX == prevPoint ? p : prevPoint;
@@ -222,15 +235,20 @@ public class GraphTools {
 		}
 
 	}
-
+	
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		List<Double> distances = new ArrayList();
-		List<Integer> prev = new ArrayList();
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5,.5,0,0,0,0,0));
+	
+	}
+
+	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
+		List<Double> costs = new ArrayList<Double>();
+		List<Integer> prev = new ArrayList<Integer>();
 		for (int i = 0; i < g.getNumNodes(); i++) {
-			distances.add(Double.MAX_VALUE);
+			costs.add(Double.MAX_VALUE);
 			prev.add(i);
 		}
-		distances.set(startNodeIndex, (double) 0);
+		costs.set(startNodeIndex, (double) 0);
 		QueueArray qObj = new QueueArray();
 		List<Integer> q = qObj.makeQ(g.getNumNodes(), startNodeIndex);
 		int counter = 0;
@@ -239,15 +257,15 @@ public class GraphTools {
 			counter++;
 			int size = g.getNumNodes();
 			for (int i = 0; i < size; i++) {
-				if (distances.get(i) > (distances.get(u) + g.getDistance(u, i))) {
-					double newDistance = distances.get(u) + g.getDistance(u, i);
-					distances.set(i, newDistance);
+				if (costs.get(i) > (costs.get(u) + g.getCost(u, i, prefs))) {
+					double newCost = costs.get(u) + g.getCost(u, i, prefs);
+					costs.set(i, newCost);
 					prev.set(i, u);
-					qObj.decreaseKey(i, newDistance);
+					qObj.decreaseKey(i, newCost);
 				}
 			}
 		}
-		List<Integer> path = new ArrayList();
+		List<Integer> path = new ArrayList<Integer>();
 		int end = endNodeIndex;
 		while (end != startNodeIndex) {
 			path.add(end);

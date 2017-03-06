@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.Tools;
+import generic.UserPrefs;
 import googlemaps.LatLng;
 
 public class GraphTests {
@@ -56,7 +58,7 @@ public class GraphTests {
 			nodes.add(new Node());
 		}
 		Graph g = new Graph(distance, null, nodes);
-		List<Integer> path = GraphTools.dijkstra(0, g, 4);
+		List<Integer> path = GraphTools.dijkstra(0, g, 4, UserPrefs.DISTANCE_ONLY);
 		System.out.println(path);
 
 	}
@@ -79,25 +81,33 @@ public class GraphTests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
 
-		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
-		nodes.addAll(newNodes);
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 5, southwest, northeast);
+		// nodes.addAll(newNodes);
 
 		Graph g = new Graph(null, null, nodes);
 		g.setDistancesFromNodes();
+		g.setElevationsFromNodes();
 
 		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
 		// southwest, northeast);
 		// img = Tools.ClipLogo(img);
 
 		// Tools.WriteImage(img, "testImages/polytest7.png");
-		List<Integer> path = GraphTools.dijkstra(0, g, newNodes.size() - 1);
+		List<Integer> path = GraphTools.dijkstra(0, g, nodes.size() - 1);
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
+		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+
+		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
+		// southwest, northeast);
+		img = Tools.ClipLogo(img);
+
+		Tools.WriteImage(img, "testImages/dTest1.png");
 	}
 
 }
