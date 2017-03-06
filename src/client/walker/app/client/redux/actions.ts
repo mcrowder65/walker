@@ -15,7 +15,7 @@ const showMainSpinner = (context: any) => {
     };
 };
 
-const setMarkers = (context: WalkerMap | WalkerMarkerModal, markers: Marker[] ): void => {
+const setMarkers = (context: WalkerMap | WalkerMarkerModal, markers: Marker[]): void => {
     context.action = {
       type: 'SET_MARKERS',
       markers
