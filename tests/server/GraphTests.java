@@ -88,7 +88,7 @@ public class GraphTests {
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
 
 		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 5, southwest, northeast);
-		nodes.addAll(newNodes);
+		// nodes.addAll(newNodes);
 
 		Graph g = new Graph(null, null, nodes);
 		g.setDistancesFromNodes();
