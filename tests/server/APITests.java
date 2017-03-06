@@ -15,7 +15,7 @@ import googlemaps.LatLng;
 
 public class APITests {
 
-	// @Test
+	@Test
 	@SuppressWarnings("unused")
 	public void polylineTest() {
 		// Point2D.Double start = new Point2D.Double(40.249403, -111.650154);
@@ -36,12 +36,12 @@ public class APITests {
 		// APITools.GetDirectionsResponse(Tools.latlngToString(start, true),
 		// Tools.latlngToString(end, true));
 		String poly = server.APITools.GetOverviewPolyline(resp);
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, poly);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true, poly);
 		Tools.WriteImage(img, "testImages/polytest2.png");
 	}
 
 	@SuppressWarnings("unused")
-	// @Test
+	@Test
 	public void nodesFromPolylineTest() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
@@ -61,7 +61,7 @@ public class APITests {
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 		Graph g = new Graph(null, null, nodes);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
@@ -92,7 +92,7 @@ public class APITests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
@@ -128,7 +128,7 @@ public class APITests {
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
