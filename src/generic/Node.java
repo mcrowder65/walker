@@ -5,8 +5,27 @@ import googlemaps.LatLng;
 
 public class Node {
 
+	private boolean startNode = false;
+	private boolean endNode = false;
+
 	public LatLng getPosition() {
 		return position;
+	}
+
+	public boolean isStart() {
+		return startNode;
+	}
+
+	public boolean isEnd() {
+		return endNode;
+	}
+
+	public void setStart(boolean s) {
+		this.startNode = s;
+	}
+
+	public void setEnd(boolean e) {
+		this.endNode = e;
 	}
 
 	public void setPosition(LatLng position) {
