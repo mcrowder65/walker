@@ -15,7 +15,7 @@ const showMainSpinner = (context: any) => {
     };
 };
 
-const setMarkers = async (context: WalkerMap | WalkerMarkerModal, markers: Marker[] ): Promise<void> => {
+const setMarkers = (context: WalkerMap | WalkerMarkerModal, markers: Marker[] ): void => {
     context.action = {
       type: 'SET_MARKERS',
       markers
@@ -37,7 +37,7 @@ const initMarkers = async (context: WalkerMap | WalkerMarkerModal, url: string):
 
 };
 
-const setLatitudeAndLongitude = async (context: WalkerMap, currentMarker: Marker): Promise<void> => {
+const setLatitudeAndLongitude = (context: WalkerMap, currentMarker: Marker): void => {
   context.action = {
     type: 'SET_LATITUDE_AND_LONGITUDE',
     currentMarker

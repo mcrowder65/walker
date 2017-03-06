@@ -64,6 +64,7 @@ export class WalkerMap {
       latitude,
       longitude
     };
+
     if(this.settingStartMarker) {
       const markersString = await Actions.POST('getMarkers');
       let markers = JSON.parse(markersString);
@@ -75,7 +76,8 @@ export class WalkerMap {
       this.setStartMarkerMessage = 'NOW SET YOUR END MARKER!!!';
 
     } else {
-
+      await Actions.initMarkers(this, 'getMarkers');
+      Actions.setMarkers(this, [...this.markers, marker]);
       Actions.setLatitudeAndLongitude(this, marker);
       const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
       walkerMarkerModal.open();
