@@ -33,6 +33,19 @@ export function rootReducer(state: State = InitialState, action: Action): State 
         };
       }
 
+      case 'SET_START_MARKER': {
+        return {
+          ...state,
+          startMarker: action.startMarker
+        };
+      }
+
+      case 'SET_END_MARKER': {
+        return {
+          ...state,
+          endMarker: action.endMarker
+        };
+      }
       default: {
           return state;
       }

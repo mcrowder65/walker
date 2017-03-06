@@ -34,13 +34,45 @@
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
     <paper-button raised class="indigo" on-tap="setStartMarker">[[startPointButtonText]]</paper-button>
-    [[setStartMarkerMessage]]
+    <paper-button raised class="indigo" on-tap="setEndMarker">[[endPointButtonText]]</paper-button>
+    <template is="dom-if" if="[[displayGoButton]]">
+      <paper-button raised class="indigo" on-tap="go">GO!</paper-button>
+    </template>
+
     <google-map
       fit-to-markers
       map-type="satellite"
       click-events="true"
       on-google-map-click="mapClicked"
       api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
+      <template is="dom-if" if="[[startMarker]]">
+        <google-map-marker
+          id="[[startMarker.id]]"
+          animation="DROP"
+          latitude="[[startMarker.latitude]]"
+          longitude="[[startMarker.longitude]]"
+          title="Starting point!"
+          draggable="true"
+          click-events="true"
+          drag-events="true"
+          class="marker"
+          on-google-map-marker-dragend="startMarkerDragDone">
+        </google-map-marker>
+      </template>
+      <template is="dom-if" if="[[endMarker]]">
+        <google-map-marker
+          id="[[endMarker.id]]"
+          animation="DROP"
+          latitude="[[endMarker.latitude]]"
+          longitude="[[endMarker.longitude]]"
+          title="Ending point!"
+          draggable="true"
+          click-events="true"
+          drag-events="true"
+          class="marker"
+          on-google-map-marker-dragend="endMarkerDragDone">
+        </google-map-marker>
+      </template>
       <template is="dom-repeat" items="[[markers]]">
           <google-map-marker
             id="[[item.id]]"

@@ -50,6 +50,20 @@ const resetMarkerModal = async (context: WalkerMarkerModal): Promise<void> => {
   }
 };
 
+const setStartMarker = (context: WalkerMap, startMarker: Marker): void => {
+  context.action = {
+    type: 'SET_START_MARKER',
+    startMarker
+  }
+};
+
+const setEndMarker = (context: WalkerMap, endMarker: Marker): void => {
+  context.action = {
+    type: 'SET_END_MARKER',
+    endMarker
+  }
+};
+
 /**
  * This set marker just sets the current marker in the state for the marker modal.
  */
@@ -90,6 +104,8 @@ export const Actions = {
     setMarkers,
     setLatitudeAndLongitude,
     initMarkers,
+    setStartMarker,
+    setEndMarker,
     setCurrentMarker,
     resetMarkerModal,
     POST

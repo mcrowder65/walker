@@ -15,18 +15,23 @@ export class WalkerMap {
   public action: Action;
   public successMessage: string;
   public errorMessage: string;
-  public setStartMarkerMessage: 'SET YOUR START MARKER!!!!' | '' | 'NOW SET YOUR END MARKER!!!';
-  public settingStartMarker: boolean;
-  public settingEndMarker: boolean;
-  public startPointButtonText: 'Don\'t set your start marker' | 'Set start marker';
+  public settingStartMarker: boolean = false;
+  public settingEndMarker: boolean = false;
+  public startPointButtonText: 'Done setting start marker' | 'Set start marker';
+  public endPointButtonText: 'Done setting end marker' | 'Set end marker';
   public properties: any;
-
+  public startMarker: Marker;
+  public endMarker: Marker;
+  public displayGoButton: boolean;
 
   beforeRegister(): void {
     this.is = 'walker-map';
     this.properties = {
-      settingStartMarker: {
-        observer: 'settingStartMarkerChange'
+      startMarker: {
+        observer: 'displayGoButtonFunc'
+      },
+      endMarker: {
+        observer: 'displayGoButtonFunc'
       }
     };
   }
@@ -34,6 +39,7 @@ export class WalkerMap {
   ready(): void {
     this.initMarkers();
     this.startPointButtonText = 'Set start marker';
+    this.endPointButtonText = 'Set end marker';
   }
 
   /**
@@ -46,16 +52,6 @@ export class WalkerMap {
   async clearMarkers(): Promise<void> {
     Actions.setMarkers(this, []);
   }
-  settingStartMarkerChange(): void {
-      if(this.settingStartMarker) {
-        this.setStartMarkerMessage = 'SET YOUR START MARKER!!!!';
-        this.startPointButtonText = 'Don\'t set your start marker';
-      } else {
-        this.setStartMarkerMessage = '';
-        this.startPointButtonText = 'Set start marker';
-        Actions.initMarkers(this, 'getMarkers');
-      }
-  }
 
   async mapClicked(e: any): Promise<void> {
     const latitude: number = e.detail.latLng.lat();
@@ -66,16 +62,14 @@ export class WalkerMap {
     };
 
     if(this.settingStartMarker) {
-      const markersString = await Actions.POST('getMarkers');
-      let markers = JSON.parse(markersString);
-      for(let i: number = 0; i < markers.length; i++) {
-        markers[i] = JSON.parse(markers[i]);
-      }
-
-      Actions.setMarkers(this, [...this.markers, marker]);
-      this.setStartMarkerMessage = 'NOW SET YOUR END MARKER!!!';
-
+      console.log('this.settingStartMarker')
+      Actions.setStartMarker(this, marker);
+    } else if(this.settingEndMarker) {
+      console.log('this.settingEndMarker');
+      Actions.setEndMarker(this, marker);
     } else {
+      Actions.setStartMarker(this, null);
+      Actions.setEndMarker(this, null);
       await Actions.initMarkers(this, 'getMarkers');
       Actions.setMarkers(this, [...this.markers, marker]);
       Actions.setLatitudeAndLongitude(this, marker);
@@ -93,10 +87,59 @@ export class WalkerMap {
     walkerMarkerModal.open();
   }
 
-  async setStartMarker(e: any): Promise<void> {
+  setStartMarker(e: any): void {
     this.settingStartMarker = !this.settingStartMarker;
+    if(this.settingStartMarker) {
+      this.startPointButtonText = 'Done setting start marker';
+    } else {
+      this.startPointButtonText = 'Set start marker';
+    }
   }
 
+  setEndMarker(e: any): void {
+    if(!this.settingStartMarker) {
+      this.settingEndMarker = !this.settingEndMarker;
+      if(this.settingEndMarker) {
+        this.endPointButtonText = 'Done setting end marker';
+      } else {
+        this.endPointButtonText = 'Set end marker';
+      }
+    }
+
+  }
+
+  endMarkerDragDone(e: any): void {
+    const latitude: number = e.detail.latLng.lat();
+    const longitude: number = e.detail.latLng.lng();
+    const oldMarker: any = e.model.__data__.item;
+    const newMarker: Marker = {
+      ...oldMarker,
+      latitude,
+      longitude
+    };
+    Actions.setEndMarker(this, newMarker);
+  }
+
+  startMarkerDragDone(e: any): void {
+    const latitude: number = e.detail.latLng.lat();
+    const longitude: number = e.detail.latLng.lng();
+    const oldMarker: any = e.model.__data__.item;
+    const newMarker: Marker = {
+      ...oldMarker,
+      latitude,
+      longitude
+    };
+    Actions.setStartMarker(this, newMarker);
+  }
+
+  /**
+   * observer from startMarker and endMarker
+   */
+  displayGoButtonFunc(): void {
+    const retValue: boolean = this.startMarker !== undefined && this.startMarker !== null
+           && this.endMarker !== undefined && this.endMarker !== null;
+    this.displayGoButton = retValue;
+  }
   async markerDragDone(e: any): Promise<void> {
     try {
       const oldMarker: any = e.model.__data__.item;
@@ -128,6 +171,8 @@ export class WalkerMap {
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
+    this.startMarker = state.startMarker;
+    this.endMarker = state.endMarker;
   }
 
 }
