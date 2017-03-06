@@ -7,6 +7,8 @@ import java.awt.color.ICC_Profile;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -136,6 +138,12 @@ public class Tools {
 		img.setRGB(x, y, color.getRGB());
 	
 	}
+	public static BufferedImage ImageDeepCopy(BufferedImage bi) {
+		 ColorModel cm = bi.getColorModel();
+		 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		 WritableRaster raster = bi.copyData(null);
+		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null).getSubimage(0, 0, bi.getWidth(), bi.getHeight());
+		}
 	public static BufferedImage convertICCToRGB(BufferedImage img)
 	{
 		ICC_Profile ip = ICC_Profile.getInstance( ColorSpace.CS_sRGB );
