@@ -26,6 +26,24 @@ public class Graph {
 		this.nodes = nodes;
 	}
 
+	public int getStartIndex() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isStart()) {
+				return i;
+			}
+		}
+		return 0;
+	}
+
+	public int getEndIndex() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isEnd()) {
+				return i;
+			}
+		}
+		return nodes.size() - 1;
+	}
+
 	public void setDistancesFromNodes() {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -50,7 +68,7 @@ public class Graph {
 
 	public void setElevationsFromNodes() {
 		String elevResp = APITools.GetElevationResponse(nodes);
-	    double[] elevs = APITools.GetElevations(elevResp, nodes);
+		double[] elevs = APITools.GetElevations(elevResp, nodes);
 		elevation = new double[nodes.size()][];
 		for (int i = 0; i < nodes.size(); i++) {
 			elevation[i] = new double[nodes.size()];
@@ -76,14 +94,14 @@ public class Graph {
 	public double getDistance(int startNode, int endNode) {
 		return distance[startNode][endNode];
 	}
+
 	public double getElevation(int startNode, int endNode) {
 		return elevation[startNode][endNode];
 	}
-	
-	public double getCost(int startNode, int endNode, UserPrefs prefs)
-	{
-		return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) * prefs.getDistanceWeight() : 0) +
-			   (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) * prefs.getElevationWeight() : 0);
+
+	public double getCost(int startNode, int endNode, UserPrefs prefs) {
+		return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) * prefs.getDistanceWeight() : 0)
+				+ (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) * prefs.getElevationWeight() : 0);
 	}
 
 	public List<Double> getDistanceList(int startNode) {

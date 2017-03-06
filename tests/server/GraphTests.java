@@ -80,31 +80,24 @@ public class GraphTests {
 		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-
+		nodes.get(0).setStart(true);
+		nodes.get(nodes.size() - 1).setEnd(true);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
 
-		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 5, southwest, northeast);
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
 		nodes.addAll(newNodes);
-
 		Graph g = new Graph(null, null, nodes);
 		g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
 
-		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
-		// southwest, northeast);
-		// img = Tools.ClipLogo(img);
-
-		// Tools.WriteImage(img, "testImages/polytest7.png");
-		List<Integer> path = GraphTools.dijkstra(0, g, nodes.size() - 1);
+		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
 
-		// GraphTools.WriteGraphToImage(img, g, new Color(255, 0, 0), 2,
-		// southwest, northeast);
 		img = Tools.ClipLogo(img);
 
 		Tools.WriteImage(img, "testImages/dTest1.png");
