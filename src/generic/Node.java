@@ -7,6 +7,8 @@ public class Node {
 
 	private boolean startNode = false;
 	private boolean endNode = false;
+	private LatLng position;
+	private Building building;
 
 	public LatLng getPosition() {
 		return position;
@@ -39,9 +41,6 @@ public class Node {
 	public void setBuilding(Building building) {
 		this.building = building;
 	}
-
-	private LatLng position;
-	private Building building;
 
 	public Node(LatLng position) {
 		this.position = position;

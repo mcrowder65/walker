@@ -82,13 +82,13 @@ public class GraphTests {
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
 		nodes.get(0).setStart(true);
 		nodes.get(nodes.size() - 1).setEnd(true);
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
 
-		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 100, southwest, northeast);
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
 		nodes.addAll(newNodes);
 		Graph g = new Graph(null, null, nodes);
 		g.setDistancesFromNodes();
@@ -96,6 +96,7 @@ public class GraphTests {
 
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
+
 		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
 
 		img = Tools.ClipLogo(img);

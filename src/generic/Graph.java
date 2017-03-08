@@ -26,6 +26,19 @@ public class Graph {
 		this.nodes = nodes;
 	}
 
+	public int getNodeIndex(Node n) {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (n == nodes.get(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public void setEdge(int start, int end, double dist) {
+		distance[start][end] = dist;
+	}
+
 	public int getStartIndex() {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).isStart()) {
@@ -44,12 +57,26 @@ public class Graph {
 		return nodes.size() - 1;
 	}
 
+	public double calcBulidingDist(Node start, Node end) {
+		LatLng locStartNode = start.getPosition();
+		LatLng locEndNode = end.getPosition();
+		double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+		double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+
+		double total = latDiff + longDiff;
+
+		return total;
+	}
+
 	public void setDistancesFromNodes() {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int z = 0; z < nodes.size(); z++) {
 				if (i == z) {
 					distance[i][z] = 0;
+				} else if (nodes.get(i).getBuilding() != null && nodes.get(z) != null) {
+					double d = calcBulidingDist(nodes.get(i), nodes.get(z));
+					distance[i][z] = d;
 				} else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
@@ -64,6 +91,7 @@ public class Graph {
 				}
 			}
 		}
+
 	}
 
 	public void setElevationsFromNodes() {
