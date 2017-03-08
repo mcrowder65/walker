@@ -276,4 +276,22 @@ public class GraphTools {
 		return finalPath;
 	}
 
+	public static List<Integer> iterativeDijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs)
+	{
+		List<Integer> currPath;
+		boolean[][] validPaths = new boolean[g.getNumNodes()][];
+		for (int n = 0; n < g.getNumNodes(); n++)
+			validPaths[n] = new boolean[g.getNumNodes()];
+		
+		do
+		{
+			currPath = dijkstra(startNodeIndex, g, endNodeIndex, prefs);
+			
+			break;
+		} while (true);
+		return currPath;
+		
+	}
+	
+
 }
