@@ -276,4 +276,8 @@ public class GraphTools {
 		return finalPath;
 	}
 
+	public static List<Integer> iterativeDijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs)
+	{
+		
+	}
 }
