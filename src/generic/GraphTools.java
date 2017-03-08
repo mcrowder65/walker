@@ -287,8 +287,10 @@ public class GraphTools {
 		{
 			currPath = dijkstra(startNodeIndex, g, endNodeIndex, prefs);
 			
-			
+			break;
 		} while (true);
+		return currPath;
+		
 	}
 	
 
