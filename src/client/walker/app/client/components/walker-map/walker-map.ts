@@ -23,19 +23,18 @@ export class WalkerMap {
   public startMarker: Marker;
   public endMarker: Marker;
   public displayGoButton: boolean;
+  public displayCancelButton: boolean;
 
   beforeRegister(): void {
     this.is = 'walker-map';
-    this.properties = {
-      startMarker: {
-        observer: 'displayGoButtonFunc'
-      },
-      endMarker: {
-        observer: 'displayGoButtonFunc'
-      }
-    };
   }
 
+  cancel(): void {
+    console.log('cancel');
+    Actions.initMarkers(this, 'getMarkers');
+    Actions.setStartMarker(this, null);
+    Actions.setEndMarker(this, null);
+  }
   ready(): void {
     this.initMarkers();
     this.startPointButtonText = 'Set start marker';
@@ -132,14 +131,6 @@ export class WalkerMap {
     Actions.setStartMarker(this, newMarker);
   }
 
-  /**
-   * observer from startMarker and endMarker
-   */
-  displayGoButtonFunc(): void {
-    const retValue: boolean = this.startMarker !== undefined && this.startMarker !== null
-           && this.endMarker !== undefined && this.endMarker !== null;
-    this.displayGoButton = retValue;
-  }
   async markerDragDone(e: any): Promise<void> {
     try {
       const oldMarker: any = e.model.__data__.item;
@@ -176,6 +167,10 @@ export class WalkerMap {
     this.markers = state.markers;
     this.startMarker = state.startMarker;
     this.endMarker = state.endMarker;
+    this.displayGoButton = this.startMarker !== undefined && this.startMarker !== null
+                        && this.endMarker !== undefined && this.endMarker !== null;
+    this.displayCancelButton = (this.startMarker !== undefined && this.startMarker !== null) ||
+                               (this.endMarker !== undefined && this.endMarker !== null);
   }
 
 }

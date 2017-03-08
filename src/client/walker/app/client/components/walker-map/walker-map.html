@@ -38,6 +38,9 @@
     <template is="dom-if" if="[[displayGoButton]]">
       <paper-button raised class="indigo" on-tap="go">GO!</paper-button>
     </template>
+    <template is="dom-if" if="[[displayCancelButton]]">
+      <paper-button raised class="indigo" on-tap="cancel">Cancel</paper-button>
+    </template>
 
     <google-map
       fit-to-markers
