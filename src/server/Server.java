@@ -17,6 +17,7 @@ import server.handlers.building.GetBuildingsHandler;
 import server.handlers.marker.DeleteMarkerHandler;
 import server.handlers.marker.GetMarkersHandler;
 import server.handlers.marker.SetMarkerHandler;
+import server.handlers.travel.TravelHandler;
 
 public class Server {
 
@@ -27,6 +28,7 @@ public class Server {
 	private DeleteMarkerHandler deleteMarkerHandler;
 	private GetBuildingsHandler getBuildingsHandler;
 	private GetBuildingHandler getBuildingHandler;
+	private TravelHandler travelHandler;
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		new Server().run(args);
@@ -63,6 +65,9 @@ public class Server {
 
 		getBuildingHandler = new GetBuildingHandler();
 		httpServer.createContext("/getBuilding", getBuildingHandler);
+
+		travelHandler = new TravelHandler();
+		httpServer.createContext("/travel", travelHandler);
 
 		httpServer.start();
 

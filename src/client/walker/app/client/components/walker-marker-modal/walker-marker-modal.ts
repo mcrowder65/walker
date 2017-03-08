@@ -131,6 +131,9 @@ export class WalkerMarkerModal {
 
   }
 
+  clearMarkers(e: any): void {
+      Actions.initMarkers(this, 'getMarkers');
+  }
 
   mapStateToThis(e: StatechangeEvent): void {
     const state: State = e.detail.state

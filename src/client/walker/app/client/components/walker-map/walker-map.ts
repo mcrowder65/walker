@@ -168,6 +168,9 @@ export class WalkerMap {
 
   }
 
+  go(): void {
+    Actions.travel(this, 'travel', this.startMarker, this.endMarker);
+  }
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;

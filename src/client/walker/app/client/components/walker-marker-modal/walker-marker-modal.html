@@ -43,7 +43,7 @@
           <paper-input label="Opening time" value="{{openingTime}}"></paper-input>
           <paper-input label="Closing time" value="{{closingTime}}"></paper-input>
         </template>
-        <paper-button noink dialog-dismiss>Cancel</paper-button>
+        <paper-button noink dialog-dismiss on-tap="clearMarkers">Cancel</paper-button>
         <template is="dom-if" if="[[markerId]]">
           <paper-button noink dialog-dismiss on-tap="deleteMarker">Delete</paper-button>
         </template>

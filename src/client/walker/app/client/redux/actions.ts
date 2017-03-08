@@ -99,6 +99,18 @@ const POST = async (url: string, data?: string): Promise<any> => {
   });
 };
 
+const travel = async (context: WalkerMap, url: string, startMarker: Marker, endMarker: Marker): Promise<any> => {
+    try {
+      const body = {
+        startMarker,
+        endMarker
+      };
+      const response = await POST(url, JSON.stringify(body));
+    } catch(error) {
+      throw error;
+    }
+};
+
 export const Actions = {
     defaultAction,
     setMarkers,
@@ -108,5 +120,6 @@ export const Actions = {
     setEndMarker,
     setCurrentMarker,
     resetMarkerModal,
-    POST
+    POST,
+    travel
 };
