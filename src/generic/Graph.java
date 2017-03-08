@@ -26,6 +26,19 @@ public class Graph {
 		this.nodes = nodes;
 	}
 
+	public int getNodeIndex(Node n) {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (n == nodes.get(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public void setEdge(int start, int end, double dist) {
+		distance[start][end] = dist;
+	}
+
 	public int getStartIndex() {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).isStart()) {
