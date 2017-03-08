@@ -143,7 +143,7 @@ public class Tools {
 		 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
 		 WritableRaster raster = bi.copyData(null);
 		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null).getSubimage(0, 0, bi.getWidth(), bi.getHeight());
-		}
+	}
 	public static BufferedImage convertICCToRGB(BufferedImage img)
 	{
 		ICC_Profile ip = ICC_Profile.getInstance( ColorSpace.CS_sRGB );
