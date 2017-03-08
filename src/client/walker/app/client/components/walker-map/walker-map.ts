@@ -29,11 +29,14 @@ export class WalkerMap {
     this.is = 'walker-map';
   }
 
-  cancel(): void {
+  async cancel(): Promise<void> {
     console.log('cancel');
     Actions.initMarkers(this, 'getMarkers');
+    console.log('done initing');
     Actions.setStartMarker(this, null);
+    console.log('done starting');
     Actions.setEndMarker(this, null);
+    console.log('done ending')
   }
   ready(): void {
     this.initMarkers();
@@ -103,6 +106,7 @@ export class WalkerMap {
       } else {
         this.endPointButtonText = 'Set end marker';
       }
+      Actions.setEndMarker(this, this.endMarker);
     }
 
   }
@@ -162,13 +166,14 @@ export class WalkerMap {
   go(): void {
     Actions.travel(this, 'travel', this.startMarker, this.endMarker);
   }
+
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
     this.startMarker = state.startMarker;
     this.endMarker = state.endMarker;
     this.displayGoButton = this.startMarker !== undefined && this.startMarker !== null
-                        && this.endMarker !== undefined && this.endMarker !== null;
+                        && this.endMarker !== undefined && this.endMarker !== null && !this.settingEndMarker;
     this.displayCancelButton = (this.startMarker !== undefined && this.startMarker !== null) ||
                                (this.endMarker !== undefined && this.endMarker !== null);
   }
