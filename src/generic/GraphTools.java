@@ -80,7 +80,7 @@ public class GraphTools {
 			Node node = new Node(new LatLng(lat, lon));
 			randomNodes.add(node);
 		}
-		System.out.println("Max x: " + maxX + ", Max Y: " + maxY);
+		// System.out.println("Max x: " + maxX + ", Max Y: " + maxY);
 		return randomNodes;
 
 	}
@@ -235,10 +235,10 @@ public class GraphTools {
 		}
 
 	}
-	
+
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5,.5,0,0,0,0,0));
-	
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, 0, 0, 0, 0, 0));
+
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
@@ -276,25 +276,21 @@ public class GraphTools {
 		return finalPath;
 	}
 
-	public static List<Integer> iterativeDijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs)
-	{
+	public static List<Integer> iterativeDijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
 		List<Integer> currPath;
 		boolean[][] validPaths = new boolean[g.getNumNodes()][];
 		for (int n = 0; n < g.getNumNodes(); n++)
 			validPaths[n] = new boolean[g.getNumNodes()];
-		
-		do
-		{
+
+		do {
 			currPath = dijkstra(startNodeIndex, g, endNodeIndex, prefs);
-			for (int n = 0; n < currPath.size() - 1; n++) 
-			{
-				
+			for (int n = 0; n < currPath.size() - 1; n++) {
+
 			}
 			break;
 		} while (true);
 		return currPath;
-		
+
 	}
-	
 
 }
