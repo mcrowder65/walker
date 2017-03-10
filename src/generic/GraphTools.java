@@ -288,7 +288,7 @@ public class GraphTools {
 			currPath = dijkstra(startNodeIndex, g, endNodeIndex, prefs);
 			for (int n = 0; n < currPath.size() - 1; n++) 
 			{
-				
+				//if (validPaths[n][n + 1])
 			}
 			break;
 		} while (true);
