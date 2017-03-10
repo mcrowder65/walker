@@ -10,6 +10,7 @@ public class Config {
 	public static final int MAPS_BACKGROUND_RGB = -1776417;
 	public static final int MAPS_GRASS_RGB = -3479901;
 	public static final int MAPS_NORMALPATH_RGB = -1;
-	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 5;
+	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 7;
 	public static final int FILLCOLOR_MODE_RADIUS = 2;
+	public static final int FILLCOLOR_RGB_TOLERANCE = 3;
 }

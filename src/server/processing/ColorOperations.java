@@ -111,9 +111,9 @@ public class ColorOperations {
 	{
 	   
 		int fillRGB = fillColor.getRGB();
-		boolean[][] visited = new boolean[orig.getHeight()][];
-		for (int n = 0; n < orig.getHeight(); n++)
-			visited[n] = new boolean[orig.getWidth()];
+		int[][] visited = new int[orig.getWidth()][];
+		for (int n = 0; n < orig.getWidth(); n++)
+			visited[n] = new int[orig.getHeight()];
 		
 		int currX = (int)seed.getX();
 		int currY = (int)seed.getY();
@@ -130,6 +130,7 @@ public class ColorOperations {
 		int seedRGB = getMode(orig, currX, currY);
 		int neighborRGB;
 		boolean tolerated = false;
+		//int neighborFilledCount = 0;
 		Stack<Integer> xStack = new Stack<Integer>();
 		Stack<Integer> yStack = new Stack<Integer>();
 		xStack.push(currX);
@@ -140,95 +141,138 @@ public class ColorOperations {
 			currY = yStack.pop();
 			
 		
-			//Above
-			tolerated = false;
-			for (int y = currY + 1; y <= currY + 1 + Config.FILLCOLOR_PIXELDIM_TOLERANCE; y++)
-			{
-				if (y > target.getHeight() - 1) break;
-				if (visited[currX][y]) break;
-				neighborRGB = orig.getRGB(currX, y);
-				if (neighborRGB == seedRGB)
-				{
-					tolerated = true;
-					break;
-				}
-			}
-			if (currY + 1 < target.getHeight()) visited[currX][currY + 1] = true;
-			if (tolerated)
-			{
-				target.setRGB(currX, currY + 1, fillRGB);
-				xStack.push(currX);
-				yStack.push(currY + 1);
-			}
 			
+			//Above
+			if (currY + 1 > target.getHeight() - 1 || visited[currX][currY + 1] != 2)
+			{
+				tolerated = false;
+				
+				for (int y = currY + 1; y <= currY + 1 + Config.FILLCOLOR_PIXELDIM_TOLERANCE; y++)
+				{
+					if (y > target.getHeight() - 1) break;
+					if (visited[currX][y] > 0) {
+						if (visited[currX][y] == 2) {
+							tolerated = true;
+							break;
+						}
+						else
+							continue;
+					}
+					neighborRGB = orig.getRGB(currX, y);
+					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE))
+					{
+						tolerated = true;
+						break;
+					}
+				}
+
+				if (tolerated)
+				{
+					target.setRGB(currX, currY + 1, fillRGB);
+					visited[currX][currY + 1] = 2;
+					xStack.push(currX);
+					yStack.push(currY + 1);
+				}
+				else if (currY + 1 < target.getHeight()) visited[currX][currY + 1] = 1;
+			}
 			
 			//Below
-			tolerated = false;
-			for (int y = currY - 1; y >= currY - 1 - Config.FILLCOLOR_PIXELDIM_TOLERANCE; y--)
+			if (currY - 1 < 0 || visited[currX][currY - 1] != 2)
 			{
-				if (y < 0) break;
-				if (visited[currX][y]) break;
-				neighborRGB = orig.getRGB(currX, y);
-				if (neighborRGB == seedRGB)
+				tolerated = false;
+				for (int y = currY - 1; y >= currY - 1 - Config.FILLCOLOR_PIXELDIM_TOLERANCE; y--)
 				{
-					tolerated = true;
-					break;
+					if (y < 0) break;
+					if (visited[currX][y] > 0) {
+						if (visited[currX][y] == 2) {
+							tolerated = true;
+							break;
+						}
+						else
+							continue;
+					}
+					neighborRGB = orig.getRGB(currX, y);
+					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE))
+					{
+						tolerated = true;
+						break;
+					}
 				}
+				
+				if (tolerated)
+				{
+					target.setRGB(currX, currY - 1, fillRGB);
+					visited[currX][currY - 1] = 2;
+					xStack.push(currX);
+					yStack.push(currY - 1);
+				}
+				else if (currY - 1 < target.getHeight()) visited[currX][currY - 1] = 1;
 			}
-			if (currY - 1 >= 0) visited[currX][currY - 1] = true;
-			if (tolerated)
-			{
-				target.setRGB(currX, currY - 1, fillRGB);
-				xStack.push(currX);
-				yStack.push(currY - 1);
-			}
-			
-			
 			
 			//Right
-			tolerated = false;
-			for (int x = currX + 1; x <= currX + 1 + Config.FILLCOLOR_PIXELDIM_TOLERANCE; x++)
+			if (currX + 1 > target.getWidth() - 1 || visited[currX + 1][currY] != 2)
 			{
-				if (x > target.getWidth() - 1) break;
-				if (visited[x][currY]) break;
-				neighborRGB = orig.getRGB(x, currY);
-				if (neighborRGB == seedRGB)
+				tolerated = false;
+				for (int x = currX + 1; x <= currX + 1 + Config.FILLCOLOR_PIXELDIM_TOLERANCE; x++)
 				{
-					tolerated = true;
-					break;
+					if (x > target.getWidth() - 1) break;
+					if (visited[x][currY] > 0) {
+						if (visited[x][currY] == 2) {
+							tolerated = true;
+							break;
+						}
+						else
+							continue;
+					}
+					neighborRGB = orig.getRGB(x, currY);
+					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE))
+					{
+						tolerated = true;
+						break;
+					}
 				}
+				if (tolerated)
+				{
+					target.setRGB(currX + 1, currY, fillRGB);
+					visited[currX + 1][currY] = 2;
+					xStack.push(currX + 1);
+					yStack.push(currY);
+				}
+				else if (currX + 1 < target.getWidth()) visited[currX + 1][currY] = 1;
 			}
-			if (currX + 1 < target.getWidth()) visited[currX + 1][currY] = true;
-			if (tolerated)
-			{
-				target.setRGB(currX + 1, currY, fillRGB);
-				xStack.push(currX + 1);
-				yStack.push(currY);
-			}
-			
 			
 			//Left
-			tolerated = false;
-			for (int x = currX - 1; x >= currX - 1 - Config.FILLCOLOR_PIXELDIM_TOLERANCE; x--)
+			if (currX - 1 < 0 || visited[currX - 1][currY] != 2)
 			{
-				if (x < 0) break;
-				if (visited[x][currY]) break;
-				neighborRGB = orig.getRGB(x, currY);
-				if (neighborRGB == seedRGB)
+				tolerated = false;
+				for (int x = currX - 1; x >= currX - 1 - Config.FILLCOLOR_PIXELDIM_TOLERANCE; x--)
 				{
-					tolerated = true;
-					break;
+					if (x < 0) break;
+					if (visited[x][currY] > 0) {
+						if (visited[x][currY] == 2) {
+							tolerated = true;
+							break;
+						}
+						else
+							continue;
+					}
+					neighborRGB = orig.getRGB(x, currY);
+					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE))
+					{
+						tolerated = true;
+						break;
+					}
 				}
+
+				if (tolerated)
+				{
+					target.setRGB(currX - 1, currY, fillRGB);
+					visited[currX - 1][currY] = 2;
+					xStack.push(currX - 1);
+					yStack.push(currY);
+				}
+				else if (currX - 1 >= 0) visited[currX - 1][currY] = 1;
 			}
-			if (currX - 1 >= 0) visited[currX - 1][currY] = true;
-			if (tolerated)
-			{
-				target.setRGB(currX - 1, currY, fillRGB);
-				
-				xStack.push(currX - 1);
-				yStack.push(currY);
-			}
-			
 		}
 		
 	}
