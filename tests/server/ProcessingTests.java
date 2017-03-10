@@ -54,7 +54,7 @@ public class ProcessingTests {
 
 		Tools.WriteImage(img, "testImages/roadmapTest2.png");
 	}
-	@Test
+	//@Test
 	public void thresholdTest() {
 		
 		LatLng start = new LatLng(40.249403, -111.650154);
@@ -100,4 +100,24 @@ public class ProcessingTests {
 		//Tools.WriteImage(img, "testImages/roadmapTest1.png");
 	}
 	
+	
+	@Test
+	public void fillImageTest()
+	{
+		
+		//LatLng buildingPoint = new LatLng(40.249403, -111.651154);
+		LatLng buildingPoint = new LatLng(40.249603, -111.650054);
+		LatLng endPoint = new LatLng(40.249218, -111.648338);
+		LatLng center = Tools.getCenter(buildingPoint, endPoint);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(buildingPoint, endPoint, sizeX, sizeY);
+		BufferedImage roadmap = server.APITools.DownloadStaticMapImage(buildingPoint, endPoint, sizeX, sizeY, zoom, false);
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+		BufferedImage filled = ColorOperations.filledImage(roadmap, Color.RED, southwest, northeast, buildingPoint);
+		
+		Tools.WriteImage(filled, "testImages/roadmapTest4.png");
+	}
 }
