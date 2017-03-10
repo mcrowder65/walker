@@ -23,8 +23,19 @@ public class ImageTools {
 
 		int x1 = (int) startPnt.x;
 		int y1 = (int) startPnt.y;
-		int x2 = (int) endPnt.x;
-		int y2 = (int) endPnt.y;
+		// int x2 = (int) endPnt.x;
+		// int y2 = (int) endPnt.y;
+		int x2 = 457;
+		int y2 = 320;
+
+		int rgbStart = img.getRGB(x1, y1);
+		int rgbEnd = img.getRGB(x2, y2);
+		System.out.println(x1);
+		System.out.println(y1);
+		System.out.println(rgbStart);
+		System.out.println(x2);
+		System.out.println(y2);
+		System.out.println(rgbEnd);
 
 	}
 }
