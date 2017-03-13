@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,26 @@ public class APITools {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static double[] GetAllElevations(List<Node> points)
+	{
+		final int PARTITION_SIZE = 100;
+		List<Node> partition;
+		int currPos = 0;
+		double[] elevs = new double[points.size()];
+		while (currPos < points.size())
+		{
+			partition = points.subList(currPos, Math.min(currPos + PARTITION_SIZE, points.size()));
+			
+			String resp = GetElevationResponse(partition);
+			double[] elevsTemp = GetElevations(resp, partition);
+			for (int n = 0; n < elevsTemp.length; n++)
+				elevs[n + currPos] = elevsTemp[n];
+			
+			currPos += PARTITION_SIZE;
+		}
+		return elevs;
 	}
 	
 	public static String GetElevationResponse(LatLng... points)
@@ -195,6 +216,18 @@ public class APITools {
 	{
 		return (lonDiff * Math.cos(latitude * 0.018) )/ 0.0000089;
 	}
+	public static double metersToLat(LatLng pivot, double metersLatDistance)
+	{
+		double coefY = metersLatDistance * 0.0000089;
+		return pivot.latitude + coefY;
+	}
+	public static double metersToLon(LatLng pivot, double metersLonDistance)
+	{
+		double coefX = metersLonDistance * 0.0000089;
+		return pivot.longitude + coefX / Math.cos(pivot.latitude * 0.018);
+	}
+	
+	
 	public static double getLatitudeDifference(LatLng a, LatLng b)
 	{
 		return Math.abs(toMetersLat(a.latitude - b.latitude));

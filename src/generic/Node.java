@@ -50,6 +50,14 @@ public class Node {
 		this.position = position;
 		this.building = building;
 	}
+	
+	public Node(double latitude, double longitude, Building building, boolean isStartNode, boolean isEndNode)
+	{
+		this.position = new LatLng(latitude, longitude);
+		this.building = building;
+		this.startNode = isStartNode;
+		this.endNode = isEndNode;
+	}
 
 	public Node() {
 	}
