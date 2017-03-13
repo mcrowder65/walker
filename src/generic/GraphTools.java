@@ -85,6 +85,34 @@ public class GraphTools {
 
 	}
 
+	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast)
+	{
+		double latLen = APITools.getLatitudeDifference(southwest, northeast);
+		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
+		
+		int latNodes = (int)(latLen / meterSpacing);
+		int lonNodes = (int)(lonLen / meterSpacing);
+		
+		double latOffset = Math.abs((latNodes * meterSpacing) - latLen) / 2;
+		double lonOffset = Math.abs((lonNodes * meterSpacing) - lonLen) / 2;
+		
+		ArrayList<Node> nodes = new ArrayList<Node>();
+		
+		for (int x = 0; x < lonNodes; x++)
+		{
+			double currentLon = APITools.metersToLon(southwest, x * meterSpacing + lonOffset);
+			for (int y = 0; y < latNodes; y++)
+			{
+				double currentLat = APITools.metersToLat(southwest, y * meterSpacing + latOffset);
+				nodes.add(new Node(currentLat, currentLon, null, false, false));
+				
+				
+			}
+		}
+		return nodes;
+	}
+	
+	
 	private static void bresenham2(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor) {
 		int x1 = (int) start.x;
 		int x2 = (int) end.x;
@@ -276,6 +304,14 @@ public class GraphTools {
 		return finalPath;
 	}
 
+	/**
+	 * TODO: We are probably not going to use this.
+	 * @param startNodeIndex
+	 * @param g
+	 * @param endNodeIndex
+	 * @param prefs
+	 * @return
+	 */
 	public static List<Integer> iterativeDijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
 		List<Integer> currPath;
 		boolean[][] validPaths = new boolean[g.getNumNodes()][];
