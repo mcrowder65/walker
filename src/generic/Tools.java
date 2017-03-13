@@ -143,7 +143,7 @@ public class Tools {
 		 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
 		 WritableRaster raster = bi.copyData(null);
 		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null).getSubimage(0, 0, bi.getWidth(), bi.getHeight());
-		}
+	}
 	public static BufferedImage convertICCToRGB(BufferedImage img)
 	{
 		ICC_Profile ip = ICC_Profile.getInstance( ColorSpace.CS_sRGB );
@@ -151,6 +151,27 @@ public class Tools {
 		ColorConvertOp cco = new ColorConvertOp( ics, null );
 		BufferedImage result = cco.filter( img, null );
 		return result;
+	}
+	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
+	{
+		return colorIsCloseEnough(rgb1, rgb2, tolerance, tolerance, tolerance);
+	}
+	
+	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int rTolerance, int gTolerance, int bTolerance)
+	{
+		int r1 = (rgb1 & 0x00ff0000) >> 16;
+		int r2 = (rgb2 & 0x00ff0000) >> 16;
+		if (Math.abs(r1 - r2) > rTolerance)
+			return false;
+		int g1 = (rgb1 & 0x0000ff00) >> 8;
+		int g2 = (rgb2 & 0x0000ff00) >> 8;
+		if (Math.abs(g1 - g2) > gTolerance)
+			return false;
+		int b1 = (rgb1 & 0x000000ff);
+		int b2 = (rgb2 & 0x000000ff);
+		if (Math.abs(b1 - b2) > bTolerance)
+			return false;
+		return true;
 	}
 
 	static String readFile(String path, Charset encoding) throws IOException {

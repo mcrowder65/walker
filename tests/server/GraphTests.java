@@ -71,7 +71,7 @@ public class GraphTests {
 		int sizeX = 640;
 		int sizeY = 640;
 		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-
+		
 		String resp;
 		if (Config.USE_MOCK)
 			resp = Tools.readMock("BYU_ShortPath");
