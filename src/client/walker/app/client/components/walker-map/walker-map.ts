@@ -143,6 +143,12 @@ export class WalkerMap {
    */
   async markerDragDone(e: any): Promise<void> {
     try {
+      if(this.settingEndMarker || this.settingStartMarker) {
+        this.errorMessage = '';
+        this.errorMessage = 'You need to set the start or end marker.';
+        await Actions.initMarkers(this, 'getMarkers');
+        return;
+      }
       const oldMarker: Marker = e.model.__data__.item;
       const latitude: number = e.detail.latLng.lat();
       const longitude: number = e.detail.latLng.lng();
@@ -184,6 +190,19 @@ export class WalkerMap {
     return this.endMarkers.length === 1 ? this.endMarkers[0] : null;
   }
 
+  /**
+   * Called from dom
+   */
+  computeIcon(marker: Marker): string {
+    //http://matthewjcrowder.com/Google Maps Markers/smallerOrange.png
+    console.log(marker);
+    const base: string = "http://matthewjcrowder.com/Google Maps Markers/";
+    if(UtilitiesService.isDefined(marker.buildingId)) {
+      return base + "yellow_MarkerB.png";
+    } else {
+      return base + "red_MarkerA.png";
+    }
+  }
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
