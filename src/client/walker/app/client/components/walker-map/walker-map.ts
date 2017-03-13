@@ -6,6 +6,7 @@ import {Marker} from '../../typings/marker';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
 import {Options} from '../../typings/options';
+import {UtilitiesService} from '../../services/utilities-service';
 
 export class WalkerMap {
   public is: string;
@@ -20,23 +21,20 @@ export class WalkerMap {
   public startPointButtonText: 'Done setting start marker' | 'Set start marker';
   public endPointButtonText: 'Done setting end marker' | 'Set end marker';
   public properties: any;
-  public startMarker: Marker;
-  public endMarker: Marker;
   public displayGoButton: boolean;
   public displayCancelButton: boolean;
+  public $: any;
+  public startMarkers: Marker[];
+  public endMarkers: Marker[];
 
   beforeRegister(): void {
     this.is = 'walker-map';
   }
 
   async cancel(): Promise<void> {
-    console.log('cancel');
-    Actions.initMarkers(this, 'getMarkers');
-    console.log('done initing');
+    await Actions.initMarkers(this, 'getMarkers');
     Actions.setStartMarker(this, null);
-    console.log('done starting');
     Actions.setEndMarker(this, null);
-    console.log('done ending')
   }
   ready(): void {
     this.initMarkers();
@@ -62,7 +60,7 @@ export class WalkerMap {
       latitude,
       longitude
     };
-
+    console.log(marker);
     if(this.settingStartMarker) {
       console.log('this.settingStartMarker')
       Actions.setStartMarker(this, marker);
@@ -106,7 +104,7 @@ export class WalkerMap {
       } else {
         this.endPointButtonText = 'Set end marker';
       }
-      Actions.setEndMarker(this, this.endMarker);
+      Actions.setEndMarker(this, this.getEndMarker());
     }
 
   }
@@ -137,13 +135,13 @@ export class WalkerMap {
 
   async markerDragDone(e: any): Promise<void> {
     try {
-      const oldMarker: any = e.model.__data__.item;
+      const oldMarker: Marker = e.model.__data__.item;
       const latitude: number = e.detail.latLng.lat();
       const longitude: number = e.detail.latLng.lng();
       if(!this.settingStartMarker) {
-        const building: boolean = oldMarker.closingTime !== undefined
-                               || oldMarker.openingTime !== undefined
-                               || oldMarker.title !== undefined;
+        const building: boolean = UtilitiesService.isDefined(oldMarker.closingTime)
+                               || UtilitiesService.isDefined(oldMarker.openingTime)
+                               || UtilitiesService.isDefined(oldMarker.title);
         const newMarker: Marker = {
           ...oldMarker,
           latitude,
@@ -164,18 +162,27 @@ export class WalkerMap {
   }
 
   go(): void {
-    Actions.travel(this, 'travel', this.startMarker, this.endMarker);
+    Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker());
+  }
+
+  private getStartMarker(): Marker {
+    return this.startMarkers.length === 1 ? this.startMarkers[0] : null;
+  }
+
+  private getEndMarker(): Marker {
+    return this.endMarkers.length === 1 ? this.endMarkers[0] : null;
   }
 
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
-    this.startMarker = state.startMarker;
-    this.endMarker = state.endMarker;
-    this.displayGoButton = this.startMarker !== undefined && this.startMarker !== null
-                        && this.endMarker !== undefined && this.endMarker !== null && !this.settingEndMarker;
-    this.displayCancelButton = (this.startMarker !== undefined && this.startMarker !== null) ||
-                               (this.endMarker !== undefined && this.endMarker !== null);
+    this.startMarkers = UtilitiesService.isDefined(state.startMarker) ? [state.startMarker] : [];
+    this.endMarkers = UtilitiesService.isDefined(state.endMarker) ? [state.endMarker] : [];
+    this.displayGoButton = UtilitiesService.isDefined(this.getStartMarker())
+                          && UtilitiesService.isDefined(this.getEndMarker())
+                          && !this.settingEndMarker;
+    this.displayCancelButton = UtilitiesService.isDefined(this.getStartMarker())
+                            || UtilitiesService.isDefined(this.getEndMarker());
   }
 
 }

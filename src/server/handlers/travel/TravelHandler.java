@@ -24,6 +24,8 @@ public class TravelHandler extends WalkerHandler {
 			JsonObject jsonObject = JSONTools.g.fromJson(result, JsonObject.class);
 			Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
 			Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
+			System.out.println("startMarker: " + startMarker);
+			System.out.println("endMarker: " + endMarker);
 			// TODO handle!!!!!!!!
 		}
 
