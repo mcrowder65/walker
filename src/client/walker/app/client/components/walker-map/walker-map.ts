@@ -60,12 +60,9 @@ export class WalkerMap {
       latitude,
       longitude
     };
-    console.log(marker);
     if(this.settingStartMarker) {
-      console.log('this.settingStartMarker')
       Actions.setStartMarker(this, marker);
     } else if(this.settingEndMarker) {
-      console.log('this.settingEndMarker');
       Actions.setEndMarker(this, marker);
     } else {
       Actions.setStartMarker(this, null);
