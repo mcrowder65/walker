@@ -29,7 +29,6 @@
     }
     </style>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
-
     <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
@@ -43,6 +42,7 @@
     </template><br>
     <template is="dom-if" if="[[displayStartMarker]]">displayStartMarker: [[displayStartMarker]]<br></template>
     <template is="dom-if" if="[[displayEndMarker]]"> displayEndMarker: [[displayEndMarker]]<br></template>
+
     <google-map
       id="map"
       fit-to-markers
@@ -62,6 +62,7 @@
           click-events="true"
           drag-events="true"
           class="marker"
+          icon="http://matthewjcrowder.com/Google Maps Markers/darkgreen_MarkerA.png"
           on-google-map-marker-dragend="startMarkerDragDone">
         </google-map-marker>
       </template>
@@ -76,7 +77,9 @@
           click-events="true"
           drag-events="true"
           class="marker"
-          on-google-map-marker-dragend="endMarkerDragDone">
+          on-google-map-marker-dragend="endMarkerDragDone"
+          icon="http://matthewjcrowder.com/Google Maps Markers/purple_MarkerB.png"
+          >
         </google-map-marker>
       </template>
       <template is="dom-repeat" items="[[markers]]">
@@ -91,7 +94,10 @@
             drag-events="true"
             on-google-map-marker-click="editMarker"
             on-google-map-marker-dragend="markerDragDone"
-            class="marker">
+            class="marker"
+            icon="[[computeIcon(item)]]"
+            >
+            <!-- icon="https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png" -->
           </google-map-marker>
       </template>
     </google-map>
