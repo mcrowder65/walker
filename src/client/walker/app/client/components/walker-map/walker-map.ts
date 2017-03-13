@@ -93,6 +93,7 @@ export class WalkerMap {
     }
   }
 
+
   setEndMarker(e: any): void {
     if(!this.settingStartMarker) {
       this.settingEndMarker = !this.settingEndMarker;
@@ -106,6 +107,9 @@ export class WalkerMap {
 
   }
 
+  /**
+   * Called from dom
+   */
   endMarkerDragDone(e: any): void {
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
@@ -116,8 +120,12 @@ export class WalkerMap {
       longitude
     };
     Actions.setEndMarker(this, newMarker);
+
   }
 
+  /**
+   * Called from dom
+   */
   startMarkerDragDone(e: any): void {
     const latitude: number = e.detail.latLng.lat();
     const longitude: number = e.detail.latLng.lng();
@@ -130,6 +138,9 @@ export class WalkerMap {
     Actions.setStartMarker(this, newMarker);
   }
 
+  /**
+   * Called from dom
+   */
   async markerDragDone(e: any): Promise<void> {
     try {
       const oldMarker: Marker = e.model.__data__.item;
@@ -158,6 +169,9 @@ export class WalkerMap {
 
   }
 
+  /**
+   * Called from dom
+   */
   go(): void {
     Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker());
   }
