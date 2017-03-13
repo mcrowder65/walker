@@ -38,19 +38,25 @@
     <template is="dom-if" if="[[displayGoButton]]">
       <paper-button raised class="indigo" on-tap="go">GO!</paper-button>
     </template>
-
+    <template is="dom-if" if="[[displayCancelButton]]">
+      <paper-button raised class="indigo" on-tap="cancel">Cancel</paper-button>
+    </template><br>
+    <template is="dom-if" if="[[displayStartMarker]]">displayStartMarker: [[displayStartMarker]]<br></template>
+    <template is="dom-if" if="[[displayEndMarker]]"> displayEndMarker: [[displayEndMarker]]<br></template>
     <google-map
+      id="map"
       fit-to-markers
       map-type="satellite"
       click-events="true"
       on-google-map-click="mapClicked"
-      api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk">
-      <template is="dom-if" if="[[startMarker]]">
+      api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk"
+      no-auto-tilt="true">
+      <template is="dom-repeat" items="[[startMarkers]]">
         <google-map-marker
-          id="[[startMarker.id]]"
+          id="startMarker"
           animation="DROP"
-          latitude="[[startMarker.latitude]]"
-          longitude="[[startMarker.longitude]]"
+          latitude="[[item.latitude]]"
+          longitude="[[item.longitude]]"
           title="Starting point!"
           draggable="true"
           click-events="true"
@@ -59,12 +65,12 @@
           on-google-map-marker-dragend="startMarkerDragDone">
         </google-map-marker>
       </template>
-      <template is="dom-if" if="[[endMarker]]">
+     <template is="dom-repeat" items="[[endMarkers]]">
         <google-map-marker
-          id="[[endMarker.id]]"
+          id="endMarker"
           animation="DROP"
-          latitude="[[endMarker.latitude]]"
-          longitude="[[endMarker.longitude]]"
+          latitude="[[item.latitude]]"
+          longitude="[[item.longitude]]"
           title="Ending point!"
           draggable="true"
           click-events="true"
