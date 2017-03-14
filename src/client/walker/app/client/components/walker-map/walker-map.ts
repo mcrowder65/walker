@@ -203,6 +203,10 @@ export class WalkerMap {
     }
   }
 
+  computeTitle(title: string): string {
+    return UtilitiesService.isDefined(title) ? title : 'entrance';
+  }
+
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
