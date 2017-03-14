@@ -95,8 +95,8 @@ public class Graph {
 	}
 
 	public void setElevationsFromNodes() {
-		String elevResp = APITools.GetElevationResponse(nodes);
-		double[] elevs = APITools.GetElevations(elevResp, nodes);
+		double[] elevs = APITools.GetAllElevations(nodes);
+		
 		elevation = new double[nodes.size()][];
 		for (int i = 0; i < nodes.size(); i++) {
 			elevation[i] = new double[nodes.size()];
