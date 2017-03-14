@@ -36,6 +36,7 @@ export class WalkerMap {
     Actions.setStartMarker(this, null);
     Actions.setEndMarker(this, null);
   }
+
   ready(): void {
     this.initMarkers();
     this.startPointButtonText = 'Set start marker';
@@ -196,11 +197,12 @@ export class WalkerMap {
   computeIcon(marker: Marker): string {
     const base: string = 'http://localhost:8000/markers/';
     if(UtilitiesService.isDefined(marker.buildingId)) {
-      return base + 'yellow_MarkerB.png';
+      return base + 'yellow_marker.png';
     } else {
-      return base + 'red_MarkerA.png';
+      return base + 'red_marker.png';
     }
   }
+
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
