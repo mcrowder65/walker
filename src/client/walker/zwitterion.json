@@ -344,6 +344,12 @@
         },
         "services/utilities-service.ts": {
             "parentImport": false
+        },
+        "markers/yellow_MarkerB.png": {
+            "parentImport": true
+        },
+        "markers/red_MarkerA.png": {
+            "parentImport": true
         }
     }
 }
