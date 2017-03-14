@@ -32,6 +32,8 @@ const initMarkers = async (context: WalkerMap | WalkerMarkerModal, url: string):
     }
     setMarkers(context, markers);
   } catch(error) {
+    context.errorMessage = '';
+    context.errorMessage = 'The server is probably not on.';
     throw error;
   }
 
@@ -92,6 +94,7 @@ const POST = async (url: string, data?: string): Promise<any> => {
       };
 
       request.onerror = function () {
+
           reject(Error('Network Error'));
       };
 
