@@ -88,7 +88,7 @@
             animation="DROP"
             latitude="[[item.latitude]]"
             longitude="[[item.longitude]]"
-            title="[[item.title]]"
+            title="[[computeTitle(item.title)]]"
             draggable="true"
             click-events="true"
             drag-events="true"
@@ -97,7 +97,6 @@
             class="marker"
             icon="[[computeIcon(item)]]"
             >
-            <!-- icon="https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png" -->
           </google-map-marker>
       </template>
     </google-map>
