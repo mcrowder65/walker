@@ -33,7 +33,7 @@ const initMarkers = async (context: WalkerMap | WalkerMarkerModal, url: string):
     setMarkers(context, markers);
   } catch(error) {
     context.errorMessage = '';
-    context.errorMessage = 'The server is probably not on.';
+     context.errorMessage = 'The server is probably not on.';
     throw error;
   }
 
