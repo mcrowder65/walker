@@ -46,8 +46,13 @@ export class WalkerMap {
   /**
    * This is needed here because the html calls it as well.
    */
-  initMarkers(): void {
-    Actions.initMarkers(this, 'getMarkers');
+  async initMarkers(): Promise<void> {
+    try {
+        await Actions.initMarkers(this, 'getMarkers');
+    } catch(error) {
+      console.error(error.message);
+    }
+
   }
 
   async clearMarkers(): Promise<void> {
