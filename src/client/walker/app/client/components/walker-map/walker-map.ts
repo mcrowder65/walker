@@ -203,6 +203,9 @@ export class WalkerMap {
     }
   }
 
+  /**
+   * Called from dom
+   */
   computeTitle(title: string): string {
     return UtilitiesService.isDefined(title) ? title : 'entrance';
   }
