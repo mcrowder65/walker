@@ -194,13 +194,11 @@ export class WalkerMap {
    * Called from dom
    */
   computeIcon(marker: Marker): string {
-    //http://matthewjcrowder.com/Google Maps Markers/smallerOrange.png
-    console.log(marker);
-    const base: string = "http://matthewjcrowder.com/Google Maps Markers/";
+    const base: string = 'http://localhost:8000/markers/';
     if(UtilitiesService.isDefined(marker.buildingId)) {
-      return base + "yellow_MarkerB.png";
+      return base + 'yellow_MarkerB.png';
     } else {
-      return base + "red_MarkerA.png";
+      return base + 'red_MarkerA.png';
     }
   }
   mapStateToThis(e: any): void {
