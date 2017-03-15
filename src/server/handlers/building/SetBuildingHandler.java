@@ -18,7 +18,6 @@ public class SetBuildingHandler extends WalkerHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		// TODO Auto-generated method stub
 		synchronized (lock) {
 			String response = this.getRequestBodyAndSetHeaders(exchange);
 			Building building = JSONTools.g.fromJson(response, Building.class);
