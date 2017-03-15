@@ -5,6 +5,7 @@ import {Actions} from '../../redux/actions';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {Marker} from '../../typings/marker';
 import {Options} from '../../typings/options';
+import {UtilitiesService} from '../../services/utilities-service';
 
 export class WalkerMarkerModal {
   public is: string;
@@ -144,7 +145,9 @@ export class WalkerMarkerModal {
       this.title = state.currentMarker.title;
       this.openingTime = state.currentMarker.openingTime;
       this.closingTime = state.currentMarker.closingTime;
-      this.building = this.openingTime !== undefined || this.closingTime !== undefined || this.title !== undefined;
+      this.building = UtilitiesService.isDefined(this.openingTime)
+                   || UtilitiesService.isDefined(this.closingTime)
+                   || UtilitiesService.isDefined(this.title);
       this.buildingId = !this.building ? state.currentMarker.buildingId : this.buildingId;
       this.getBuildings();
 

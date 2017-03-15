@@ -14,7 +14,6 @@ import org.junit.Test;
 import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
-import generic.ImageTools;
 import generic.Node;
 import generic.Tools;
 import generic.UserPrefs;
@@ -38,7 +37,7 @@ public class GraphTests {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+	//@Test
 	public void testDijkstraFakeNodes() {
 		double[][] distance = new double[5][5];
 		for (int i = 0; i < distance.length; i++) {
@@ -60,61 +59,54 @@ public class GraphTests {
 		}
 		Graph g = new Graph(distance, null, nodes);
 		List<Integer> path = GraphTools.dijkstra(0, g, 4, UserPrefs.DISTANCE_ONLY);
+		System.out.println(path);
 
 	}
 
-	// @Test
-	// public void testDijkstraRealNodes() {
-	// LatLng start = new LatLng(40.249403, -111.650154);
-	// LatLng end = new LatLng(40.249218, -111.648338);
-	// LatLng center = Tools.getCenter(start, end);
-	// int sizeX = 640;
-	// int sizeY = 640;
-	// int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-	//
-	// String resp;
-	// if (Config.USE_MOCK)
-	// resp = Tools.readMock("BYU_ShortPath");
-	// else
-	// resp = APITools.GetDirectionsResponse(start.toUrlValue(),
-	// end.toUrlValue());
-	// String[] polyPieces = server.APITools.GetPolylinePieces(resp);
-	// String poly = server.APITools.GetOverviewPolyline(resp);
-	// List<Node> nodes =
-	// generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-	// nodes.get(0).setStart(true);
-	// nodes.get(nodes.size() - 1).setEnd(true);
-	// BufferedImage img = server.APITools.DownloadStaticMapImage(start, end,
-	// sizeX, sizeY, zoom, false);
-	//
-	// double metersPerPixel = APITools.getMetersPerPixel(center.latitude,
-	// zoom);
-	// LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX,
-	// sizeY);
-	// LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX,
-	// sizeY);
-	//
-	// List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10,
-	// southwest, northeast);
-	// nodes.addAll(newNodes);
-	// Graph g = new Graph(null, null, nodes);
-	// g.setDistancesFromNodes();
-	// g.setElevationsFromNodes();
-	//
-	// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
-	// g.getEndIndex());
-	// List<Node> nodesToDraw = g.getNodesFromPath(path);
-	//
-	// GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest,
-	// northeast, Color.ORANGE, g);
-	//
-	// img = Tools.ClipLogo(img);
-	//
-	// Tools.WriteImage(img, "testImages/dTest1.png");
-	// }
+	//@Test
+	public void testDijkstraRealNodes() {
+		LatLng start = new LatLng(40.249403, -111.650154);
+		LatLng end = new LatLng(40.249218, -111.648338);
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+		
+		String resp;
+		if (Config.USE_MOCK)
+			resp = Tools.readMock("BYU_ShortPath");
+		else
+			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+		String poly = server.APITools.GetOverviewPolyline(resp);
+		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
+		nodes.get(0).setStart(true);
+		nodes.get(nodes.size() - 1).setEnd(true);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
+		nodes.addAll(newNodes);
+		Graph g = new Graph(null, null, nodes);
+		g.setDistancesFromNodes();
+		g.setElevationsFromNodes();
+
+		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
+		List<Node> nodesToDraw = g.getNodesFromPath(path);
+
+		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+
+		img = Tools.ClipLogo(img);
+
+		Tools.WriteImage(img, "testImages/dTest1.png");
+	}
 
 	@Test
-	public void analyzeImage() {
+	public void uniformNodeGenerationTest()
+	{
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
@@ -127,33 +119,42 @@ public class GraphTests {
 			resp = Tools.readMock("BYU_ShortPath");
 		else
 			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+
+		resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
 		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
 		String poly = server.APITools.GetOverviewPolyline(resp);
 		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-		nodes.get(0).setStart(true);
-		nodes.get(nodes.size() - 1).setEnd(true);
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
-		BufferedImage nudeImage = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		
+		
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
 
+		
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
-		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
-		nodes.addAll(newNodes);
+		
+		List<Node> moreNodes = GraphTools.GenerateUniformNodes(10, southwest, northeast);
+		nodes.addAll(moreNodes);
 		Graph g = new Graph(null, null, nodes);
+		
+		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
+		
+		Tools.WriteImage(img, "testImages/graphTest1.png");
+		
 		g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
-		ImageTools.analyzeImage(nudeImage, g.getNodes().get(g.getStartIndex()), g.getNodes().get(g.getEndIndex()));
-
+		nodes.get(0).setStart(true);
+		nodes.get(nodes.size() - 1).setEnd(true);
+		
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
-
+		
 		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
-
+		
 		img = Tools.ClipLogo(img);
 
-		Tools.WriteImage(nudeImage, "testImages/dTest2.png");
+		Tools.WriteImage(img, "testImages/dTest3.png");
 	}
 
+	
 }

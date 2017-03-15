@@ -10,15 +10,25 @@ import server.JSONTools;
 import server.handlers.WalkerHandler;
 
 public class TravelHandler extends WalkerHandler {
+	Object lock;
+
+	public TravelHandler() {
+		lock = new Object();
+	}
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		String result = getRequestBodyAndSetHeaders(exchange);
-		System.out.println("result: " + result);
-		JsonObject jsonObject = JSONTools.g.fromJson(result, JsonObject.class);
-		Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
-		Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
-		// TODO handle!!!!!!!!
+		synchronized (lock) {
+			String result = getRequestBodyAndSetHeaders(exchange);
+			System.out.println("result: " + result);
+			JsonObject jsonObject = JSONTools.g.fromJson(result, JsonObject.class);
+			Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
+			Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
+			System.out.println("startMarker: " + startMarker);
+			System.out.println("endMarker: " + endMarker);
+			// TODO handle!!!!!!!!
+		}
+
 	}
 
 }

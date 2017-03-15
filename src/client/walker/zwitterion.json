@@ -341,6 +341,27 @@
         },
         "bower_components/paper-item/paper-item-shared-styles.html": {
             "parentImport": true
+        },
+        "services/utilities-service.ts": {
+            "parentImport": false
+        },
+        "markers/yellow_MarkerB.png": {
+            "parentImport": true
+        },
+        "markers/red_MarkerA.png": {
+            "parentImport": true
+        },
+        "markers/red_marker.png": {
+            "parentImport": true
+        },
+        "markers/darkgreen_MarkerA.png": {
+            "parentImport": true
+        },
+        "markers/yellow_marker.png": {
+            "parentImport": true
+        },
+        "markers/purple_MarkerB.png": {
+            "parentImport": true
         }
     }
 }
