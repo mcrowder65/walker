@@ -104,11 +104,11 @@ public class ProcessingTests {
 	@Test
 	public void fillImageTest()
 	{
-		Color c = new Color(255,0,0);
-		System.out.println(c.getRGB());
+		//Color c = new Color(255,0,0);
+		//System.out.println(c.getRGB());
 		//LatLng buildingPoint = new LatLng(40.249403, -111.651154);
-		LatLng buildingPoint = new LatLng(40.249603, -111.650054);
-		LatLng endPoint = new LatLng(40.249218, -111.648338);
+		LatLng buildingPoint = new LatLng(40.249803, -111.647854);
+		LatLng endPoint = new LatLng(40.249718, -111.648338);
 		LatLng center = Tools.getCenter(buildingPoint, endPoint);
 		int sizeX = 640;
 		int sizeY = 640;
