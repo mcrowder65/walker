@@ -13,25 +13,24 @@ public class UserPrefs {
 	private boolean elevator;
 	private boolean wilderness;
 	private double elevationWeight;
-	private double wildernessWeight;
 	private double stairsWeight;
 
 	public UserPrefs() {
 	}
 
-	public UserPrefs(double distanceWeight, double elevationWeight, double buildingWeight, double parkinglotWeight,
-			double wildernessWeight, double stairsWeight, double elevatorWeight) {
+	public UserPrefs(boolean distance, double elevationWeight, boolean building, boolean parkinglot, boolean wilderness,
+			double stairsWeight, boolean elevator) {
 		super();
-		this.distanceWeight = distanceWeight;
+		this.distance = distance;
 		this.elevationWeight = elevationWeight;
-		this.buildingWeight = buildingWeight;
-		this.parkinglotWeight = parkinglotWeight;
-		this.wildernessWeight = wildernessWeight;
+		this.building = building;
+		this.parkinglot = parkinglot;
+		this.wilderness = wilderness;
 		this.stairsWeight = stairsWeight;
-		this.elevatorWeight = elevatorWeight;
+		this.elevator = elevator;
 	}
 
-	public static UserPrefs DISTANCE_ONLY = new UserPrefs(1, 0, 0, 0, 0, 0, 0);
+	public static UserPrefs DISTANCE_ONLY = new UserPrefs(true, 0, false, false, false, 0, false);
 
 	private boolean validateWeight(double weight) {
 		if (weight >= 0 && weight <= 1)
@@ -41,14 +40,14 @@ public class UserPrefs {
 		return false;
 	}
 
-	public double getDistanceWeight() {
-		return distanceWeight;
+	public boolean getDistanceWeight() {
+		return distance;
 	}
 
-	public void setDistanceWeight(double distanceWeight) {
-		if (!validateWeight(distanceWeight))
-			return;
-		this.distanceWeight = distanceWeight;
+	public void setDistanceWeight(boolean distance) {
+		// if (!validateWeight(distanceWeight))
+		// return;
+		this.distance = distance;
 	}
 
 	public double getElevationWeight() {
@@ -62,37 +61,37 @@ public class UserPrefs {
 		this.elevationWeight = elevationWeight;
 	}
 
-	public double getBuildingWeight() {
-		return buildingWeight;
+	public boolean getBuildingWeight() {
+		return building;
 	}
 
-	public void setBuildingWeight(double buildingWeight) {
-		if (!validateWeight(buildingWeight))
-			return;
+	public void setBuildingWeight(boolean building) {
+		// if (!validateWeight(buildingWeight))
+		// return;
 
-		this.buildingWeight = buildingWeight;
+		this.building = building;
 	}
 
-	public double getParkinglotWeight() {
-		return parkinglotWeight;
+	public boolean getParkinglotWeight() {
+		return parkinglot;
 	}
 
-	public void setParkinglotWeight(double parkinglotWeight) {
-		if (!validateWeight(parkinglotWeight))
-			return;
+	public void setParkinglotWeight(boolean parkinglot) {
+		// if (!validateWeight(parkinglot))
+		// return;
 
-		this.parkinglotWeight = parkinglotWeight;
+		this.parkinglot = parkinglot;
 	}
 
-	public double getWildernessWeight() {
-		return wildernessWeight;
+	public boolean getWildernessWeight() {
+		return wilderness;
 	}
 
-	public void setWildernessWeight(double wildernessWeight) {
-		if (!validateWeight(wildernessWeight))
-			return;
+	public void setWildernessWeight(boolean wilderness) {
+		// if (!validateWeight(wildernessWeight))
+		// return;
 
-		this.wildernessWeight = wildernessWeight;
+		this.wilderness = wilderness;
 	}
 
 	public double getStairsWeight() {
@@ -106,14 +105,14 @@ public class UserPrefs {
 		this.stairsWeight = stairsWeight;
 	}
 
-	public double getElevatorWeight() {
-		return elevatorWeight;
+	public boolean getElevatorWeight() {
+		return elevator;
 	}
 
-	public void setElevatorWeight(double elevatorWeight) {
-		if (!validateWeight(elevatorWeight))
-			return;
+	public void setElevatorWeight(boolean elevator) {
+		// if (!validateWeight(elevatorWeight))
+		// return;
 
-		this.elevatorWeight = elevatorWeight;
+		this.elevator = elevator;
 	}
 }

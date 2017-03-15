@@ -3,7 +3,9 @@
 <link rel="import" href="../../bower_components/google-apis/google-apis.html">
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../bower_components/google-map/google-map-search.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../walker-marker-modal/walker-marker-modal.html">
 <link rel="import" href="../walker-notification/walker-notification.html">
 
@@ -19,17 +21,23 @@
     #walker-marker-modal {
       width: 300px;
     }
-    .indigo {
-      background-color: pink;
-    }
 
     .marker {
       background-color: blue;
       color: blue;
     }
+    paper-button {
+      background-color: pink;
+    }
+
+    #search-input {
+      width: 300px;
+    }
     </style>
     <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
     <walker-notification success-message="[[successMessage]]" error-message="[[errorMessage]]"></walker-notification>
+    <paper-input id="search-input" label="Search location" value="{{searchValue}}"></paper-input>
+    <paper-button on-tap="search">Search!</paper-button>
     <paper-button raised class="indigo" on-tap="initMarkers">Init markers</paper-button>
     <paper-button raised class="indigo" on-tap="clearMarkers">Clear markers</paper-button>
     <paper-button raised class="indigo" on-tap="setStartMarker">[[startPointButtonText]]</paper-button>
@@ -42,15 +50,19 @@
     </template><br>
     <template is="dom-if" if="[[displayStartMarker]]">displayStartMarker: [[displayStartMarker]]<br></template>
     <template is="dom-if" if="[[displayEndMarker]]"> displayEndMarker: [[displayEndMarker]]<br></template>
-
+    <google-map-search map="[[map]]" query="[[query]]" results="{{results}}">
+    </google-map-search>
     <google-map
       id="map"
-      fit-to-markers
+      map="{{map}}"
       map-type="satellite"
       click-events="true"
       on-google-map-click="mapClicked"
       api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk"
-      no-auto-tilt="true">
+      longitude="[[startLongitude]]"
+      latitude="[[startLatitude]]"
+      no-auto-tilt="true"
+      zoom="17">
       <template is="dom-repeat" items="[[startMarkers]]">
         <google-map-marker
           id="startMarker"
