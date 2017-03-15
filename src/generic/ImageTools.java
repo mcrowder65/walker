@@ -41,7 +41,7 @@ public class ImageTools {
 		int x2 = (int) endPnt.x;
 		int y2 = (int) endPnt.y;
 		
-		List<int>xVals
+		//List<int>xVals
 
 		int cx, cy, ix, iy, dx, dy, ddx = x2 - x1, ddy = y2 - y1;
 
