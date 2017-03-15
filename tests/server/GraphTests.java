@@ -2,6 +2,7 @@ package server;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 
 import generic.Config;
 import generic.Graph;
@@ -23,6 +27,9 @@ public class GraphTests {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(new FileInputStream("key.json"))
+				.setDatabaseUrl("https://walker-73119.firebaseio.com/").build();
+		FirebaseApp.initializeApp(options);
 	}
 
 	@AfterClass
@@ -94,7 +101,7 @@ public class GraphTests {
 		g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
 
-		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
+		List<Integer> path = GraphTools.dijkstra(g.start(), g, g.end());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 
 		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
@@ -140,17 +147,21 @@ public class GraphTests {
 
 		g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
-		nodes.get(0).setStart(true);
-		nodes.get(nodes.size() - 1).setEnd(true);
+		g.writeToFirebase();
+		// nodes.get(0).setStart(true);
+		// nodes.get(nodes.size() - 1).setEnd(true);
+		//
+		// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
+		// g.getEndIndex());
+		// List<Node> nodesToDraw = g.getNodesFromPath(path);
+		//
+		// GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest,
+		// northeast, Color.ORANGE, g);
+		//
+		// img = Tools.ClipLogo(img);
+		//
+		// Tools.WriteImage(img, "testImages/dTest3.png");
 
-		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
-		List<Node> nodesToDraw = g.getNodesFromPath(path);
-
-		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
-
-		img = Tools.ClipLogo(img);
-
-		Tools.WriteImage(img, "testImages/dTest3.png");
 	}
 
 }

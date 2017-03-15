@@ -1,6 +1,7 @@
 package generic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import generic.objects.WalkerObject;
@@ -13,6 +14,8 @@ public class Graph extends WalkerObject {
 	private double[][] distance;
 	private double[][] elevation;
 	private List<Node> nodes;
+	private List<List<Double>> distanceList;
+	private List<List<Double>> elevationList;
 
 	public Graph(double[][] distance, double[][] elevation, List<Node> nodes) {
 		this.distance = distance;
@@ -41,7 +44,27 @@ public class Graph extends WalkerObject {
 		distance[start][end] = dist;
 	}
 
-	public int getStartIndex() {
+	public List<List<Double>> getDistanceList() {
+		return distanceList;
+	}
+
+	public void setDistanceList(List<List<Double>> distanceList) {
+		this.distanceList = distanceList;
+	}
+
+	public List<List<Double>> getElevationList() {
+		return elevationList;
+	}
+
+	public void setElevationList(List<List<Double>> elevationList) {
+		this.elevationList = elevationList;
+	}
+
+	public double[][] getElevation() {
+		return elevation;
+	}
+
+	public int start() {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).isStart()) {
 				return i;
@@ -50,7 +73,7 @@ public class Graph extends WalkerObject {
 		return 0;
 	}
 
-	public int getEndIndex() {
+	public int end() {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).isEnd()) {
 				return i;
@@ -147,8 +170,13 @@ public class Graph extends WalkerObject {
 		nodes.add(n);
 	}
 
-	public int getNumNodes() {
+	public int numNodes() {
 		return nodes.size();
+	}
+
+	@Override
+	public String toString() {
+		return "Graph [nodes=" + nodes + ", distanceList=" + distanceList + ", elevationList=" + elevationList + "]";
 	}
 
 	public double[][] getDistance() {
@@ -163,7 +191,24 @@ public class Graph extends WalkerObject {
 		this.elevation = elevation;
 	}
 
+	private List<List<Double>> convert(double[][] matrix) {
+		List<double[]> list = Arrays.asList(matrix);
+		List<List<Double>> result = new ArrayList<>();
+		for (int i = 0; i < list.size(); i++) {
+			List<Double> dubs = new ArrayList<>();
+			for (int x = 0; x < list.get(i).length; x++) {
+				dubs.add(list.get(i)[x]);
+			}
+			result.add(dubs);
+		}
+		return result;
+	}
+
 	public void writeToFirebase() {
+		this.distanceList = convert(distance);
+		this.elevationList = convert(elevation);
+		this.distance = null;
+		this.elevation = null;
 		Tools.firebase.create("nodes", this);
 	}
 

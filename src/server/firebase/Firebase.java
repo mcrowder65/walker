@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import generic.Graph;
 import generic.objects.WalkerObject;
 
 public class Firebase {
@@ -135,14 +136,20 @@ public class Firebase {
 	 *            WalkerObject
 	 */
 	public void create(String path, WalkerObject obj) {
+		System.out.println("create daddy");
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		DatabaseReference pushedRef = ref.push();
 		pushedRef.setValue(obj);
 		String id = pushedRef.getKey();
+		System.out.println("id: " + id);
 		DatabaseReference idRef = database.getReference(path + "/" + id);
 		obj.setId(id);
+
 		idRef.setValue(obj);
+		System.out.println("idRef: " + idRef);
+		WalkerObject graph = this.get("nodes/" + id, new Graph());
+		System.out.println(graph);
 
 	}
 

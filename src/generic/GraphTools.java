@@ -266,18 +266,18 @@ public class GraphTools {
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
 		List<Double> costs = new ArrayList<Double>();
 		List<Integer> prev = new ArrayList<Integer>();
-		for (int i = 0; i < g.getNumNodes(); i++) {
+		for (int i = 0; i < g.numNodes(); i++) {
 			costs.add(Double.MAX_VALUE);
 			prev.add(i);
 		}
 		costs.set(startNodeIndex, (double) 0);
 		QueueArray qObj = new QueueArray();
-		List<Integer> q = qObj.makeQ(g.getNumNodes(), startNodeIndex);
+		List<Integer> q = qObj.makeQ(g.numNodes(), startNodeIndex);
 		int counter = 0;
 		while (counter < q.size()) {
 			int u = qObj.deleteMin();
 			counter++;
-			int size = g.getNumNodes();
+			int size = g.numNodes();
 			for (int i = 0; i < size; i++) {
 				if (costs.get(i) > (costs.get(u) + g.getCost(u, i, prefs))) {
 					double newCost = costs.get(u) + g.getCost(u, i, prefs);
@@ -309,9 +309,9 @@ public class GraphTools {
 	 */
 	public static List<Integer> iterativeDijkstra(int startNodeIndex, Graph g, int endNodeIndex, UserPrefs prefs) {
 		List<Integer> currPath;
-		boolean[][] validPaths = new boolean[g.getNumNodes()][];
-		for (int n = 0; n < g.getNumNodes(); n++)
-			validPaths[n] = new boolean[g.getNumNodes()];
+		boolean[][] validPaths = new boolean[g.numNodes()][];
+		for (int n = 0; n < g.numNodes(); n++)
+			validPaths[n] = new boolean[g.numNodes()];
 
 		do {
 			currPath = dijkstra(startNodeIndex, g, endNodeIndex, prefs);
