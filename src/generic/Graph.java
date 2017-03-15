@@ -163,6 +163,10 @@ public class Graph extends WalkerObject {
 		this.elevation = elevation;
 	}
 
+	public void writeToFirebase() {
+		Tools.firebase.create("nodes", this);
+	}
+
 	@Override
 	public String toJson() {
 		String jsonString = JSONTools.g.toJson(this);
