@@ -2,60 +2,48 @@ package generic;
 
 public class PathConstituents {
 
-	public double normalPercent;
-	public double grassPercent;
-	public double cementLotPercent;
-	public double highVegetationPercent;
-	public double buildingPercent;
+	public boolean grass;
+	public boolean parkingLot;
+	public boolean wilderness;
+	public boolean building;
 	public double stairsPercent;
-	public PathConstituents(double normalPercent, double grassPercent, double cementLotPercent,
-			double highVegetationPercent, double buildingPercent, double stairsPercent) {
+
+	public PathConstituents(boolean grass, boolean parkingLot, boolean wilderness, boolean buliding,
+			double stairsPercent) {
 		super();
-		this.normalPercent = normalPercent;
-		this.grassPercent = grassPercent;
-		this.cementLotPercent = cementLotPercent;
-		this.highVegetationPercent = highVegetationPercent;
-		this.buildingPercent = buildingPercent;
+		this.grass = grass;
+		this.parkingLot = parkingLot;
+		this.wilderness = wilderness;
+		this.building = building;
 		this.stairsPercent = stairsPercent;
-		validate();
+		// validate();
 	}
 
-	
-	public double getNormalPercent() {
-		return normalPercent;
+	public boolean getGrass() {
+		return grass;
 	}
 
-
-	public double getGrassPercent() {
-		return grassPercent;
+	public boolean parkingLot() {
+		return parkingLot;
 	}
 
-
-	public double getCementLotPercent() {
-		return cementLotPercent;
+	public boolean getWilderness() {
+		return wilderness;
 	}
 
-
-	public double getHighVegetationPercent() {
-		return highVegetationPercent;
+	public boolean getBuilding() {
+		return building;
 	}
-
-
-	public double getBuildingPercent() {
-		return buildingPercent;
-	}
-
 
 	public double getStairsPercent() {
 		return stairsPercent;
 	}
 
+	// private void validate() {
+	// assert normalPercent + grassPercent + cementLotPercent +
+	// highVegetationPercent + buildingPercent
+	// + stairsPercent == 1.0;
+	//
+	// }
 
-	private void validate()
-	{
-		assert normalPercent + grassPercent + cementLotPercent + highVegetationPercent + buildingPercent + stairsPercent == 1.0;
-		
-	}
-	
-	
 }
