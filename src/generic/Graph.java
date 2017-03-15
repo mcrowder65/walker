@@ -3,10 +3,12 @@ package generic;
 import java.util.ArrayList;
 import java.util.List;
 
+import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
+import server.JSONTools;
 
-public class Graph {
+public class Graph extends WalkerObject {
 
 	private double[][] distance;
 	private double[][] elevation;
@@ -96,7 +98,7 @@ public class Graph {
 
 	public void setElevationsFromNodes() {
 		double[] elevs = APITools.GetAllElevations(nodes);
-		
+
 		elevation = new double[nodes.size()][];
 		for (int i = 0; i < nodes.size(); i++) {
 			elevation[i] = new double[nodes.size()];
@@ -111,7 +113,7 @@ public class Graph {
 	}
 
 	public List<Node> getNodesFromPath(List<Integer> path) {
-		List<Node> pathNodes = new ArrayList();
+		List<Node> pathNodes = new ArrayList<>();
 		for (int i = 0; i < path.size(); i++) {
 			Node n = this.nodes.get(path.get(i));
 			pathNodes.add(n);
@@ -133,7 +135,7 @@ public class Graph {
 	}
 
 	public List<Double> getDistanceList(int startNode) {
-		List<Double> distances = new ArrayList();
+		List<Double> distances = new ArrayList<>();
 		for (int i = 0; i < distance.length; i++) {
 			double dist = getDistance(startNode, i);
 			distances.add(dist);
@@ -159,6 +161,12 @@ public class Graph {
 
 	public void setElevation(double[][] elevation) {
 		this.elevation = elevation;
+	}
+
+	@Override
+	public String toJson() {
+		String jsonString = JSONTools.g.toJson(this);
+		return jsonString;
 	}
 
 }
