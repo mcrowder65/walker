@@ -7,7 +7,7 @@ package generic;
  */
 public class UserPrefs {
 
-	private boolean distance;
+	private double distance;
 	private boolean building;
 	private boolean parkinglot;
 	private boolean elevator;
@@ -18,7 +18,7 @@ public class UserPrefs {
 	public UserPrefs() {
 	}
 
-	public UserPrefs(boolean distance, double elevationWeight, boolean building, boolean parkinglot, boolean wilderness,
+	public UserPrefs(double distance, double elevationWeight, boolean building, boolean parkinglot, boolean wilderness,
 			double stairsWeight, boolean elevator) {
 		super();
 		this.distance = distance;
@@ -30,7 +30,7 @@ public class UserPrefs {
 		this.elevator = elevator;
 	}
 
-	public static UserPrefs DISTANCE_ONLY = new UserPrefs(true, 0, false, false, false, 0, false);
+	public static UserPrefs DISTANCE_ONLY = new UserPrefs(0, 0, false, false, false, 0, false);
 
 	private boolean validateWeight(double weight) {
 		if (weight >= 0 && weight <= 1)
@@ -40,11 +40,11 @@ public class UserPrefs {
 		return false;
 	}
 
-	public boolean getDistanceWeight() {
+	public double getDistanceWeight() {
 		return distance;
 	}
 
-	public void setDistanceWeight(boolean distance) {
+	public void setDistanceWeight(double distance) {
 		// if (!validateWeight(distanceWeight))
 		// return;
 		this.distance = distance;

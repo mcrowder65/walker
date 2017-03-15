@@ -85,34 +85,29 @@ public class GraphTools {
 
 	}
 
-	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast)
-	{
+	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
-		
-		int latNodes = (int)(latLen / meterSpacing);
-		int lonNodes = (int)(lonLen / meterSpacing);
-		
+
+		int latNodes = (int) (latLen / meterSpacing);
+		int lonNodes = (int) (lonLen / meterSpacing);
+
 		double latOffset = Math.abs((latNodes * meterSpacing) - latLen) / 2;
 		double lonOffset = Math.abs((lonNodes * meterSpacing) - lonLen) / 2;
-		
+
 		ArrayList<Node> nodes = new ArrayList<Node>();
-		
-		for (int x = 0; x < lonNodes; x++)
-		{
+
+		for (int x = 0; x < lonNodes; x++) {
 			double currentLon = APITools.metersToLon(southwest, x * meterSpacing + lonOffset);
-			for (int y = 0; y < latNodes; y++)
-			{
+			for (int y = 0; y < latNodes; y++) {
 				double currentLat = APITools.metersToLat(southwest, y * meterSpacing + latOffset);
 				nodes.add(new Node(currentLat, currentLon, null, false, false));
-				
-				
+
 			}
 		}
 		return nodes;
 	}
-	
-	
+
 	private static void bresenham2(BufferedImage img, Point2D.Double start, Point2D.Double end, Color lineColor) {
 		int x1 = (int) start.x;
 		int x2 = (int) end.x;
@@ -220,7 +215,6 @@ public class GraphTools {
 
 	public static void DrawLines(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor, Graph g) {
-		List<Point2D.Double> points = new ArrayList();
 		for (Node n : g.getNodes()) {
 			Point2D.Double p = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast, img.getWidth(),
 					img.getHeight());
@@ -265,7 +259,7 @@ public class GraphTools {
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, 0, 0, 0, 0, 0));
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, false, false, false, 0, false));
 
 	}
 
@@ -306,6 +300,7 @@ public class GraphTools {
 
 	/**
 	 * TODO: We are probably not going to use this.
+	 * 
 	 * @param startNodeIndex
 	 * @param g
 	 * @param endNodeIndex
@@ -321,9 +316,8 @@ public class GraphTools {
 		do {
 			currPath = dijkstra(startNodeIndex, g, endNodeIndex, prefs);
 
-			for (int n = 0; n < currPath.size() - 1; n++) 
-			{
-				//if (validPaths[n][n + 1])
+			for (int n = 0; n < currPath.size() - 1; n++) {
+				// if (validPaths[n][n + 1])
 			}
 			break;
 		} while (true);
