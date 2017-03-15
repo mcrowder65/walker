@@ -362,6 +362,9 @@
         },
         "markers/purple_MarkerB.png": {
             "parentImport": true
+        },
+        "bower_components/google-map/google-map-search.html": {
+            "parentImport": true
         }
     }
 }
