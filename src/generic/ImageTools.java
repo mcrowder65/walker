@@ -11,7 +11,7 @@ import server.APITools;
 public class ImageTools {
 
 	public static void getNumWhitePixles(int centerX, int centerY, BufferedImage img) {
-		List<Integer> vals = new ArrayList();
+		List<Integer> vals = new ArrayList<>();
 		vals.add(img.getRGB(centerX, centerY - 1));
 		vals.add(img.getRGB(centerX - 1, centerY - 1));
 		vals.add(img.getRGB(centerX + 1, centerY - 1));
