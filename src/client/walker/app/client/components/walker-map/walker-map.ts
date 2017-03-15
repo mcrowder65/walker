@@ -26,11 +26,30 @@ export class WalkerMap {
   public $: any;
   public startMarkers: Marker[];
   public endMarkers: Marker[];
-
+  public query: string;
+  public results: any;
+  public searchValue: string;
+  public startLongitude: number;
+  public startLatitude: number;
   beforeRegister(): void {
     this.is = 'walker-map';
+    this.properties = {
+      'results': {
+        observer: 'resultsChange'
+      }
+    };
   }
 
+  resultsChange(): void {
+    if(UtilitiesService.isDefined(this.results) && UtilitiesService.isDefined(this.results[0])) {
+      this.startLongitude = this.results[0].longitude;
+      this.startLatitude = this.results[0].latitude;
+    }
+
+  }
+  search(): void {
+    this.query = this.searchValue;
+  }
   async cancel(): Promise<void> {
     await Actions.initMarkers(this, 'getMarkers');
     Actions.setStartMarker(this, null);
@@ -214,6 +233,8 @@ export class WalkerMap {
   computeTitle(title: string): string {
     return UtilitiesService.isDefined(title) ? title : 'entrance';
   }
+
+
 
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
