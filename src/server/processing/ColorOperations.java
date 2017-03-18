@@ -111,8 +111,7 @@ public class ColorOperations {
 			if (currRGB == Config.MAPS_BUILDING_RGB)
 				return;
 			
-		} while (currRGB == Config.MAPS_BACKGROUND_RGB || currRGB == Config.MAPS_GRASS_RGB
-				|| currRGB == Config.MAPS_NORMALPATH_RGB);
+		} while ( !Tools.colorIsProbablyBuilding(currRGB, Config.FILLCOLOR_RGB_TOLERANCE));
 		currX--;
 		currY--;
 
@@ -131,12 +130,13 @@ public class ColorOperations {
 			currY = yStack.pop();
 
 			// Above
-			if (currY + 1 > target.getHeight() - 1 || visited[currX][currY + 1] != 2) {
+			if (currY + 1 < target.getHeight() && visited[currX][currY + 1] == 0) {
 				tolerated = false;
 
 				for (int y = currY + 1; y <= currY + 1 + Config.FILLCOLOR_PIXELDIM_TOLERANCE; y++) {
 					if (y > target.getHeight() - 1)
 						break;
+					/*
 					if (visited[currX][y] > 0) {
 						if (visited[currX][y] == 2) {
 							tolerated = true;
@@ -144,15 +144,16 @@ public class ColorOperations {
 						} else
 							continue;
 					}
+					*/
 					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
 				}
 
 				if (tolerated) {
-					target.setRGB(currX, currY + 1, fillRGB);
+					//target.setRGB(currX, currY + 1, fillRGB);
 					visited[currX][currY + 1] = 2;
 					xStack.push(currX);
 					yStack.push(currY + 1);
@@ -161,11 +162,12 @@ public class ColorOperations {
 			}
 
 			// Below
-			if (currY - 1 < 0 || visited[currX][currY - 1] != 2) {
+			if (currY - 1 > -1 &&  visited[currX][currY - 1]  == 0) {
 				tolerated = false;
 				for (int y = currY - 1; y >= currY - 1 - Config.FILLCOLOR_PIXELDIM_TOLERANCE; y--) {
 					if (y < 0)
 						break;
+					/*
 					if (visited[currX][y] > 0) {
 						if (visited[currX][y] == 2) {
 							tolerated = true;
@@ -173,15 +175,16 @@ public class ColorOperations {
 						} else
 							continue;
 					}
+					*/
 					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
 				}
 
 				if (tolerated) {
-					target.setRGB(currX, currY - 1, fillRGB);
+					//target.setRGB(currX, currY - 1, fillRGB);
 					visited[currX][currY - 1] = 2;
 					xStack.push(currX);
 					yStack.push(currY - 1);
@@ -190,11 +193,12 @@ public class ColorOperations {
 			}
 
 			// Right
-			if (currX + 1 > target.getWidth() - 1 || visited[currX + 1][currY] != 2) {
+			if (currX + 1 < target.getWidth() &&  visited[currX + 1][currY]  == 0) {
 				tolerated = false;
 				for (int x = currX + 1; x <= currX + 1 + Config.FILLCOLOR_PIXELDIM_TOLERANCE; x++) {
 					if (x > target.getWidth() - 1)
 						break;
+					/*
 					if (visited[x][currY] > 0) {
 						if (visited[x][currY] == 2) {
 							tolerated = true;
@@ -202,14 +206,15 @@ public class ColorOperations {
 						} else
 							continue;
 					}
+					*/
 					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
 				}
 				if (tolerated) {
-					target.setRGB(currX + 1, currY, fillRGB);
+					//target.setRGB(currX + 1, currY, fillRGB);
 					visited[currX + 1][currY] = 2;
 					xStack.push(currX + 1);
 					yStack.push(currY);
@@ -218,11 +223,12 @@ public class ColorOperations {
 			}
 
 			// Left
-			if (currX - 1 < 0 || visited[currX - 1][currY] != 2) {
+			if (currX - 1 > - 1 &&  visited[currX - 1][currY]  == 0) {
 				tolerated = false;
 				for (int x = currX - 1; x >= currX - 1 - Config.FILLCOLOR_PIXELDIM_TOLERANCE; x--) {
 					if (x < 0)
 						break;
+					/*
 					if (visited[x][currY] > 0) {
 						if (visited[x][currY] == 2) {
 							tolerated = true;
@@ -230,20 +236,33 @@ public class ColorOperations {
 						} else
 							continue;
 					}
+					*/
 					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
 				}
 
 				if (tolerated) {
-					target.setRGB(currX - 1, currY, fillRGB);
+					//target.setRGB(currX - 1, currY, fillRGB);
 					visited[currX - 1][currY] = 2;
 					xStack.push(currX - 1);
 					yStack.push(currY);
 				} else if (currX - 1 >= 0)
 					visited[currX - 1][currY] = 1;
+			}
+			
+			
+			
+		}
+		
+		for (int x = 0; x < visited.length; x++)
+		{
+			for (int y = 0; y < visited[x].length; y++)
+			{
+				if (visited[x][y] == 2)
+					target.setRGB(x, y, fillRGB);
 			}
 		}
 
