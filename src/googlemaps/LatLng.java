@@ -48,7 +48,11 @@ public class LatLng implements UrlValue {
 	  this.latitude = pnt.y;
 	  this.longitude = pnt.x;
   }
-
+  public LatLng(LatLng other)
+  {
+	  this.latitude = other.latitude;
+	  this.longitude = other.longitude;
+  }
   @Override
   public String toString() {
     return toUrlValue();

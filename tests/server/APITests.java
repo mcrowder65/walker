@@ -15,7 +15,7 @@ import googlemaps.LatLng;
 
 public class APITests {
 
-	@Test
+	//@Test
 	@SuppressWarnings("unused")
 	public void polylineTest() {
 		// Point2D.Double start = new Point2D.Double(40.249403, -111.650154);
@@ -41,7 +41,7 @@ public class APITests {
 	}
 
 	@SuppressWarnings("unused")
-	@Test
+	//@Test
 	public void nodesFromPolylineTest() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
@@ -74,7 +74,7 @@ public class APITests {
 	}
 
 	@SuppressWarnings("unused")
-	@Test
+	//@Test
 	public void genNodesTest() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
@@ -110,7 +110,7 @@ public class APITests {
 	}
 
 	@SuppressWarnings("unused")
-	@Test
+	//@Test
 	public void elevationTest() {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
@@ -139,5 +139,17 @@ public class APITests {
 		String elevResp = APITools.GetElevationResponse(nodes);
 		double[] elevs = APITools.GetElevations(elevResp, nodes);
 
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void tilingTest()
+	{
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.645854);
+		int zoom = 17;
+		BufferedImage img = APITools.GetTiledImage(southwest, northeast, zoom, false);
+		Tools.WriteImage(img, "testImages/tilingTest.png");
+		
 	}
 }
