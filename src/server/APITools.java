@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -245,7 +246,25 @@ public class APITools {
 		double latProportion = (location.latitude - southwest.latitude) / (northeast.latitude - southwest.latitude);
 		return new Point2D.Double((sizeX - 1) * lonProportion, (sizeY - 1) - ((sizeY - 1) * latProportion));
 	}
-
+	public static Point getImagePointFromLatLngNorm(LatLng location, LatLng southwest, LatLng northeast, int sizeX,
+			int sizeY) {
+		return  getImagePointFromLatLngNorm(location, southwest, northeast, sizeX,
+				sizeY, false);
+	}
+	public static Point getImagePointFromLatLngNorm(LatLng location, LatLng southwest, LatLng northeast, int sizeX,
+			int sizeY, boolean quiet) {
+		if (location.latitude > northeast.latitude || location.longitude > northeast.longitude
+				|| location.latitude < southwest.latitude || location.longitude < southwest.longitude) {
+			if (!quiet)
+				System.err.println("Error: LatLng could not be mapped to point - it is not visible.");
+			return null;
+		}
+		double lonProportion = (location.longitude - southwest.longitude) / (northeast.longitude - southwest.longitude);
+		double latProportion = (location.latitude - southwest.latitude) / (northeast.latitude - southwest.latitude);
+		return new Point((int)((sizeX - 1) * lonProportion), (int)((sizeY - 1) - ((sizeY - 1) * latProportion)));
+	}
+	
+	
 	public static BufferedImage DownloadStaticMapImage(LatLng start, LatLng end, int sizeX, int sizeY,
 			boolean isSatellite) {
 		return DownloadStaticMapImage(start, end, sizeX, sizeY, getAppropriateZoom(start, end, sizeX, sizeY),
@@ -329,12 +348,17 @@ public class APITools {
 		
 		
 		int counterTEMP = 0;
-		
-		for (double spannedMetersLat = 0; spannedMetersLat < totalSpanningMetersLat; spannedMetersLat += metersSliceLat)
+		int iterX = 0;
+		int iterY = 0;
+		int spacingX = -1;
+		int spacingY = -1;
+	
+		for (double spannedMetersLat = 0; spannedMetersLat < totalSpanningMetersLat; spannedMetersLat += metersSliceLat, iterY++)
 		{
 			currSouthwest.latitude = APITools.metersToLat(southwest, spannedMetersLat);
 			currNortheast.latitude = APITools.metersToLat(currSouthwest, metersSliceLat);
-			for (double spannedMetersLon = 0; spannedMetersLon < totalSpanningMetersLon; spannedMetersLon += metersSliceLon)
+			iterX = 0;
+			for (double spannedMetersLon = 0; spannedMetersLon < totalSpanningMetersLon; spannedMetersLon += metersSliceLon, iterX++)
 			{
 				currSouthwest.longitude = APITools.metersToLon(southwest, spannedMetersLon);
 				currNortheast.longitude = APITools.metersToLon(currSouthwest, metersSliceLon);
@@ -343,19 +367,35 @@ public class APITools {
 				
 				BufferedImage sliceImg = APITools.DownloadStaticMapImage(currCenter, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite, null);
 				sliceImg = Tools.ClipLogo(sliceImg);
+				
 				Tools.WriteImage(sliceImg, "testImages/TILEDTEST_"+ (++counterTEMP) +".png");
 				
+				System.out.println("slice w: " + sliceImg.getWidth() + ", slice h: " + sliceImg.getHeight());
 				
-				Point2D.Double startPoint = APITools.getImagePointFromLatLng(currSouthwest, southwest, northeast, imageWidth, imageHeight);
-				LatLng boundedNortheast = new LatLng(Math.min(northeast.latitude, currNortheast.latitude), Math.min(northeast.longitude, currNortheast.longitude));
-				//Point2D.Double hypotheticalEndPoint = APITools.getImagePointFromLatLng(currNortheast, southwest, northeast, imageWidth, imageHeight, true);
-				Point2D.Double endPoint = APITools.getImagePointFromLatLng(boundedNortheast, southwest, northeast, imageWidth, imageHeight);
+				Point startPoint;
+				Point endPoint;
+				if (spacingX == -1)
+				{
+					startPoint = APITools.getImagePointFromLatLngNorm(currSouthwest, southwest, northeast, imageWidth, imageHeight);
+					LatLng boundedNortheast = new LatLng(Math.min(northeast.latitude, currNortheast.latitude), Math.min(northeast.longitude, currNortheast.longitude));
+					endPoint = APITools.getImagePointFromLatLngNorm(boundedNortheast, southwest, northeast, imageWidth, imageHeight);
+					spacingX = (int)(endPoint.x - startPoint.x);
+					spacingY = (int)(startPoint.y - endPoint.y);
+				}
+				else
+				{
+					startPoint = new Point(spacingX * iterX, (imageHeight - 1) - spacingY * iterY);
+					endPoint = new Point(Math.min(spacingX * (iterX + 1), imageWidth - 1), Math.max((imageHeight - 1) - spacingY * (iterY + 1), 0));
+				}
 				
-				if (boundedNortheast.latitude == currNortheast.latitude && boundedNortheast.longitude == currNortheast.longitude)
+				System.out.println("start: " + startPoint.toString());
+				System.out.println("end: " + endPoint.toString());
+				
+				if ((int)(endPoint.x - startPoint.x) == spacingX && (int)(startPoint.y - endPoint.y) == spacingY)
 					Tools.DrawOnImage(totalImage, sliceImg, (int)startPoint.x, (int)endPoint.y, true);
 				else
 				{
-					int trueHeight = (int)(startPoint.y - endPoint.y);
+					int trueHeight = (int)(startPoint.y - endPoint.y) + 1;
 					int trueWidth = (int)(endPoint.x - startPoint.x);
 					
 					BufferedImage trueCrop = sliceImg.getSubimage(0, sliceImg.getHeight() - trueHeight, trueWidth, trueHeight);
