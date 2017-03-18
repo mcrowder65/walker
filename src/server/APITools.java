@@ -287,6 +287,11 @@ public class APITools {
 		return DownloadStaticMapImage(Tools.getCenter(start, end), sizeX, sizeY, zoom, isSatellite, polyline);
 	}
 
+	private static String getRoadParam()
+	{
+		return "&style=feature:road|color:" + Tools.toRGBHex(Config.MAPS_NORMALPATH_RGB);
+	}
+	
 	public static BufferedImage DownloadStaticMapImage(LatLng center, int sizeX, int sizeY, int zoom, boolean isSatellite, String polyline)
 	{
 		try {
@@ -299,7 +304,7 @@ public class APITools {
 							+ generic.Config.STATICMAP_KEY);
 				else
 					url = new URL(
-							"https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off&zoom="
+							"https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off"+ getRoadParam() + "&zoom="
 									+ zoom + "&center=" + center.toUrlValue() + "&size=" + sizeX + "x" + sizeY + "&key="
 									+ generic.Config.STATICMAP_KEY);
 			} else {
@@ -309,7 +314,7 @@ public class APITools {
 							+ polylineToURLParam(polyline, 3, "red") + "&key=" + generic.Config.STATICMAP_KEY);
 				else
 					url = new URL(
-							"https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off&center="
+							"https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off"+ getRoadParam() +"&center="
 									+ center.toUrlValue() + "&size=" + sizeX + "x" + sizeY
 									+ polylineToURLParam(polyline, 3, "red") + "&key=" + generic.Config.STATICMAP_KEY);
 			}

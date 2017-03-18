@@ -185,9 +185,12 @@ public class Tools {
 //		}
 	}
 	
-	public static boolean colorIsProbablyNotBuilding(int rgb, int tolerance)
+	public static boolean colorIsProbablyBuilding(int rgb, int tolerance)
 	{
-		return colorIsCloseEnough(rgb, Config.MAPS_WEIRD_OLIVE_PATH, tolerance) || colorIsCloseEnough(rgb, Config.MAPS_BACKGROUND_RGB, tolerance); 
+		return !(colorIsCloseEnough(rgb, Config.MAPS_WEIRD_OLIVE_PATH, tolerance) || 
+				 colorIsCloseEnough(rgb, Config.MAPS_BACKGROUND_RGB, tolerance) ||
+				 colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, tolerance) ||
+				 colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, tolerance)); 
 	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
 	{
@@ -211,6 +214,13 @@ public class Tools {
 		return true;
 	}
 
+	public static String toRGBHex(int i)
+	{
+		String res = Integer.toHexString(i);
+		String removeAlpha = res.substring(2, res.length());
+		return "0x" + removeAlpha;
+	}
+	
 	static String readFile(String path, Charset encoding) throws IOException {
 		byte[] encoded = Files.readAllBytes(Paths.get(path));
 		return new String(encoded, encoding);
