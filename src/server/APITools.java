@@ -340,7 +340,7 @@ public class APITools {
 		int imageWidth = (int)((1 / metersPerPixel) * totalSpanningMetersLon);
 		int imageHeight = (int)((1 / metersPerPixel) * totalSpanningMetersLat);
 		BufferedImage totalImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_BYTE_INDEXED);
-		//totalImage = Tools.convertICCToRGB(totalImage);
+		totalImage = Tools.convertICCToRGB(totalImage);
 		
 		//These constructor arguments don't really matter
 		LatLng currSouthwest = new LatLng(southwest);
