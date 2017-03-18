@@ -1,6 +1,7 @@
 package generic;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
 import java.awt.color.ICC_Profile;
@@ -133,6 +134,7 @@ public class Tools {
 
 	}
 	
+	
 	private static float[] myRGB = new float[3];
 	public static void setImageRGB(BufferedImage img, int x, int y, Color color) {
 		img.setRGB(x, y, color.getRGB());
@@ -151,6 +153,41 @@ public class Tools {
 		ColorConvertOp cco = new ColorConvertOp( ics, null );
 		BufferedImage result = cco.filter( img, null );
 		return result;
+	}
+	
+
+	public static void DrawOnImage(BufferedImage imageToDrawOn, BufferedImage source, int startX, int startY, boolean flipY)
+	{
+		
+		Graphics g = imageToDrawOn.createGraphics();
+		g.drawImage(source, startX, startY, null);
+		
+		
+//		int sourceX = 0;
+//		int sourceY = flipY ? source.getHeight() - 1 : 0;
+//		for (int x = startX; x < imageToDrawOn.getWidth() && sourceX < source.getWidth(); x++, sourceX++)
+//		{
+//			if (flipY)
+//			{
+//				for (int y = startY; y > -1 && sourceY > -1; y--, sourceY--)
+//				{
+//					int rgb = source.getRGB(sourceX, sourceY);
+//					imageToDrawOn.setRGB(x, y, rgb);
+//					int cmpRGB = imageToDrawOn.getRGB(x, y);
+//					assert rgb == cmpRGB;
+//				}
+//			} else {
+//				for (int y = startY; y < imageToDrawOn.getHeight() && sourceY < source.getHeight(); y++, sourceY++)
+//				{
+//					imageToDrawOn.setRGB(x, y, source.getRGB(sourceX, sourceY));
+//				}
+//			}
+//		}
+	}
+	
+	public static boolean colorIsProbablyNotBuilding(int rgb, int tolerance)
+	{
+		return colorIsCloseEnough(rgb, Config.MAPS_WEIRD_OLIVE_PATH, tolerance) || colorIsCloseEnough(rgb, Config.MAPS_BACKGROUND_RGB, tolerance); 
 	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
 	{

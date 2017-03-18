@@ -108,6 +108,9 @@ public class ColorOperations {
 		int currRGB;
 		do {
 			currRGB = orig.getRGB(currX++, currY++);
+			if (currRGB == Config.MAPS_BUILDING_RGB)
+				return;
+			
 		} while (currRGB == Config.MAPS_BACKGROUND_RGB || currRGB == Config.MAPS_GRASS_RGB
 				|| currRGB == Config.MAPS_NORMALPATH_RGB);
 		currX--;
@@ -142,7 +145,7 @@ public class ColorOperations {
 							continue;
 					}
 					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
@@ -171,7 +174,7 @@ public class ColorOperations {
 							continue;
 					}
 					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
@@ -200,7 +203,7 @@ public class ColorOperations {
 							continue;
 					}
 					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}
@@ -228,7 +231,7 @@ public class ColorOperations {
 							continue;
 					}
 					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsCloseEnough(neighborRGB, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyNotBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						tolerated = true;
 						break;
 					}

@@ -2,6 +2,8 @@ package server;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +13,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+
 import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.Tools;
 import generic.UserPrefs;
+import generic.objects.Building;
 import googlemaps.LatLng;
 
 public class GraphTests {
@@ -105,7 +111,7 @@ public class GraphTests {
 	}
 
 	@Test
-	public void uniformNodeGenerationTest() {
+	public void uniformNodeGenerationTest() throws FileNotFoundException {
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
@@ -146,11 +152,13 @@ public class GraphTests {
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 
-		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+		//GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
 
 		img = Tools.ClipLogo(img);
 
 		Tools.WriteImage(img, "testImages/dTest3.png");
+		
+	
 	}
 
 }
