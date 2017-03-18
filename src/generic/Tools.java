@@ -152,6 +152,10 @@ public class Tools {
 		BufferedImage result = cco.filter( img, null );
 		return result;
 	}
+	public static boolean colorIsProbablyNotBuilding(int rgb, int tolerance)
+	{
+		return colorIsCloseEnough(rgb, Config.MAPS_WEIRD_OLIVE_PATH, tolerance) || colorIsCloseEnough(rgb, Config.MAPS_BACKGROUND_RGB, tolerance); 
+	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
 	{
 		return colorIsCloseEnough(rgb1, rgb2, tolerance, tolerance, tolerance);

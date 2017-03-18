@@ -3,3 +3,5 @@ To: 40.249218, -111.648338
 Zoom: 17
 
 HFAC: 40.249803, -111.647854
+
+https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&style=feature:all|element:labels|visibility:off&zoom=18&center=40.24976050,-111.64809600&size=640x640&key=AIzaSyBrlZw4DeO4UtdBQDmSEM9rD6gSkpF3F1g
