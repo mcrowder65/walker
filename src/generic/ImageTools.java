@@ -41,6 +41,9 @@ public class ImageTools {
 		int x2 = (int) endPnt.x;
 		int y2 = (int) endPnt.y;
 
+		int rgbEnd = img.getRGB(x2, y2);
+		System.out.println(rgbEnd);
+
 		int cx, cy, ix, iy, dx, dy, ddx = x2 - x1, ddy = y2 - y1;
 		PathConstituents path = new PathConstituents(false, false, false, false, 0);
 		// getNumWhitePixles(x2, y2, img);
@@ -54,7 +57,7 @@ public class ImageTools {
 					rgb = img.getRGB(x1, cy++);
 					if (rgb == -65536) {
 						path.building = true;
-					} else if (rgb == -3479901) {
+					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
 				}
@@ -68,7 +71,7 @@ public class ImageTools {
 					rgb = img.getRGB(x1, cy++);
 					if (rgb == -65536) {
 						path.building = true;
-					} else if (rgb == -3479901) {
+					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
 				}
@@ -85,7 +88,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, y1);
 					if (rgb == -65536) {
 						path.building = true;
-					} else if (rgb == -3479901) {
+					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
 				}
@@ -99,7 +102,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, y1);
 					if (rgb == -65536) {
 						path.building = true;
-					} else if (rgb == -3479901) {
+					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
 				}
@@ -148,7 +151,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, cy);
 					if (rgb == -65536) {
 						path.building = true;
-					} else if (rgb == -3479901) {
+					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
 					// Tools.setImageRGB(img, cx, cy, lineColor);
