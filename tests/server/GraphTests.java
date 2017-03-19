@@ -11,12 +11,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.Tools;
 import generic.UserPrefs;
 import googlemaps.LatLng;
+import server.processing.ColorOperations;
 
 public class GraphTests {
 
@@ -192,10 +194,14 @@ public class GraphTests {
 		nodes.get(0).setStart(true);
 		nodes.get(nodes.size() - 1).setEnd(true);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
-		Tools.WriteImage(img, "testImages/mine.png");
+
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+		LatLng buildingPoint = new LatLng(40.249603, -111.650054); // JKB
+		BufferedImage filled = ColorOperations.filledImage(img, new Color(Config.MAPS_BUILDING_RGB), southwest,
+				northeast, buildingPoint);
+		Tools.WriteImage(filled, "testImages/mine.png");
 
 		// List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes,
 		// 10, southwest, northeast);
