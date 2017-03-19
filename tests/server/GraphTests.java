@@ -14,7 +14,9 @@ import org.junit.Test;
 import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
+import generic.ImageTools;
 import generic.Node;
+import generic.PathConstituents;
 import generic.Tools;
 import generic.UserPrefs;
 import googlemaps.LatLng;
@@ -209,15 +211,22 @@ public class GraphTests {
 		Graph g = new Graph(null, null, nodes);
 		g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
+		Node startNode = g.getNodes().get(g.getStartIndex());
+		Node endNode = g.getNodes().get(g.getEndIndex());
 
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 
-		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+		GraphTools.DrawLines(filled, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
 
-		img = Tools.ClipLogo(img);
+		PathConstituents pc = ImageTools.analyzeImage(filled, startNode, endNode);
+		assert pc.building == true;
+		assert pc.grass == true;
+		assert pc.parkingLot == false;
+		assert pc.wilderness == false;
+		img = Tools.ClipLogo(filled);
 
-		Tools.WriteImage(img, "testImages/analyzeTest1.png");
+		Tools.WriteImage(filled, "testImages/analyzeTest1.png");
 	}
 
 }
