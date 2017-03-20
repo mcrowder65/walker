@@ -26,7 +26,9 @@ public class GetMarkersHandler extends WalkerHandler {
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		synchronized (lock) {
-			getRequestBodyAndSetHeaders(exchange);
+
+			String data = getRequestBodyAndSetHeaders(exchange);
+			System.out.println("data: " + data);
 			List<String> buildings = Tools.firebase.getAllAsJson("buildings", building);
 			List<String> entrances = Tools.firebase.getAllAsJson("entrances", entrance);
 			buildings.addAll(entrances);

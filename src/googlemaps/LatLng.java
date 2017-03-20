@@ -31,29 +31,6 @@ public class LatLng implements UrlValue {
 	 */
 	public double latitude;
 
-	public double getLatitude() {
-		return latitude;
-	}
-
-	public LatLng() {
-	}
-
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
-	public static double getEpsilon() {
-		return EPSILON;
-	}
-
 	/**
 	 * The longitude of this location.
 	 */
@@ -72,6 +49,11 @@ public class LatLng implements UrlValue {
 		this.longitude = pnt.x;
 	}
 
+	public LatLng(LatLng other) {
+		this.latitude = other.latitude;
+		this.longitude = other.longitude;
+	}
+
 	@Override
 	public String toString() {
 		return toUrlValue();
@@ -85,5 +67,6 @@ public class LatLng implements UrlValue {
 
 	public static boolean closeEnoughLatLng(LatLng a, LatLng b) {
 		return Math.abs(a.latitude - b.latitude) < EPSILON && Math.abs(a.longitude - b.longitude) < EPSILON;
+
 	}
 }

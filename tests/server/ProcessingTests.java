@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Test;
 
+import generic.Config;
 import generic.Tools;
 import googlemaps.LatLng;
 import server.processing.ColorOperations;
@@ -92,8 +93,9 @@ public class ProcessingTests {
 	public void fillImageTest() {
 		Color c = new Color(255, 0, 0);
 		System.out.println(c.getRGB());
-		// LatLng buildingPoint = new LatLng(40.249403, -111.651154);
-		LatLng buildingPoint = new LatLng(40.249603, -111.650054);
+		// LatLng buildingPoint = new LatLng(40.249403, -111.651154);  //TALMAGE
+		LatLng buildingPoint = new LatLng(40.249603, -111.650054); //JKB
+		//LatLng buildingPoint = new LatLng(40.249403, -111.650154); //Some part of the path (should produce bad results)
 		LatLng endPoint = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(buildingPoint, endPoint);
 		int sizeX = 640;
@@ -101,10 +103,11 @@ public class ProcessingTests {
 		int zoom = APITools.getAppropriateZoom(buildingPoint, endPoint, sizeX, sizeY);
 		BufferedImage roadmap = server.APITools.DownloadStaticMapImage(buildingPoint, endPoint, sizeX, sizeY, zoom,
 				false);
+		Tools.WriteImage(roadmap, "testImages/roadmapTest4andaHalf.png");
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		BufferedImage filled = ColorOperations.filledImage(roadmap, Color.RED, southwest, northeast, buildingPoint);
+		BufferedImage filled = ColorOperations.filledImage(roadmap, new Color(Config.MAPS_BUILDING_RGB), southwest, northeast, buildingPoint);
 
 		Tools.WriteImage(filled, "testImages/roadmapTest4.png");
 	}
