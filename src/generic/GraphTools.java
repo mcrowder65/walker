@@ -259,7 +259,7 @@ public class GraphTools {
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, false, false, false, 0, false));
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, false, false, false, 0, false, false));
 
 	}
 
