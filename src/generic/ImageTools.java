@@ -41,14 +41,13 @@ public class ImageTools {
 		int x2 = (int) endPnt.x;
 		int y2 = (int) endPnt.y;
 
-		int rgbEnd = img.getRGB(x2, y2);
-		System.out.println(rgbEnd);
+		// int rgbEnd = img.getRGB(x2, y2);
+		// System.out.println(rgbEnd);
 
 		int cx, cy, ix, iy, dx, dy, ddx = x2 - x1, ddy = y2 - y1;
 		PathConstituents path = new PathConstituents(false, false, false, false, 0);
-		// getNumWhitePixles(x2, y2, img);
 
-		if (ddx == 0) { // vertical line special case
+		if (ddx == 0) {
 			if (ddy > 0) {
 				cy = y1;
 				int rgb = -1;
@@ -60,9 +59,7 @@ public class ImageTools {
 					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
-				}
-				// Tools.setImageRGB(img, x1, cy++, lineColor);
-				while (cy <= y2);
+				} while (cy <= y2);
 				return path;
 			} else {
 				cy = y2;
@@ -74,9 +71,7 @@ public class ImageTools {
 					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
-				}
-				// Tools.setImageRGB(img, x1, cy++, lineColor);
-				while (cy <= y1);
+				} while (cy <= y1);
 				return path;
 			}
 		}
@@ -91,9 +86,7 @@ public class ImageTools {
 					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
-				}
-				// Tools.setImageRGB(img, cx, y1, lineColor);
-				while (++cx <= x2);
+				} while (++cx <= x2);
 				return path;
 			} else {
 				cx = x2;
@@ -105,9 +98,7 @@ public class ImageTools {
 					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
-				}
-				// Tools.setImageRGB(img, cx, y1, lineColor);
-				while (++cx <= x1);
+				} while (++cx <= x1);
 				return path;
 			}
 		}
@@ -137,7 +128,6 @@ public class ImageTools {
 					} else if (rgb == -3479901) {
 						path.grass = true;
 					}
-					// Tools.setImageRGB(img, cx, cy, lineColor);
 					cy += iy;
 					dy -= ddx;
 				} while (dy >= dx);
@@ -154,7 +144,6 @@ public class ImageTools {
 					} else if (rgb == -3414877) {
 						path.grass = true;
 					}
-					// Tools.setImageRGB(img, cx, cy, lineColor);
 					cx += ix;
 					dx -= ddy;
 				} while (dx >= dy);
@@ -164,14 +153,6 @@ public class ImageTools {
 
 		return path;
 
-		// int rgbStart = img.getRGB(x1, y1);
-		// int rgbEnd = img.getRGB(x2, y2);
-		// System.out.println(x1);
-		// System.out.println(y1);
-		// System.out.println(rgbStart);
-		// System.out.println(x2);
-		// System.out.println(y2);
-		// System.out.println(rgbEnd);
 	}
 
 }
