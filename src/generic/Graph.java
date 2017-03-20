@@ -1,5 +1,6 @@
 package generic;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,12 @@ public class Graph extends WalkerObject {
 
 	private double[][] distance;
 	private double[][] elevation;
+	private boolean[][] grass;
+	private boolean[][] wilderness;
+	private boolean[][] building;
+	private boolean[][] parking;
+	private double[][] stairs;
+
 	private List<Node> nodes;
 
 	public Graph(double[][] distance, double[][] elevation, List<Node> nodes) {
@@ -20,7 +27,52 @@ public class Graph extends WalkerObject {
 		this.nodes = nodes;
 	}
 
+	public Graph(double[][] distance, double[][] elevation, List<Node> nodes, boolean[][] grass, boolean[][] wilderness,
+			boolean[][] building, boolean[][] parking, double[][] stairs) {
+		this.distance = distance;
+		this.elevation = elevation;
+		this.nodes = nodes;
+		this.grass = grass;
+		this.wilderness = wilderness;
+		this.building = building;
+		this.parking = parking;
+		this.stairs = stairs;
+	}
+
 	public Graph() {
+
+	}
+
+	public void generateMatrix(BufferedImage img) {
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int j = 0; j < nodes.size(); j++) {
+				Node s_node = nodes.get(i);
+				Node e_node = nodes.get(j);
+				if (i == j) {
+					building[i][j] = false;
+					grass[i][j] = false;
+				}
+				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node);
+				building[i][j] = pc.building;
+				grass[i][j] = pc.grass;
+			}
+		}
+
+	}
+
+	public void generateWildernessMatrix() {
+
+	}
+
+	public void generateParkingMatrix() {
+
+	}
+
+	public void generateGrassMatrix() {
+
+	}
+
+	public void generateStairsMatrix() {
 
 	}
 
