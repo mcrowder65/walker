@@ -76,6 +76,23 @@ public class Graph extends WalkerObject {
 		}
 	}
 
+	public int findClosestNodeIndex(Node n) {
+		LatLng latLong = n.getPosition();
+		int closestNodeIndex = 0;
+		double distance = Double.MAX_VALUE;
+		for (int i = 0; i < nodes.size(); i++) {
+			double longDiff = Math.abs(latLong.longitude - nodes.get(i).getPosition().longitude);
+			double latDiff = Math.abs(latLong.latitude - nodes.get(i).getPosition().latitude);
+			double total = latDiff + longDiff;
+			if (total < distance) {
+				distance = total;
+				closestNodeIndex = i;
+			}
+		}
+
+		return closestNodeIndex;
+	}
+
 	public void generateWildernessMatrix() {
 
 	}
