@@ -18,6 +18,7 @@ public class Graph extends WalkerObject {
 	private boolean[][] building;
 	private boolean[][] parking;
 	private double[][] stairs;
+	private double[][] totalCost;
 
 	private List<Node> nodes;
 
@@ -58,6 +59,21 @@ public class Graph extends WalkerObject {
 			}
 		}
 
+	}
+
+	public void sumMatricies(UserPrefs up) {
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int j = 0; j < nodes.size(); j++) {
+				boolean g = grass[i][j];
+				boolean b = building[i][j];
+				if (up.getGrass() && g) {
+					totalCost[i][j] = Double.MAX_VALUE;
+				}
+				if (up.getBuildingWeight() && b) {
+					totalCost[i][j] = Double.MAX_VALUE;
+				}
+			}
+		}
 	}
 
 	public void generateWildernessMatrix() {

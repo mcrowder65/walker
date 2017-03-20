@@ -322,7 +322,6 @@ public class GraphTools {
 			break;
 		} while (true);
 		return currPath;
-
 	}
 
 }
