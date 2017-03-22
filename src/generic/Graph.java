@@ -44,6 +44,14 @@ public class Graph extends WalkerObject {
 
 	}
 
+	public void setStartNode(int index) {
+		nodes.get(index).setStart(true);
+	}
+
+	public void setEndNode(int index) {
+		nodes.get(index).setEnd(true);
+	}
+
 	public void generateMatrix(BufferedImage img) {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
