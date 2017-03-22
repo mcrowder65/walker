@@ -58,7 +58,6 @@ public class Graph extends WalkerObject {
 				grass[i][j] = pc.grass;
 			}
 		}
-
 	}
 
 	public void sumMatricies(UserPrefs up) {

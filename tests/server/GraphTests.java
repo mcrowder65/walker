@@ -229,4 +229,54 @@ public class GraphTests {
 		Tools.WriteImage(filled, "testImages/analyzeTest1.png");
 	}
 
+	@Test
+	public void findPathTest() {
+		LatLng start = new LatLng(40.249773, -111.650217);
+		LatLng end = new LatLng(40.249798, -111.649540);
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+
+		String resp;
+
+		resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+		String poly = server.APITools.GetOverviewPolyline(resp);
+		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
+		nodes.get(0).setStart(true);
+		nodes.get(nodes.size() - 1).setEnd(true);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+		LatLng buildingPoint = new LatLng(40.249603, -111.650054); // JKB
+		// BufferedImage filled = ColorOperations.filledImage(img, new
+		// Color(Config.MAPS_BUILDING_RGB), southwest,
+		// northeast, buildingPoint);
+		// buildingPoint = new LatLng(40.249403, -111.651154); // TALMAGE
+		// filled = ColorOperations.filledImage(filled, new
+		// Color(Config.MAPS_BUILDING_RGB), southwest, northeast,
+		// buildingPoint);
+		Tools.WriteImage(img, "testImages/b2.png");
+
+		// List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes,
+		// 10, southwest, northeast);
+		// nodes.addAll(newNodes);
+		// Graph g = new Graph(null, null, nodes);
+		// g.setDistancesFromNodes();
+		// g.setElevationsFromNodes();
+		// Node startNode = g.getNodes().get(g.getStartIndex());
+		// Node endNode = g.getNodes().get(g.getEndIndex());
+		//
+		// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
+		// g.getEndIndex());
+		// List<Node> nodesToDraw = g.getNodesFromPath(path);
+		//
+		// GraphTools.DrawLines(filled, nodesToDraw, Color.BLUE, 3, southwest,
+		// northeast, Color.ORANGE, g);
+
+	}
+
 }
