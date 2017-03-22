@@ -199,7 +199,11 @@ public class GraphTools {
 			int startY = (int) p.getY() - nodePixelRadius;
 			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
 				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
-					Tools.setImageRGB(img, x, y, nodeColor);
+					if (!n.isStart() && !n.isEnd()) {
+						Tools.setImageRGB(img, x, y, nodeColor);
+					} else {
+						Tools.setImageRGB(img, x, y, Color.orange);
+					}
 				}
 			}
 
