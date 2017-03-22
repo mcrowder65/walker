@@ -54,6 +54,9 @@ public class LatLng implements UrlValue {
 		this.longitude = other.longitude;
 	}
 
+	public LatLng() {
+	}
+
 	@Override
 	public String toString() {
 		return toUrlValue();

@@ -147,7 +147,7 @@ public class GraphTests {
 
 		g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
-		g.writeToFirebase();
+		Tools.firebase.createGraph("graphs", g);
 		// nodes.get(0).setStart(true);
 		// nodes.get(nodes.size() - 1).setEnd(true);
 		//
