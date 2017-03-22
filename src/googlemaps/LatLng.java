@@ -15,10 +15,10 @@
 
 package googlemaps;
 
-import googlemaps.StringJoin.UrlValue;
-
 import java.awt.geom.Point2D;
 import java.util.Locale;
+
+import googlemaps.StringJoin.UrlValue;
 
 /**
  * A place on Earth, represented by a Latitude/Longitude pair.
@@ -26,46 +26,50 @@ import java.util.Locale;
 public class LatLng implements UrlValue {
 
 	public static final double EPSILON = 0.0000001;
-  /**
-   * The latitude of this location.
-   */
-  public double latitude;
+	/**
+	 * The latitude of this location.
+	 */
+	public double latitude;
 
-  /**
-   * The longitude of this location.
-   */
-  public double longitude;
+	/**
+	 * The longitude of this location.
+	 */
+	public double longitude;
 
-  /**
-   * Construct a location with a latitude longitude pair.
-   */
-  public LatLng(double lat, double lng) {
-    this.latitude = lat;
-    this.longitude = lng;
-  }
-  public LatLng(Point2D.Double pnt)
-  {
-	  this.latitude = pnt.y;
-	  this.longitude = pnt.x;
-  }
-  public LatLng(LatLng other)
-  {
-	  this.latitude = other.latitude;
-	  this.longitude = other.longitude;
-  }
-  @Override
-  public String toString() {
-    return toUrlValue();
-  }
+	/**
+	 * Construct a location with a latitude longitude pair.
+	 */
+	public LatLng(double lat, double lng) {
+		this.latitude = lat;
+		this.longitude = lng;
+	}
 
-  @Override
-  public String toUrlValue() {
-    // Enforce Locale to English for double to string conversion
-    return String.format(Locale.ENGLISH, "%.8f,%.8f", latitude, longitude);
-  }
+	public LatLng(Point2D.Double pnt) {
+		this.latitude = pnt.y;
+		this.longitude = pnt.x;
+	}
 
-  public static boolean closeEnoughLatLng(LatLng a, LatLng b)
-  {
-	 return Math.abs(a.latitude - b.latitude) < EPSILON && Math.abs(a.longitude - b.longitude) < EPSILON;	
-  }
+	public LatLng(LatLng other) {
+		this.latitude = other.latitude;
+		this.longitude = other.longitude;
+	}
+
+	public LatLng() {
+	}
+
+	@Override
+	public String toString() {
+		return toUrlValue();
+	}
+
+	@Override
+	public String toUrlValue() {
+		// Enforce Locale to English for double to string conversion
+		return String.format(Locale.ENGLISH, "%.8f,%.8f", latitude, longitude);
+	}
+
+	public static boolean closeEnoughLatLng(LatLng a, LatLng b) {
+		return Math.abs(a.latitude - b.latitude) < EPSILON && Math.abs(a.longitude - b.longitude) < EPSILON;
+
+	}
 }
