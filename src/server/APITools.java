@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import generic.Config;
 import generic.Node;
+import generic.StaticMapResult;
 import generic.Tools;
 import googlemaps.LatLng;
 
@@ -369,6 +370,8 @@ public class APITools {
 				currNortheast.longitude = APITools.metersToLon(currSouthwest, metersSliceLon);
 				LatLng currCenter = Tools.getCenter(currSouthwest, currNortheast);
 				
+				currCenter.longitude -= iterX * 0.0001; //This is a horrible hack but it will have to do :(
+				currCenter.latitude += iterY * 0.00005;
 				
 				BufferedImage sliceImg = APITools.DownloadStaticMapImage(currCenter, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite, null);
 				sliceImg = Tools.ClipLogo(sliceImg);
@@ -400,7 +403,7 @@ public class APITools {
 					Tools.DrawOnImage(totalImage, sliceImg, (int)startPoint.x, (int)endPoint.y, true);
 				else
 				{
-					int trueHeight = (int)(startPoint.y - endPoint.y) + 1;
+					int trueHeight = (int)(startPoint.y - endPoint.y);
 					int trueWidth = (int)(endPoint.x - startPoint.x);
 					
 					BufferedImage trueCrop = sliceImg.getSubimage(0, sliceImg.getHeight() - trueHeight, trueWidth, trueHeight);
