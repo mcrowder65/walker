@@ -22,6 +22,25 @@ public class Graph extends WalkerObject {
 
 	private List<Node> nodes;
 
+	public List<String> getDistancesChanged() {
+		return null;
+	}
+
+	public List<String> getElevationsChanged() {
+		return null;
+	}
+
+	public void setDistancesChanged(List<String> distancesChanged) {
+		this.distancesChanged = distancesChanged;
+	}
+
+	public void setElevationsChanged(List<String> elevationsChanged) {
+		this.elevationsChanged = elevationsChanged;
+	}
+
+	private List<String> distancesChanged;
+	private List<String> elevationsChanged;
+
 	public Graph(double[][] distance, double[][] elevation, List<Node> nodes) {
 		this.distance = distance;
 		this.elevation = elevation;
@@ -44,6 +63,14 @@ public class Graph extends WalkerObject {
 
 	}
 
+	public void setStartNode(int index) {
+		nodes.get(index).setStart(true);
+	}
+
+	public void setEndNode(int index) {
+		nodes.get(index).setEnd(true);
+	}
+
 	public void generateMatrix(BufferedImage img) {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
@@ -58,7 +85,6 @@ public class Graph extends WalkerObject {
 				grass[i][j] = pc.grass;
 			}
 		}
-
 	}
 
 	public void sumMatricies(UserPrefs up) {
@@ -126,7 +152,33 @@ public class Graph extends WalkerObject {
 		distance[start][end] = dist;
 	}
 
-	public int getStartIndex() {
+	public double[][] getElevation() {
+		if (elevation == null && elevationsChanged != null) {
+			elevation = new double[elevationsChanged.size()][elevationsChanged.size()];
+			for (int x = 0; x < elevationsChanged.size(); x++) {
+				String[] arr = elevationsChanged.get(x).split(",");
+				for (int y = 0; y < arr.length; y++) {
+					elevation[x][y] = Double.valueOf(arr[y]);
+				}
+			}
+		}
+		return elevation;
+	}
+
+	public double[][] getDistance() {
+		if (distance == null && distancesChanged != null) {
+			distance = new double[distancesChanged.size()][distancesChanged.size()];
+			for (int x = 0; x < distancesChanged.size(); x++) {
+				String[] arr = distancesChanged.get(x).split(",");
+				for (int y = 0; y < arr.length; y++) {
+					distance[x][y] = Double.valueOf(arr[y]);
+				}
+			}
+		}
+		return distance;
+	}
+
+	public int start() {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).isStart()) {
 				return i;
@@ -135,7 +187,7 @@ public class Graph extends WalkerObject {
 		return 0;
 	}
 
-	public int getEndIndex() {
+	public int end() {
 		for (int i = 0; i < nodes.size(); i++) {
 			if (nodes.get(i).isEnd()) {
 				return i;
@@ -207,11 +259,11 @@ public class Graph extends WalkerObject {
 	}
 
 	public double getDistance(int startNode, int endNode) {
-		return distance[startNode][endNode];
+		return getDistance()[startNode][endNode];
 	}
 
 	public double getElevation(int startNode, int endNode) {
-		return elevation[startNode][endNode];
+		return getElevation()[startNode][endNode];
 	}
 
 	public double getCost(int startNode, int endNode, UserPrefs prefs) {
@@ -232,12 +284,8 @@ public class Graph extends WalkerObject {
 		nodes.add(n);
 	}
 
-	public int getNumNodes() {
+	public int numNodes() {
 		return nodes.size();
-	}
-
-	public double[][] getDistance() {
-		return distance;
 	}
 
 	public void setDistance(double[][] distance) {
@@ -248,8 +296,66 @@ public class Graph extends WalkerObject {
 		this.elevation = elevation;
 	}
 
-	public void writeToFirebase() {
-		Tools.firebase.create("nodes", this);
+	public List<String> convert(double[][] matrix) {
+
+		List<String> temp = new ArrayList<>();
+		for (int x = 0; x < matrix.length; x++) {
+			StringBuilder str = new StringBuilder();
+			for (int y = 0; y < matrix[0].length; y++) {
+				if (y != matrix[0].length - 1) {
+					str.append(String.valueOf(matrix[x][y]) + ",");
+				} else {
+					str.append(String.valueOf(matrix[x][y]));
+				}
+			}
+			temp.add(str.toString());
+		}
+		return temp;
+	}
+
+	public void prepareForFirebase() {
+		this.distancesChanged = this.convert(this.distance);
+
+		this.elevationsChanged = this.convert(this.elevation);
+		if (!isEqual(this.distancesChanged, this.distance)) {
+			System.err.println("distancesChanged and distance not equal!");
+		}
+		if (!isEqual(this.elevationsChanged, this.elevation)) {
+			System.err.println("elevationsChanged and elevation are not equal!");
+		}
+		this.distance = null;
+
+		this.elevation = null;
+	}
+
+	private boolean isEqual(List<String> list, double[][] matrix) {
+		if (list == null || matrix == null) {
+			return false;
+		}
+		for (int x = 0; x < list.size(); x++) {
+			String[] values = list.get(x).split(",");
+			for (int y = 0; y < values.length; y++) {
+				double value = Double.valueOf(values[y]);
+				if (value != matrix[x][y]) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	public List<String> distancesChanged() {
+		if (distancesChanged == null) {
+			this.distancesChanged = new ArrayList<>();
+		}
+		return distancesChanged;
+	}
+
+	public List<String> elevationsChanged() {
+		if (elevationsChanged == null) {
+			this.elevationsChanged = new ArrayList<>();
+		}
+		return elevationsChanged;
 	}
 
 	@Override

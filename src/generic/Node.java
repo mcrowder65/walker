@@ -5,13 +5,19 @@ import googlemaps.LatLng;
 
 public class Node {
 
-	private boolean startNode = false;
-	private boolean endNode = false;
+	transient private boolean startNode = false;
+	transient private boolean endNode = false;
 	private LatLng position;
 	private Building building;
 
 	public LatLng getPosition() {
 		return position;
+	}
+
+	@Override
+	public String toString() {
+		return "Node [startNode=" + startNode + ", endNode=" + endNode + ", position=" + position + ", building="
+				+ building + "]";
 	}
 
 	public boolean isStart() {
@@ -50,9 +56,8 @@ public class Node {
 		this.position = position;
 		this.building = building;
 	}
-	
-	public Node(double latitude, double longitude, Building building, boolean isStartNode, boolean isEndNode)
-	{
+
+	public Node(double latitude, double longitude, Building building, boolean isStartNode, boolean isEndNode) {
 		this.position = new LatLng(latitude, longitude);
 		this.building = building;
 		this.startNode = isStartNode;
