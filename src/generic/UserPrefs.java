@@ -14,12 +14,13 @@ public class UserPrefs {
 	private boolean wilderness;
 	private double elevationWeight;
 	private double stairsWeight;
+	private boolean grass;
 
 	public UserPrefs() {
 	}
 
 	public UserPrefs(double distance, double elevationWeight, boolean building, boolean parkinglot, boolean wilderness,
-			double stairsWeight, boolean elevator) {
+			double stairsWeight, boolean elevator, boolean grass) {
 		super();
 		this.distance = distance;
 		this.elevationWeight = elevationWeight;
@@ -28,9 +29,11 @@ public class UserPrefs {
 		this.wilderness = wilderness;
 		this.stairsWeight = stairsWeight;
 		this.elevator = elevator;
+		this.grass = grass;
+
 	}
 
-	public static UserPrefs DISTANCE_ONLY = new UserPrefs(0, 0, false, false, false, 0, false);
+	public static UserPrefs DISTANCE_ONLY = new UserPrefs(0, 0, false, false, false, 0, false, false);
 
 	private boolean validateWeight(double weight) {
 		if (weight >= 0 && weight <= 1)
@@ -59,6 +62,14 @@ public class UserPrefs {
 		if (!validateWeight(elevationWeight))
 			return;
 		this.elevationWeight = elevationWeight;
+	}
+
+	public void setGrass(boolean grass) {
+		this.grass = grass;
+	}
+
+	public boolean getGrass() {
+		return grass;
 	}
 
 	public boolean getBuildingWeight() {

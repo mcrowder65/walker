@@ -1,5 +1,6 @@
 package generic;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,13 @@ public class Graph extends WalkerObject {
 
 	private double[][] distance;
 	private double[][] elevation;
+	private boolean[][] grass;
+	private boolean[][] wilderness;
+	private boolean[][] building;
+	private boolean[][] parking;
+	private double[][] stairs;
+	private double[][] totalCost;
+
 	private List<Node> nodes;
 
 	public List<String> getDistancesChanged() {
@@ -39,7 +47,91 @@ public class Graph extends WalkerObject {
 		this.nodes = nodes;
 	}
 
+	public Graph(double[][] distance, double[][] elevation, List<Node> nodes, boolean[][] grass, boolean[][] wilderness,
+			boolean[][] building, boolean[][] parking, double[][] stairs) {
+		this.distance = distance;
+		this.elevation = elevation;
+		this.nodes = nodes;
+		this.grass = grass;
+		this.wilderness = wilderness;
+		this.building = building;
+		this.parking = parking;
+		this.stairs = stairs;
+	}
+
 	public Graph() {
+
+	}
+
+	public void setStartNode(int index) {
+		nodes.get(index).setStart(true);
+	}
+
+	public void setEndNode(int index) {
+		nodes.get(index).setEnd(true);
+	}
+
+	public void generateMatrix(BufferedImage img) {
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int j = 0; j < nodes.size(); j++) {
+				Node s_node = nodes.get(i);
+				Node e_node = nodes.get(j);
+				if (i == j) {
+					building[i][j] = false;
+					grass[i][j] = false;
+				}
+				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node);
+				building[i][j] = pc.building;
+				grass[i][j] = pc.grass;
+			}
+		}
+	}
+
+	public void sumMatricies(UserPrefs up) {
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int j = 0; j < nodes.size(); j++) {
+				boolean g = grass[i][j];
+				boolean b = building[i][j];
+				if (up.getGrass() && g) {
+					totalCost[i][j] = Double.MAX_VALUE;
+				}
+				if (up.getBuildingWeight() && b) {
+					totalCost[i][j] = Double.MAX_VALUE;
+				}
+			}
+		}
+	}
+
+	public int findClosestNodeIndex(Node n) {
+		LatLng latLong = n.getPosition();
+		int closestNodeIndex = 0;
+		double distance = Double.MAX_VALUE;
+		for (int i = 0; i < nodes.size(); i++) {
+			double longDiff = Math.abs(latLong.longitude - nodes.get(i).getPosition().longitude);
+			double latDiff = Math.abs(latLong.latitude - nodes.get(i).getPosition().latitude);
+			double total = latDiff + longDiff;
+			if (total < distance) {
+				distance = total;
+				closestNodeIndex = i;
+			}
+		}
+
+		return closestNodeIndex;
+	}
+
+	public void generateWildernessMatrix() {
+
+	}
+
+	public void generateParkingMatrix() {
+
+	}
+
+	public void generateGrassMatrix() {
+
+	}
+
+	public void generateStairsMatrix() {
 
 	}
 
