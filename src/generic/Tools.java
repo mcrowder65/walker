@@ -156,7 +156,7 @@ public class Tools {
 	}
 	
 
-	public static void DrawOnImage(BufferedImage imageToDrawOn, BufferedImage source, int startX, int startY, boolean flipY)
+	public static void DrawOnImage(BufferedImage imageToDrawOn, BufferedImage source, int startX, int startY)
 	{
 		
 		Graphics g = imageToDrawOn.createGraphics();

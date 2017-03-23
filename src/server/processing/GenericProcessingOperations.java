@@ -1,5 +1,6 @@
 package server.processing;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
@@ -14,7 +15,6 @@ public class GenericProcessingOperations {
 		return copy;
 	}
 	private static final int CHECKING_PIXEL_DIMS = 5;
-	private static final int AOI = 100;
 	private static final int JIGGLE_ROOM = 5;
 	
 	private static int eastPixelError(BufferedImage sw, BufferedImage east, int xOverlap, int yJiggle)
@@ -22,6 +22,8 @@ public class GenericProcessingOperations {
 		int err = 0;
 		int w = east.getWidth();
 		int halfHeight = sw.getHeight() / 2;
+		int AOI = sw.getHeight() - (JIGGLE_ROOM * 2);
+		
 		for (int eastY = halfHeight - (AOI / 2) + yJiggle; eastY < halfHeight + (AOI / 2) + yJiggle; eastY++)
 		{
 			int swY = eastY - yJiggle;
@@ -39,6 +41,8 @@ public class GenericProcessingOperations {
 		int err = 0;
 		int halfWidth = sw.getWidth() / 2;
 		int northHeight = north.getHeight();
+		int AOI = sw.getWidth() - (JIGGLE_ROOM * 2);
+		
 		for (int northX = halfWidth - (AOI / 2) + xJiggle; northX < halfWidth + (AOI / 2) + xJiggle; northX++)
 		{
 			int swX = northX - xJiggle;
@@ -51,77 +55,84 @@ public class GenericProcessingOperations {
 		
 		return err;
 	}
-	
-	
-	public static LatLng getLatLngEastStitchDelta(BufferedImage southwestImage, BufferedImage eastboundImage)
+	private static int northeastPixelError(BufferedImage south, BufferedImage west, BufferedImage ne, int xOverlap, int yOverlap)
 	{
-		int xOverlap = 50;
-		int lowestErrArg = -1;
+		return 0;
+	}
+	
+	
+	public static Point getEastStitchDelta(BufferedImage southwestImage, BufferedImage eastboundImage)
+	{
+		int xOverlap = 100;
+		int lowestErrJiggle = 0;
+		int lowestErrOffset = 0;
 		int lowestError = Integer.MAX_VALUE;
 		
 		while (xOverlap > CHECKING_PIXEL_DIMS)
 		{
-			int err=  eastPixelError(southwestImage, eastboundImage, xOverlap, 0);
-			if (err < lowestError) {
-				lowestError = err;
-				lowestErrArg = xOverlap;
+			for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
+			{			
+				int err=  eastPixelError(southwestImage, eastboundImage, xOverlap, jigg);
+				if (err < lowestError) {
+					lowestError = err;
+					lowestErrOffset = xOverlap;
+					lowestErrJiggle = jigg;
+				}
 			}
 			xOverlap--;
 		}
 		
-		xOverlap = lowestErrArg;
+		System.out.println("Optimal delta found as x=" + lowestErrOffset +", y=" + lowestErrJiggle + " with err " + lowestError);
+
+		return new Point(lowestErrOffset, lowestErrJiggle);
 		
-		lowestErrArg = -1;
-		lowestError = Integer.MAX_VALUE;
-		
-		for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
-		{
-			int err=  eastPixelError(southwestImage, eastboundImage, xOverlap, jigg);
-			if (err < lowestError) {
-				lowestError = err;
-				lowestErrArg = jigg;
-			}
-		}
-		
-		return new LatLng(xOverlap, lowestErrArg);
-		
-		
-		//return null;
 	}
 	
-	public static LatLng getLatLngNorthStitchDelta(BufferedImage southwestImage, BufferedImage northboundImage)
+	public static Point getNorthStitchDelta(BufferedImage southwestImage, BufferedImage northboundImage)
 	{
-		int yOverlap = 50;
-		int lowestErrArg = -1;
+		int yOverlap = 200;
+		int lowestErrJiggle = 0;
+		int lowestErrOffset = 0;
 		int lowestError = Integer.MAX_VALUE;
 		
 		while (yOverlap > CHECKING_PIXEL_DIMS)
 		{
-			int err=  northPixelError(southwestImage, northboundImage, yOverlap, 0);
-			if (err < lowestError) {
-				lowestError = err;
-				lowestErrArg = yOverlap;
+			for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
+			{			
+				int err=  northPixelError(southwestImage, northboundImage, yOverlap, jigg);
+				if (err < lowestError) {
+					lowestError = err;
+					lowestErrOffset = yOverlap;
+					lowestErrJiggle = jigg;
+				}
 			}
 			yOverlap--;
 		}
 		
-		yOverlap = lowestErrArg;
+
+		System.out.println("Optimal delta found as x=" + lowestErrJiggle +", y=" + lowestErrOffset + " with err " + lowestError);
+		return new Point(lowestErrJiggle, lowestErrOffset);
+	}
+
+	public static Point getNorthEastStitchDelta(BufferedImage southernImage, BufferedImage westernImage, BufferedImage northeastImage)
+	{
+		int xOverlap = 100;
+		int yOverlap = 100;
+		int lowestErrXOverlap = 0;
+		int lowestErrYOverlap = 0;
 		
-		lowestErrArg = -1;
-		lowestError = Integer.MAX_VALUE;
-		
-		for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
+		int lowestError = Integer.MAX_VALUE;
+		while (yOverlap > CHECKING_PIXEL_DIMS)
 		{
-			int err=  northPixelError(southwestImage, northboundImage, yOverlap, jigg);
-			if (err < lowestError) {
-				lowestError = err;
-				lowestErrArg = jigg;
+			while (xOverlap > CHECKING_PIXEL_DIMS)
+			{
+				
+				
+				
+				xOverlap--;
 			}
+			yOverlap--;
 		}
-		
-		return new LatLng(yOverlap, lowestErrArg);
-		
-		
-		//return null;
+		return new Point(lowestErrXOverlap, lowestErrYOverlap);
 	}
 }
