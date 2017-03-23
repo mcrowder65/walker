@@ -33,7 +33,7 @@ public class UserPrefs {
 
 	}
 
-	public static UserPrefs DISTANCE_ONLY = new UserPrefs(0, 0, false, false, false, 0, false, false);
+	public static UserPrefs DISTANCE_ONLY = new UserPrefs(1, 0, false, false, false, 0, false, false);
 
 	private boolean validateWeight(double weight) {
 		if (weight >= 0 && weight <= 1)
