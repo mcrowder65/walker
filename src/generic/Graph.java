@@ -48,11 +48,22 @@ public class Graph extends WalkerObject {
 		nodes.get(index).setStart(true);
 	}
 
+	public void printNodes() {
+		for (int i = 0; i < nodes.size(); i++) {
+			Node n = nodes.get(i);
+			if (n.isStart() == true) {
+				System.out.println(i);
+			}
+		}
+	}
+
 	public void setEndNode(int index) {
 		nodes.get(index).setEnd(true);
 	}
 
 	public void generateMatrix(BufferedImage img) {
+		building = new boolean[nodes.size()][nodes.size()];
+		grass = new boolean[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				Node s_node = nodes.get(i);
@@ -61,14 +72,21 @@ public class Graph extends WalkerObject {
 					building[i][j] = false;
 					grass[i][j] = false;
 				}
+				if (s_node.isStart() == true) {
+					System.out.println(i);
+				}
 				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node);
 				building[i][j] = pc.building;
+				if (pc.building == true) {
+					System.out.println("In here");
+				}
 				grass[i][j] = pc.grass;
 			}
 		}
 	}
 
 	public void sumMatricies(UserPrefs up) {
+		totalCost = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				boolean g = grass[i][j];
@@ -221,9 +239,14 @@ public class Graph extends WalkerObject {
 		return elevation[startNode][endNode];
 	}
 
+	// public double getCost(int startNode, int endNode, UserPrefs prefs) {
+	// return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) *
+	// prefs.getDistanceWeight() : 0)
+	// + (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) *
+	// prefs.getElevationWeight() : 0);
+	// }
 	public double getCost(int startNode, int endNode, UserPrefs prefs) {
-		return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) * prefs.getDistanceWeight() : 0)
-				+ (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) * prefs.getElevationWeight() : 0);
+		return totalCost[startNode][endNode];
 	}
 
 	public List<Double> getDistanceList(int startNode) {

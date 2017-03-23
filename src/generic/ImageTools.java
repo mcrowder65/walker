@@ -41,8 +41,12 @@ public class ImageTools {
 		int x2 = (int) endPnt.x;
 		int y2 = (int) endPnt.y;
 
-		// int rgbEnd = img.getRGB(x2, y2);
+		// if (startNode.isStart() == true) {
+		// int rgbEnd = img.getRGB(x1, y1);
 		// System.out.println(rgbEnd);
+		// System.out.println(x1);
+		// System.out.println(y1);
+		// }
 
 		int cx, cy, ix, iy, dx, dy, ddx = x2 - x1, ddy = y2 - y1;
 		PathConstituents path = new PathConstituents(false, false, false, false, 0);

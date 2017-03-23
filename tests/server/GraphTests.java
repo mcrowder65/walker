@@ -237,7 +237,7 @@ public class GraphTests {
 
 	@Test
 	public void findPathTest() {
-		LatLng start = new LatLng(40.249823, -111.651498);
+		LatLng start = new LatLng(40.249493, -111.650878);
 		LatLng end = new LatLng(40.249121, -111.648808);
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
@@ -255,11 +255,12 @@ public class GraphTests {
 		// nodes.get(0).setStart(true);
 		// nodes.get(nodes.size() - 1).setEnd(true);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		BufferedImage img_clean = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		List<Node> newNodes = GraphTools.GenerateUniformNodes(2, southwest, northeast);
+		List<Node> newNodes = GraphTools.GenerateUniformNodes(24, southwest, northeast);
 		Graph g = new Graph(null, null, newNodes);
 		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
 		int endNodeIndex = g.findClosestNodeIndex(new Node(end.latitude, end.longitude, null, false, true));
@@ -267,6 +268,19 @@ public class GraphTests {
 		g.setEndNode(endNodeIndex);
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		Tools.WriteImage(img, "testImages/b2.png");
+		g.setDistancesFromNodes();
+		g.printNodes();
+		g.generateMatrix(img);
+		// UserPrefs up = new UserPrefs(1, 0, true, false, false, 0, false,
+		// false);
+		// g.sumMatricies(up);
+		// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
+		// g.getEndIndex());
+		// List<Node> nodesToDraw = g.getNodesFromPath(path);
+		//
+		// GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 3,
+		// southwest, northeast, Color.ORANGE, g);
+		// Tools.WriteImage(img_clean, "testImages/final.png");
 		// List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes,
 		// 10, southwest, northeast);
 		// nodes.addAll(newNodes);
