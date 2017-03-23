@@ -2,6 +2,7 @@ package server;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+
+import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
@@ -22,6 +27,9 @@ public class GraphTests {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(new FileInputStream("key.json"))
+				.setDatabaseUrl("https://walker-73119.firebaseio.com/").build();
+		FirebaseApp.initializeApp(options);
 	}
 
 	@AfterClass
@@ -62,188 +70,63 @@ public class GraphTests {
 
 	}
 
-	// // @Test
-	// public void testDijkstraRealNodes() {
-	// LatLng start = new LatLng(40.249403, -111.650154);
-	// LatLng end = new LatLng(40.249218, -111.648338);
-	// LatLng center = Tools.getCenter(start, end);
-	// int sizeX = 640;
-	// int sizeY = 640;
-	// int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-	//
-	// String resp;
-	// if (Config.USE_MOCK)
-	// resp = Tools.readMock("BYU_ShortPath");
-	// else
-	// resp = APITools.GetDirectionsResponse(start.toUrlValue(),
-	// end.toUrlValue());
-	// String[] polyPieces = server.APITools.GetPolylinePieces(resp);
-	// String poly = server.APITools.GetOverviewPolyline(resp);
-	// List<Node> nodes =
-	// generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-	// nodes.get(0).setStart(true);
-	// nodes.get(nodes.size() - 1).setEnd(true);
-	// BufferedImage img = server.APITools.DownloadStaticMapImage(start, end,
-	// sizeX, sizeY, zoom, false);
-	//
-	// double metersPerPixel = APITools.getMetersPerPixel(center.latitude,
-	// zoom);
-	// LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX,
-	// sizeY);
-	// LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX,
-	// sizeY);
-	//
-	// List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10,
-	// southwest, northeast);
-	// nodes.addAll(newNodes);
-	// Graph g = new Graph(null, null, nodes);
-	// g.setDistancesFromNodes();
-	// g.setElevationsFromNodes();
-	//
-	// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
-	// g.getEndIndex());
-	// List<Node> nodesToDraw = g.getNodesFromPath(path);
-	//
-	// GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest,
-	// northeast, Color.ORANGE, g);
-	//
-	// img = Tools.ClipLogo(img);
-	//
-	// Tools.WriteImage(img, "testImages/dTest1.png");
-	// }
-
 	// @Test
-	// public void uniformNodeGenerationTest() throws FileNotFoundException {
-	// LatLng start = new LatLng(40.249403, -111.650154);
-	// LatLng end = new LatLng(40.249218, -111.648338);
-	// LatLng center = Tools.getCenter(start, end);
-	// int sizeX = 640;
-	// int sizeY = 640;
-	// int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-	//
-	// String resp;
-	// if (Config.USE_MOCK)
-	// resp = Tools.readMock("BYU_ShortPath");
-	// else
-	// resp = APITools.GetDirectionsResponse(start.toUrlValue(),
-	// end.toUrlValue());
-	//
-	// resp = APITools.GetDirectionsResponse(start.toUrlValue(),
-	// end.toUrlValue());
-	// String[] polyPieces = server.APITools.GetPolylinePieces(resp);
-	// String poly = server.APITools.GetOverviewPolyline(resp);
-	// List<Node> nodes =
-	// generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-	//
-	// BufferedImage img = server.APITools.DownloadStaticMapImage(start, end,
-	// sizeX, sizeY, zoom, true);
-	//
-	// double metersPerPixel = APITools.getMetersPerPixel(center.latitude,
-	// zoom);
-	// LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX,
-	// sizeY);
-	// LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX,
-	// sizeY);
-	//
-	// List<Node> moreNodes = GraphTools.GenerateUniformNodes(10, southwest,
-	// northeast);
-	// nodes.addAll(moreNodes);
-	// Graph g = new Graph(null, null, nodes);
-	//
-	// GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest,
-	// northeast);
-	//
-	// Tools.WriteImage(img, "testImages/graphTest1.png");
-	//
-	// g.setDistancesFromNodes();
-	// g.setElevationsFromNodes();
-	// nodes.get(0).setStart(true);
-	// nodes.get(nodes.size() - 1).setEnd(true);
-	//
-	// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
-	// g.getEndIndex());
-	// List<Node> nodesToDraw = g.getNodesFromPath(path);
-	//
-	// // GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest,
-	// // northeast, Color.ORANGE, g);
-	//
-	// img = Tools.ClipLogo(img);
-	//
-	// Tools.WriteImage(img, "testImages/dTest3.png");
-	// }
-
-	// @Test
-	// public void analyzeImageTest() {
-	// LatLng start = new LatLng(40.249773, -111.650217);
-	// LatLng end = new LatLng(40.249798, -111.649540);
-	// LatLng center = Tools.getCenter(start, end);
-	// int sizeX = 640;
-	// int sizeY = 640;
-	// int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
-	//
-	// String resp;
-	// // if (Config.USE_MOCK)
-	// // resp = Tools.readMock("BYU_ShortPath");
-	// // else
-	// resp = APITools.GetDirectionsResponse(start.toUrlValue(),
-	// end.toUrlValue());
-	// String[] polyPieces = server.APITools.GetPolylinePieces(resp);
-	// String poly = server.APITools.GetOverviewPolyline(resp);
-	// List<Node> nodes =
-	// generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-	// nodes.get(0).setStart(true);
-	// nodes.get(nodes.size() - 1).setEnd(true);
-	// BufferedImage img = server.APITools.DownloadStaticMapImage(start, end,
-	// sizeX, sizeY, zoom, false);
-	//
-	// double metersPerPixel = APITools.getMetersPerPixel(center.latitude,
-	// zoom);
-	// LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX,
-	// sizeY);
-	// LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX,
-	// sizeY);
-	// LatLng buildingPoint = new LatLng(40.249603, -111.650054); // JKB
-	// BufferedImage filled = ColorOperations.filledImage(img, new
-	// Color(Config.MAPS_BUILDING_RGB), southwest,
-	// northeast, buildingPoint);
-	// Tools.WriteImage(filled, "testImages/mine.png");
-	//
-	// // List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes,
-	// // 10, southwest, northeast);
-	// // nodes.addAll(newNodes);
-	// Graph g = new Graph(null, null, nodes);
-	// g.setDistancesFromNodes();
-	// g.setElevationsFromNodes();
-	// Node startNode = g.getNodes().get(g.getStartIndex());
-	// Node endNode = g.getNodes().get(g.getEndIndex());
-	//
-	// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
-	// g.getEndIndex());
-	// List<Node> nodesToDraw = g.getNodesFromPath(path);
-	//
-	// GraphTools.DrawLines(filled, nodesToDraw, Color.BLUE, 3, southwest,
-	// northeast, Color.ORANGE, g);
-	//
-	// PathConstituents pc = ImageTools.analyzeImage(filled, startNode,
-	// endNode);
-	// assert pc.building == true;
-	// assert pc.grass == true;
-	// assert pc.parkingLot == false;
-	// assert pc.wilderness == false;
-	// img = Tools.ClipLogo(filled);
-	//
-	// Tools.WriteImage(filled, "testImages/analyzeTest1.png");
-	// }
-
-	@Test
-	public void findPathTest() {
-		LatLng start = new LatLng(40.249493, -111.650878);
-		LatLng end = new LatLng(40.249121, -111.648808);
+	public void testDijkstraRealNodes() {
+		LatLng start = new LatLng(40.249403, -111.650154);
+		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
 		int sizeY = 640;
 		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
 
+		String resp;
+		if (Config.USE_MOCK)
+			resp = Tools.readMock("BYU_ShortPath");
+		else
+			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+		String poly = server.APITools.GetOverviewPolyline(resp);
+		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
+		nodes.get(0).setStart(true);
+		nodes.get(nodes.size() - 1).setEnd(true);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+
+		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
+		nodes.addAll(newNodes);
+		Graph g = new Graph(null, null, nodes);
+		g.setDistancesFromNodes();
+		g.setElevationsFromNodes();
+
+		List<Integer> path = GraphTools.dijkstra(g.start(), g, g.end());
+		List<Node> nodesToDraw = g.getNodesFromPath(path);
+
+		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+
+		img = Tools.ClipLogo(img);
+
+		Tools.WriteImage(img, "testImages/dTest1.png");
+	}
+
+	@Test
+<<<<<<< HEAD
+	public void findPathTest() {
+		LatLng start = new LatLng(40.249493, -111.650878);
+		LatLng end = new LatLng(40.249121, -111.648808);
+=======
+	public void uniformNodeGenerationTest() {
+		LatLng start = new LatLng(40.249403, -111.650154);
+		LatLng end = new LatLng(40.249218, -111.648338);
+>>>>>>> master
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+
+<<<<<<< HEAD
 		// String resp;
 		//
 		// resp = APITools.GetDirectionsResponse(start.toUrlValue(),
@@ -256,10 +139,25 @@ public class GraphTests {
 		// nodes.get(nodes.size() - 1).setEnd(true);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		BufferedImage img_clean = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+=======
+		String resp;
+		if (Config.USE_MOCK)
+			resp = Tools.readMock("BYU_ShortPath");
+		else
+			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+
+		resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+		String poly = server.APITools.GetOverviewPolyline(resp);
+		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
+
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
+>>>>>>> master
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+<<<<<<< HEAD
 		List<Node> newNodes = GraphTools.GenerateUniformNodes(24, southwest, northeast);
 		Graph g = new Graph(null, null, newNodes);
 		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
@@ -289,13 +187,33 @@ public class GraphTests {
 		// g.setElevationsFromNodes();
 		// Node startNode = g.getNodes().get(g.getStartIndex());
 		// Node endNode = g.getNodes().get(g.getEndIndex());
+=======
+
+		List<Node> moreNodes = GraphTools.GenerateUniformNodes(10, southwest, northeast);
+		nodes.addAll(moreNodes);
+		Graph g = new Graph(null, null, nodes);
+
+		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
+
+		Tools.WriteImage(img, "testImages/graphTest1.png");
+
+		g.setDistancesFromNodes();
+		g.setElevationsFromNodes();
+		Tools.firebase.createGraph("graphs", g);
+		// nodes.get(0).setStart(true);
+		// nodes.get(nodes.size() - 1).setEnd(true);
+>>>>>>> master
 		//
 		// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
 		// g.getEndIndex());
 		// List<Node> nodesToDraw = g.getNodesFromPath(path);
 		//
-		// GraphTools.DrawLines(filled, nodesToDraw, Color.BLUE, 3, southwest,
+		// GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest,
 		// northeast, Color.ORANGE, g);
+		//
+		// img = Tools.ClipLogo(img);
+		//
+		// Tools.WriteImage(img, "testImages/dTest3.png");
 
 	}
 
