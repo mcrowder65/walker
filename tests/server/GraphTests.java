@@ -112,56 +112,42 @@ public class GraphTests {
 	}
 
 	@Test
-	public void uniformNodeGenerationTest() {
-		LatLng start = new LatLng(40.249403, -111.650154);
-		LatLng end = new LatLng(40.249218, -111.648338);
+	public void findPathTest() {
+		LatLng start = new LatLng(40.249493, -111.650878);
+		LatLng end = new LatLng(40.249121, -111.648808);
+
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
 		int sizeY = 640;
 		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
 
-		String resp;
-		if (Config.USE_MOCK)
-			resp = Tools.readMock("BYU_ShortPath");
-		else
-			resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
-
-		resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
-		String[] polyPieces = server.APITools.GetPolylinePieces(resp);
-		String poly = server.APITools.GetOverviewPolyline(resp);
-		List<Node> nodes = generic.GraphTools.CreateNodesFromPolyline(polyPieces);
-
-		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, true);
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		BufferedImage img_clean = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
-		List<Node> moreNodes = GraphTools.GenerateUniformNodes(10, southwest, northeast);
-		nodes.addAll(moreNodes);
-		Graph g = new Graph(null, null, nodes);
-
+		List<Node> newNodes = GraphTools.GenerateUniformNodes(24, southwest, northeast);
+		Graph g = new Graph(null, null, newNodes);
+		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
+		int endNodeIndex = g.findClosestNodeIndex(new Node(end.latitude, end.longitude, null, false, true));
+		g.setStartNode(startNodeIndex);
+		g.setEndNode(endNodeIndex);
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
-
-		Tools.WriteImage(img, "testImages/graphTest1.png");
-
+		Tools.WriteImage(img, "testImages/b2.png");
 		g.setDistancesFromNodes();
-		g.setElevationsFromNodes();
-		Tools.firebase.createGraph("graphs", g);
-		// nodes.get(0).setStart(true);
-		// nodes.get(nodes.size() - 1).setEnd(true);
-		//
-		// List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
-		// g.getEndIndex());
-		// List<Node> nodesToDraw = g.getNodesFromPath(path);
-		//
-		// GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 3, southwest,
-		// northeast, Color.ORANGE, g);
-		//
-		// img = Tools.ClipLogo(img);
-		//
-		// Tools.WriteImage(img, "testImages/dTest3.png");
-
+		g.generateMatrix(img);
+		// // UserPrefs up = new UserPrefs(1, 0, true, false, false, 0, false,
+		// // false);
+		// // g.sumMatricies(up);
+		// // List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
+		// // g.getEndIndex());
+		// // List<Node> nodesToDraw = g.getNodesFromPath(path);
+		// //
+		// // GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 3,
+		// // southwest, northeast, Color.ORANGE, g);
+		// // Tools.WriteImage(img_clean, "testImages/final.png");
+		// //
 	}
 
 }
