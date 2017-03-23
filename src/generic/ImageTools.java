@@ -53,7 +53,7 @@ public class ImageTools {
 					rgb = img.getRGB(x1, cy++);
 					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == Config.MAPS_GRASS_RGB) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (cy <= y2);
@@ -65,7 +65,7 @@ public class ImageTools {
 					rgb = img.getRGB(x1, cy++);
 					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == Config.MAPS_GRASS_RGB) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (cy <= y1);
@@ -80,7 +80,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, y1);
 					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == Config.MAPS_GRASS_RGB) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (++cx <= x2);
@@ -92,7 +92,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, y1);
 					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == Config.MAPS_GRASS_RGB) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (++cx <= x1);
@@ -122,7 +122,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, cy);
 					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == Config.MAPS_GRASS_RGB) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 					cy += iy;
@@ -138,7 +138,7 @@ public class ImageTools {
 					rgb = img.getRGB(cx, cy);
 					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == Config.MAPS_GRASS_RGB) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 					cx += ix;
