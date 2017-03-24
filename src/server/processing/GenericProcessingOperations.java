@@ -49,7 +49,7 @@ public class GenericProcessingOperations {
 			for (int northY = northHeight - CHECKING_PIXEL_DIMS; northY <  northHeight; northY++)
 			{
 				int swY = northY - (northHeight - CHECKING_PIXEL_DIMS);
-				err += (sw.getRGB(swX, swY) == north.getRGB(northX, northY) ? 0 : 1);
+				err += (Tools.colorIsCloseEnough(sw.getRGB(swX, swY), north.getRGB(northX, northY), 2) ? 0 : 1);
 			}
 		}
 		
@@ -90,7 +90,7 @@ public class GenericProcessingOperations {
 	
 	public static Point getNorthStitchDelta(BufferedImage southwestImage, BufferedImage northboundImage)
 	{
-		int yOverlap = 200;
+		int yOverlap = 130;
 		int lowestErrJiggle = 0;
 		int lowestErrOffset = 0;
 		int lowestError = Integer.MAX_VALUE;
@@ -111,7 +111,7 @@ public class GenericProcessingOperations {
 		
 
 		System.out.println("Optimal delta found as x=" + lowestErrJiggle +", y=" + lowestErrOffset + " with err " + lowestError);
-		return new Point(lowestErrJiggle, lowestErrOffset);
+		return new Point(-lowestErrJiggle, lowestErrOffset);
 	}
 
 	public static Point getNorthEastStitchDelta(BufferedImage southernImage, BufferedImage westernImage, BufferedImage northeastImage)
