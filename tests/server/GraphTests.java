@@ -113,7 +113,7 @@ public class GraphTests {
 
 	@Test
 	public void findPathTest() {
-		LatLng start = new LatLng(40.249493, -111.650878);
+		LatLng start = new LatLng(40.248904, -111.651412);
 		LatLng end = new LatLng(40.249121, -111.648808);
 
 		LatLng center = Tools.getCenter(start, end);
