@@ -4,10 +4,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import generic.objects.Building;
+import generic.objects.Entrance;
 import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
 import server.JSONTools;
+import server.dao.BuildingDAO;
 
 public class Graph extends WalkerObject {
 
@@ -136,6 +139,15 @@ public class Graph extends WalkerObject {
 					}
 				}
 			}
+		}
+	}
+
+	public void addEnterExit() {
+		BuildingDAO bd = new BuildingDAO();
+		List<Building> buildings = bd.getAll();
+		for (int i = 0; i < buildings.size(); i++) {
+			Building b = buildings.get(i);
+			List<Entrance> entrances = b.getResolvedEntrances();
 		}
 	}
 
