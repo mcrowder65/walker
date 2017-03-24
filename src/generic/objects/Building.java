@@ -1,5 +1,6 @@
 package generic.objects;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class Building extends WalkerObject {
 
 	public List<Entrance> getResolvedEntrances() {
 		if (resolvedEntrances == null && entrances != null) {
+			resolvedEntrances = new ArrayList<>();
 			for (String key : entrances.keySet()) {
 				Entrance entrance = (Entrance) Tools.firebase.get("entrances/" + key, new Entrance());
 				resolvedEntrances.add(entrance);
@@ -116,6 +118,8 @@ public class Building extends WalkerObject {
 	@Override
 	public String toString() {
 		return "Building [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + ", openingTime="
-				+ openingTime + ", closingTime=" + closingTime + ", entrances=" + entrances + "]";
+				+ openingTime + ", closingTime=" + closingTime + ", entrances=" + entrances + ", resolvedEntrances="
+				+ resolvedEntrances + "]";
 	}
+
 }
