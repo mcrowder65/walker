@@ -122,6 +122,7 @@ public class Graph extends WalkerObject {
 		totalCost = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
+				totalCost[i][j] = distance[i][j];
 				boolean g = grass[i][j];
 				boolean b = building[i][j];
 				if (up.getGrass() && g) {
