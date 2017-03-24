@@ -123,7 +123,6 @@ public class GraphTests {
 
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		BufferedImage img_clean = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
-
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
@@ -142,7 +141,10 @@ public class GraphTests {
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 
+		GraphTools.DrawRouteOnly(img_clean, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE);
+		Tools.WriteImage(img_clean, "testImages/final.png");
 		GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+
 		Tools.WriteImage(img_clean, "testImages/final.png");
 		// //
 	}
