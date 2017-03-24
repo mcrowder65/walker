@@ -123,13 +123,17 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				totalCost[i][j] = distance[i][j];
-				boolean g = grass[i][j];
-				boolean b = building[i][j];
-				if (up.getGrass() && g) {
-					totalCost[i][j] = Double.MAX_VALUE;
+				if (up.getGrass()) {
+					boolean g = grass[i][j];
+					if (g) {
+						totalCost[i][j] = Double.MAX_VALUE;
+					}
 				}
-				if (up.getBuildingWeight() && b) {
-					totalCost[i][j] = Double.MAX_VALUE;
+				if (up.getBuildingWeight()) {
+					boolean b = building[i][j];
+					if (b) {
+						totalCost[i][j] = Double.MAX_VALUE;
+					}
 				}
 			}
 		}
@@ -240,7 +244,7 @@ public class Graph extends WalkerObject {
 		return total;
 	}
 
-	public void setDistancesFromNodes() {
+	public void setDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int z = 0; z < nodes.size(); z++) {
@@ -260,6 +264,10 @@ public class Graph extends WalkerObject {
 					double latSqr = latDiff * latDiff;
 					double res = Math.sqrt(longSqr + latSqr);
 					distance[i][z] = res;
+					PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+					if (pc.building == true) {
+						distance[i][z] = Double.MAX_VALUE;
+					}
 				}
 			}
 		}
