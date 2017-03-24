@@ -137,16 +137,13 @@ public class GraphTests {
 		Tools.WriteImage(img, "testImages/b2.png");
 		g.setDistancesFromNodes();
 		g.generateMatrix(img, southwest, northeast);
-		// // UserPrefs up = new UserPrefs(1, 0, true, false, false, 0, false,
-		// // false);
-		// // g.sumMatricies(up);
-		// // List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g,
-		// // g.getEndIndex());
-		// // List<Node> nodesToDraw = g.getNodesFromPath(path);
-		// //
-		// // GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 3,
-		// // southwest, northeast, Color.ORANGE, g);
-		// // Tools.WriteImage(img_clean, "testImages/final.png");
+		UserPrefs up = new UserPrefs(1, 0, true, false, false, 0, false, false);
+		g.sumMatricies(up);
+		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
+		List<Node> nodesToDraw = g.getNodesFromPath(path);
+
+		GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+		Tools.WriteImage(img_clean, "testImages/final.png");
 		// //
 	}
 

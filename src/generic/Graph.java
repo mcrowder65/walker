@@ -67,6 +67,24 @@ public class Graph extends WalkerObject {
 		nodes.get(index).setStart(true);
 	}
 
+	public int getStartIndex() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isStart() == true) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public int getEndIndex() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isEnd() == true) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public void printNodes() {
 		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
@@ -91,12 +109,9 @@ public class Graph extends WalkerObject {
 					building[i][j] = false;
 					grass[i][j] = false;
 				}
-				
+
 				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node, southwest, northeast);
 				building[i][j] = pc.building;
-				if (pc.building == true || pc.grass) {
-					System.out.println("In here");
-				}
 				grass[i][j] = pc.grass;
 				building[i][j] = pc.building;
 			}
