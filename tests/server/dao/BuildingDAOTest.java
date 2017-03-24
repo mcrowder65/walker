@@ -1,4 +1,4 @@
-package fao;
+package server.dao;
 
 import java.io.FileInputStream;
 import java.util.List;
@@ -10,9 +10,9 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
 import generic.objects.Building;
-import server.fao.BuildingFAO;
+import server.dao.BuildingDAO;
 
-public class BuildingFAOTest {
+public class BuildingDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -23,7 +23,7 @@ public class BuildingFAOTest {
 
 	@Test
 	public void test() {
-		BuildingFAO buildingFAO = new BuildingFAO();
+		BuildingDAO buildingFAO = new BuildingDAO();
 		List<Building> buildings = buildingFAO.getAll();
 		for (int i = 0; i < buildings.size(); i++) {
 			buildings.get(i).getResolvedEntrances();
