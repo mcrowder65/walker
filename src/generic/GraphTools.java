@@ -217,6 +217,38 @@ public class GraphTools {
 		}
 	}
 
+	public static void DrawRouteOnly(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
+			LatLng southwest, LatLng northeast, Color lineColor) {
+
+		Point2D.Double prevPoint = APITools.getImagePointFromLatLng(nodes.get(0).getPosition(), southwest, northeast,
+				img.getWidth(), img.getHeight());
+		int startX = (int) prevPoint.getX() - nodePixelRadius;
+		int startY = (int) prevPoint.getY() - nodePixelRadius;
+		for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
+			for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
+				Tools.setImageRGB(img, x, y, Color.RED);
+			}
+		}
+		for (int i = 1; i < nodes.size(); i++) {
+			Point2D.Double p = APITools.getImagePointFromLatLng(nodes.get(i).getPosition(), southwest, northeast,
+					img.getWidth(), img.getHeight());
+			startX = (int) p.getX() - nodePixelRadius;
+			startY = (int) p.getY() - nodePixelRadius;
+			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
+				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
+					Tools.setImageRGB(img, x, y, Color.RED);
+				}
+			}
+			if (lineColor != null && prevPoint != null) {
+				Point2D.Double minX = p.x < prevPoint.x ? p : prevPoint;
+				Point2D.Double maxX = minX == prevPoint ? p : prevPoint;
+				bresenham2(img, minX, maxX, lineColor);
+			}
+
+			prevPoint = p;
+		}
+	}
+
 	public static void DrawLines(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor, Graph g) {
 		for (Node n : g.getNodes()) {
