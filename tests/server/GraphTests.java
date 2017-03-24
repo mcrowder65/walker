@@ -126,7 +126,8 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		List<Node> newNodes = GraphTools.GenerateUniformNodes(6, southwest, northeast);
+		List<Node> nodes = GraphTools.GenerateUniformNodes(12, southwest, northeast);
+		List<Node> newNodes = GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
 		Graph g = new Graph(null, null, newNodes);
 		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
 		int endNodeIndex = g.findClosestNodeIndex(new Node(end.latitude, end.longitude, null, false, true));
@@ -141,9 +142,9 @@ public class GraphTests {
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 
-		GraphTools.DrawRouteOnly(img_clean, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE);
+		GraphTools.DrawRouteOnly(img_clean, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE);
 		Tools.WriteImage(img_clean, "testImages/finalClean.png");
-		GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 3, southwest, northeast, Color.ORANGE, g);
+		GraphTools.DrawLines(img_clean, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
 
 		Tools.WriteImage(img_clean, "testImages/final.png");
 		// //

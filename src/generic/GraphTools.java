@@ -85,6 +85,23 @@ public class GraphTools {
 
 	}
 
+	public static List<Node> RemoveBuildingNodes(List<Node> nodes, BufferedImage img, LatLng southwest,
+			LatLng northeast) {
+		for (int i = 0; i < nodes.size(); i++) {
+			Node n = nodes.get(i);
+			Point2D.Double startPnt = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
+					img.getWidth(), img.getHeight());
+			int x = (int) startPnt.x;
+			int y = (int) startPnt.y;
+			int rgb = img.getRGB(x, y);
+			if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+				nodes.remove(i);
+				i--;
+			}
+		}
+		return nodes;
+	}
+
 	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
