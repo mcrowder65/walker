@@ -80,7 +80,7 @@ public class Graph extends WalkerObject {
 		nodes.get(index).setEnd(true);
 	}
 
-	public void generateMatrix(BufferedImage img) {
+	public void generateMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
 		building = new boolean[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -91,15 +91,14 @@ public class Graph extends WalkerObject {
 					building[i][j] = false;
 					grass[i][j] = false;
 				}
-				if (s_node.isStart() == true) {
-					System.out.println(i);
-				}
-				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node);
+				
+				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node, southwest, northeast);
 				building[i][j] = pc.building;
-				if (pc.building == true) {
+				if (pc.building == true || pc.grass) {
 					System.out.println("In here");
 				}
 				grass[i][j] = pc.grass;
+				building[i][j] = pc.building;
 			}
 		}
 	}
