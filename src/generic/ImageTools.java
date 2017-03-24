@@ -23,14 +23,7 @@ public class ImageTools {
 		System.out.println(vals);
 	}
 
-	public static PathConstituents analyzeImage(BufferedImage img, Node startNode, Node endNode) {
-		int zoom = APITools.getAppropriateZoom(startNode.getPosition(), endNode.getPosition(), img.getWidth(),
-				img.getHeight());
-		LatLng center = Tools.getCenter(startNode.getPosition(), endNode.getPosition());
-		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
-		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, img.getWidth(), img.getHeight());
-		LatLng northeast = APITools.getNortheast(center, metersPerPixel, img.getWidth(), img.getHeight());
-
+	public static PathConstituents analyzeImage(BufferedImage img, Node startNode, Node endNode, LatLng southwest, LatLng northeast) {
 		Point2D.Double startPnt = APITools.getImagePointFromLatLng(startNode.getPosition(), southwest, northeast,
 				img.getWidth(), img.getHeight());
 		Point2D.Double endPnt = APITools.getImagePointFromLatLng(endNode.getPosition(), southwest, northeast,
@@ -41,8 +34,12 @@ public class ImageTools {
 		int x2 = (int) endPnt.x;
 		int y2 = (int) endPnt.y;
 
-		// int rgbEnd = img.getRGB(x2, y2);
+		// if (startNode.isStart() == true) {
+		// int rgbEnd = img.getRGB(x1, y1);
 		// System.out.println(rgbEnd);
+		// System.out.println(x1);
+		// System.out.println(y1);
+		// }
 
 		int cx, cy, ix, iy, dx, dy, ddx = x2 - x1, ddy = y2 - y1;
 		PathConstituents path = new PathConstituents(false, false, false, false, 0);
@@ -54,9 +51,9 @@ public class ImageTools {
 				do {
 
 					rgb = img.getRGB(x1, cy++);
-					if (rgb == -65536) {
+					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == -3414877) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (cy <= y2);
@@ -66,9 +63,9 @@ public class ImageTools {
 				int rgb = -1;
 				do {
 					rgb = img.getRGB(x1, cy++);
-					if (rgb == -65536) {
+					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == -3414877) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (cy <= y1);
@@ -81,9 +78,9 @@ public class ImageTools {
 				int rgb = -1;
 				do {
 					rgb = img.getRGB(cx, y1);
-					if (rgb == -65536) {
+					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == -3414877) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (++cx <= x2);
@@ -93,9 +90,9 @@ public class ImageTools {
 				int rgb = -1;
 				do {
 					rgb = img.getRGB(cx, y1);
-					if (rgb == -65536) {
+					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == -3414877) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 				} while (++cx <= x1);
@@ -123,9 +120,9 @@ public class ImageTools {
 				int rgb = -1;
 				do {
 					rgb = img.getRGB(cx, cy);
-					if (rgb == -65536) {
+					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == -3479901) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 					cy += iy;
@@ -139,9 +136,9 @@ public class ImageTools {
 				int rgb = -1;
 				do {
 					rgb = img.getRGB(cx, cy);
-					if (rgb == -65536) {
+					if (Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.building = true;
-					} else if (rgb == -3414877) {
+					} else if (Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
 						path.grass = true;
 					}
 					cx += ix;

@@ -67,11 +67,40 @@ public class Graph extends WalkerObject {
 		nodes.get(index).setStart(true);
 	}
 
+	public int getStartIndex() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isStart() == true) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public int getEndIndex() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isEnd() == true) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public void printNodes() {
+		for (int i = 0; i < nodes.size(); i++) {
+			Node n = nodes.get(i);
+			if (n.isStart() == true) {
+				System.out.println(i);
+			}
+		}
+	}
+
 	public void setEndNode(int index) {
 		nodes.get(index).setEnd(true);
 	}
 
-	public void generateMatrix(BufferedImage img) {
+	public void generateMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
+		building = new boolean[nodes.size()][nodes.size()];
+		grass = new boolean[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				Node s_node = nodes.get(i);
@@ -80,16 +109,20 @@ public class Graph extends WalkerObject {
 					building[i][j] = false;
 					grass[i][j] = false;
 				}
-				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node);
+
+				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node, southwest, northeast);
 				building[i][j] = pc.building;
 				grass[i][j] = pc.grass;
+				building[i][j] = pc.building;
 			}
 		}
 	}
 
 	public void sumMatricies(UserPrefs up) {
+		totalCost = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
+				totalCost[i][j] = distance[i][j];
 				boolean g = grass[i][j];
 				boolean b = building[i][j];
 				if (up.getGrass() && g) {
@@ -266,9 +299,14 @@ public class Graph extends WalkerObject {
 		return getElevation()[startNode][endNode];
 	}
 
+	// public double getCost(int startNode, int endNode, UserPrefs prefs) {
+	// return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) *
+	// prefs.getDistanceWeight() : 0)
+	// + (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) *
+	// prefs.getElevationWeight() : 0);
+	// }
 	public double getCost(int startNode, int endNode, UserPrefs prefs) {
-		return (prefs.getDistanceWeight() > 0 ? getDistance(startNode, endNode) * prefs.getDistanceWeight() : 0)
-				+ (prefs.getElevationWeight() > 0 ? getElevation(startNode, endNode) * prefs.getElevationWeight() : 0);
+		return totalCost[startNode][endNode];
 	}
 
 	public List<Double> getDistanceList(int startNode) {
