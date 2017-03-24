@@ -366,7 +366,7 @@ public class APITools {
 		LatLng cornerPivotCenter = Tools.getCenter(southwest, cornerPivotNE);
 		BufferedImage cornerPivotImage = APITools.DownloadStaticMapImage(cornerPivotCenter, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite, null);
 		cornerPivotImage = Tools.ClipLogo(cornerPivotImage);
-		
+		//Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) + ".png");
 		Point throwawayPoint = new Point();
 		HashMap<Point, BufferedImage> lonByLatImages = new HashMap<Point, BufferedImage>();
 		lonByLatImages.put(new Point(0,0), cornerPivotImage);
@@ -398,7 +398,7 @@ public class APITools {
 				sliceImg = Tools.ClipLogo(sliceImg);
 				throwawayPoint.x = iterX; throwawayPoint.y = iterY;
 				lonByLatImages.put(new Point(iterX, iterY), sliceImg);
-
+				//Tools.WriteImage(sliceImg, "testImages/SLICETEST_" + (++counterTEMP) + ".png");
 				System.out.println("slice w: " + sliceImg.getWidth() + ", slice h: " + sliceImg.getHeight());
 
 				Point delta;
@@ -425,7 +425,7 @@ public class APITools {
 				int startDrawX = Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS * iterX - delta.x;
 				int startDrawY = totalImage.getHeight() - (sliceImg.getHeight() * iterY - delta.y) - sliceImg.getHeight();
 				Tools.DrawOnImage(totalImage, sliceImg, startDrawX, startDrawY);
-				Tools.WriteImage(totalImage, "testImages/TOTALTEST_" + (++counterTEMP) + ".png");
+				//Tools.WriteImage(totalImage, "testImages/TOTALTEST_" + (counterTEMP) + ".png");
 				
 				/*
 				Point startPoint;
