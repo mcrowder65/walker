@@ -8,6 +8,7 @@ import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
 import server.JSONTools;
+import server.dao.GraphFirebaseWrapper;
 
 public class Graph extends WalkerObject {
 
@@ -19,27 +20,115 @@ public class Graph extends WalkerObject {
 	private boolean[][] parking;
 	private double[][] stairs;
 	private double[][] totalCost;
-
+	private String name;
 	private List<Node> nodes;
 
-	public List<String> getDistancesChanged() {
-		return null;
+	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
+		super();
+		this.setId(graphFirebaseWrapper.getId());
+		distance = convertToDoubles(graphFirebaseWrapper.getDistance());
+		elevation = convertToDoubles(graphFirebaseWrapper.getElevation());
+		grass = convertToBooleans(graphFirebaseWrapper.getGrass());
+		wilderness = convertToBooleans(graphFirebaseWrapper.getWilderness());
+		building = convertToBooleans(graphFirebaseWrapper.getBuilding());
+		parking = convertToBooleans(graphFirebaseWrapper.getParking());
+		stairs = convertToDoubles(graphFirebaseWrapper.getStairs());
+		name = graphFirebaseWrapper.getName();
+		nodes = graphFirebaseWrapper.getNodes();
 	}
 
-	public List<String> getElevationsChanged() {
-		return null;
+	private double[][] convertToDoubles(List<String> list) {
+		double[][] matrix = new double[list.size()][list.size()];
+		for (int x = 0; x < list.size(); x++) {
+			String[] arr = list.get(x).split(",");
+			for (int y = 0; y < arr.length; y++) {
+				matrix[x][y] = Double.valueOf(arr[y]);
+			}
+		}
+		return matrix;
 	}
 
-	public void setDistancesChanged(List<String> distancesChanged) {
-		this.distancesChanged = distancesChanged;
+	private boolean[][] convertToBooleans(List<String> list) {
+		boolean[][] matrix = new boolean[list.size()][list.size()];
+		for (int x = 0; x < list.size(); x++) {
+			String[] arr = list.get(x).split(",");
+			for (int y = 0; y < arr.length; y++) {
+				matrix[x][y] = Boolean.getBoolean(arr[y]);
+			}
+		}
+		return matrix;
 	}
 
-	public void setElevationsChanged(List<String> elevationsChanged) {
-		this.elevationsChanged = elevationsChanged;
+	public Graph(double[][] distance, double[][] elevation, boolean[][] grass, boolean[][] wilderness,
+			boolean[][] building, boolean[][] parking, double[][] stairs, double[][] totalCost, String name,
+			List<Node> nodes) {
+		this.distance = distance;
+		this.elevation = elevation;
+		this.grass = grass;
+		this.wilderness = wilderness;
+		this.building = building;
+		this.parking = parking;
+		this.stairs = stairs;
+		this.totalCost = totalCost;
+		this.name = name;
+		this.nodes = nodes;
 	}
 
-	private List<String> distancesChanged;
-	private List<String> elevationsChanged;
+	public boolean[][] getGrass() {
+		return grass;
+	}
+
+	public void setGrass(boolean[][] grass) {
+		this.grass = grass;
+	}
+
+	public boolean[][] getWilderness() {
+		return wilderness;
+	}
+
+	public void setWilderness(boolean[][] wilderness) {
+		this.wilderness = wilderness;
+	}
+
+	public boolean[][] getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(boolean[][] building) {
+		this.building = building;
+	}
+
+	public boolean[][] getParking() {
+		return parking;
+	}
+
+	public void setParking(boolean[][] parking) {
+		this.parking = parking;
+	}
+
+	public double[][] getStairs() {
+		return stairs;
+	}
+
+	public void setStairs(double[][] stairs) {
+		this.stairs = stairs;
+	}
+
+	public double[][] getTotalCost() {
+		return totalCost;
+	}
+
+	public void setTotalCost(double[][] totalCost) {
+		this.totalCost = totalCost;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Graph(double[][] distance, double[][] elevation, List<Node> nodes) {
 		this.distance = distance;
@@ -186,28 +275,10 @@ public class Graph extends WalkerObject {
 	}
 
 	public double[][] getElevation() {
-		if (elevation == null && elevationsChanged != null) {
-			elevation = new double[elevationsChanged.size()][elevationsChanged.size()];
-			for (int x = 0; x < elevationsChanged.size(); x++) {
-				String[] arr = elevationsChanged.get(x).split(",");
-				for (int y = 0; y < arr.length; y++) {
-					elevation[x][y] = Double.valueOf(arr[y]);
-				}
-			}
-		}
 		return elevation;
 	}
 
 	public double[][] getDistance() {
-		if (distance == null && distancesChanged != null) {
-			distance = new double[distancesChanged.size()][distancesChanged.size()];
-			for (int x = 0; x < distancesChanged.size(); x++) {
-				String[] arr = distancesChanged.get(x).split(",");
-				for (int y = 0; y < arr.length; y++) {
-					distance[x][y] = Double.valueOf(arr[y]);
-				}
-			}
-		}
 		return distance;
 	}
 
@@ -332,68 +403,6 @@ public class Graph extends WalkerObject {
 
 	public void setElevation(double[][] elevation) {
 		this.elevation = elevation;
-	}
-
-	public List<String> convert(double[][] matrix) {
-
-		List<String> temp = new ArrayList<>();
-		for (int x = 0; x < matrix.length; x++) {
-			StringBuilder str = new StringBuilder();
-			for (int y = 0; y < matrix[0].length; y++) {
-				if (y != matrix[0].length - 1) {
-					str.append(String.valueOf(matrix[x][y]) + ",");
-				} else {
-					str.append(String.valueOf(matrix[x][y]));
-				}
-			}
-			temp.add(str.toString());
-		}
-		return temp;
-	}
-
-	public void prepareForFirebase() {
-		this.distancesChanged = this.convert(this.distance);
-
-		this.elevationsChanged = this.convert(this.elevation);
-		if (!isEqual(this.distancesChanged, this.distance)) {
-			System.err.println("distancesChanged and distance not equal!");
-		}
-		if (!isEqual(this.elevationsChanged, this.elevation)) {
-			System.err.println("elevationsChanged and elevation are not equal!");
-		}
-		this.distance = null;
-
-		this.elevation = null;
-	}
-
-	private boolean isEqual(List<String> list, double[][] matrix) {
-		if (list == null || matrix == null) {
-			return false;
-		}
-		for (int x = 0; x < list.size(); x++) {
-			String[] values = list.get(x).split(",");
-			for (int y = 0; y < values.length; y++) {
-				double value = Double.valueOf(values[y]);
-				if (value != matrix[x][y]) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	public List<String> distancesChanged() {
-		if (distancesChanged == null) {
-			this.distancesChanged = new ArrayList<>();
-		}
-		return distancesChanged;
-	}
-
-	public List<String> elevationsChanged() {
-		if (elevationsChanged == null) {
-			this.elevationsChanged = new ArrayList<>();
-		}
-		return elevationsChanged;
 	}
 
 	@Override

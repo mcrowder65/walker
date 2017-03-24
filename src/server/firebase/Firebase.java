@@ -10,8 +10,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import generic.Graph;
 import generic.objects.WalkerObject;
+import server.dao.GraphFirebaseWrapper;
 
 public class Firebase {
 
@@ -146,27 +146,23 @@ public class Firebase {
 		this.set(setIdPath, id);
 	}
 
-	public void createGraph(String path, Graph graph) {
+	public void createGraph(String path, GraphFirebaseWrapper graph) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);
 		DatabaseReference pushedRef = ref.push();
-		Graph g = new Graph(graph.getDistance(), graph.getElevation(), graph.getNodes());
-		g.prepareForFirebase();
-		System.out.println("distances length: " + g.distancesChanged().size());
-		pushedRef.setValue(g);
-
+		pushedRef.setValue(graph);
 		String id = pushedRef.getKey();
-		System.out.println("id: " + id);
 
 		String setIdPath = path + "/" + id + "/id";
-		this.set(setIdPath, id);
+		set(setIdPath, id);
 
 		String setDistancesChangedPath = path + "/" + id + "/distancesChanged";
-		this.set(setDistancesChangedPath, g.distancesChanged());
-		String setElevationsChangedPath = path + "/" + id + "/elevationsChanged";
-		this.set(setElevationsChangedPath, g.elevationsChanged());
-		System.out.println("set some distances and elevations!");
-
+		// this.set(setDistancesChangedPath, g.distancesChanged());
+		// String setElevationsChangedPath = path + "/" + id +
+		// "/elevationsChanged";
+		// this.set(setElevationsChangedPath, g.elevationsChanged());
+		// System.out.println("set some distances and elevations!");
+		// TODO do me
 	}
 
 	public void delete(String path) {
