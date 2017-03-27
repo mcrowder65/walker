@@ -263,6 +263,20 @@ public class Graph extends WalkerObject {
 		return total;
 	}
 
+	public double checkEntrences(Node start, Node end) {
+
+		if (start.getBuilding() == end.getBuilding()) {
+			LatLng locStartNode = start.getPosition();
+			LatLng locEndNode = end.getPosition();
+			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+			double dist = longDiff + latDiff;
+			return dist;
+		}
+		return -1;
+
+	}
+
 	public void setDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -275,17 +289,24 @@ public class Graph extends WalkerObject {
 				} else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
-					LatLng locStartNode = startNode.getPosition();
-					LatLng locEndNode = endNode.getPosition();
-					double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-					double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
-					double longSqr = longDiff * longDiff;
-					double latSqr = latDiff * latDiff;
-					double res = Math.sqrt(longSqr + latSqr);
-					distance[i][z] = res;
-					PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
-					if (pc.building == true) {
-						distance[i][z] = Double.MAX_VALUE;
+					double checkRes = checkEntrences(startNode, endNode);
+					if (checkRes != -1) {
+						distance[i][z] = checkRes;
+					} else {
+						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+						if (pc.building == true) {
+							distance[i][z] = Double.MAX_VALUE;
+						} else {
+							LatLng locStartNode = startNode.getPosition();
+							LatLng locEndNode = endNode.getPosition();
+							double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+							double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+							double longSqr = longDiff * longDiff;
+							double latSqr = latDiff * latDiff;
+							double res = Math.sqrt(longSqr + latSqr);
+							distance[i][z] = res;
+						}
+
 					}
 				}
 			}
