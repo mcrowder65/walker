@@ -2,10 +2,14 @@ package server;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
 import generic.Config;
+import generic.Graph;
+import generic.GraphTools;
+import generic.Node;
 import generic.Tools;
 import googlemaps.LatLng;
 import server.processing.ColorOperations;
@@ -104,9 +108,24 @@ public class ProcessingTests {
 		BufferedImage roadmap = server.APITools.DownloadStaticMapImage(buildingPoint, endPoint, sizeX, sizeY, zoom,
 				false);
 		Tools.WriteImage(roadmap, "testImages/roadmapTest4andaHalf.png");
+		
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+		
+		
+		
+//		Node node = new Node(buildingPoint);
+//		Graph g = new Graph();
+//		g.setNodes(new ArrayList<Node>());
+//		g.addNode(node);
+//		
+//		GraphTools.WriteGraphToImage(roadmap, g, Color.BLUE, 2, southwest, northeast);
+//		Tools.WriteImage(roadmap, "testImages/roadmapTest4AndThreeQuarters.png");
+		
+		
+		
+	
 		BufferedImage filled = ColorOperations.filledImage(roadmap, new Color(Config.MAPS_BUILDING_RGB), southwest, northeast, buildingPoint);
 
 		Tools.WriteImage(filled, "testImages/roadmapTest4.png");
