@@ -148,6 +148,13 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < buildings.size(); i++) {
 			Building b = buildings.get(i);
 			List<Entrance> entrances = b.getResolvedEntrances();
+			for (int j = 0; j < entrances.size(); j++) {
+				Entrance entrance = entrances.get(j);
+				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+				Node n = new Node(position, b);
+				this.nodes.add(n);
+			}
+
 		}
 	}
 
