@@ -46,9 +46,9 @@ public class GenericProcessingOperations {
 		for (int northX = halfWidth - (AOI / 2) + xJiggle; northX < halfWidth + (AOI / 2) + xJiggle; northX++)
 		{
 			int swX = northX - xJiggle;
-			for (int northY = northHeight - CHECKING_PIXEL_DIMS; northY <  northHeight; northY++)
+			for (int northY = northHeight - CHECKING_PIXEL_DIMS - yOverlap; northY <  northHeight - yOverlap; northY++)
 			{
-				int swY = northY - (northHeight - CHECKING_PIXEL_DIMS);
+				int swY = northY - (northHeight - CHECKING_PIXEL_DIMS) + yOverlap;
 				err += (Tools.colorIsCloseEnough(sw.getRGB(swX, swY), north.getRGB(northX, northY), 2) ? 0 : 1);
 			}
 		}
@@ -63,38 +63,38 @@ public class GenericProcessingOperations {
 	
 	public static Point getEastStitchDelta(BufferedImage southwestImage, BufferedImage eastboundImage)
 	{
-		int xOverlap = 100;
+		int xOverlap = 600;
 		int lowestErrJiggle = 0;
 		int lowestErrOffset = 0;
 		int lowestError = Integer.MAX_VALUE;
-		
+		int jigg = 0;
 		while (xOverlap > CHECKING_PIXEL_DIMS)
 		{
-			for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
-			{			
+			//for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
+			//{			
 				int err=  eastPixelError(southwestImage, eastboundImage, xOverlap, jigg);
 				if (err < lowestError) {
 					lowestError = err;
 					lowestErrOffset = xOverlap;
-					lowestErrJiggle = jigg;
+					//lowestErrJiggle = jigg;
 				}
-			}
+			//}
 			xOverlap--;
 		}
 		
 		System.out.println("Optimal delta found as x=" + lowestErrOffset +", y=" + lowestErrJiggle + " with err " + lowestError);
 
-		return new Point(lowestErrOffset, lowestErrJiggle);
+		return new Point(lowestErrOffset, 0);
 		
 	}
 	
 	public static Point getNorthStitchDelta(BufferedImage southwestImage, BufferedImage northboundImage)
 	{
-		int yOverlap = 130;
+		int yOverlap = 300;
 		int lowestErrJiggle = 0;
 		int lowestErrOffset = 0;
 		int lowestError = Integer.MAX_VALUE;
-		
+		//int jigg = 0;
 		while (yOverlap > CHECKING_PIXEL_DIMS)
 		{
 			for (int jigg = -JIGGLE_ROOM; jigg <= JIGGLE_ROOM; jigg++)
@@ -103,7 +103,7 @@ public class GenericProcessingOperations {
 				if (err < lowestError) {
 					lowestError = err;
 					lowestErrOffset = yOverlap;
-					lowestErrJiggle = jigg;
+					//lowestErrJiggle = jigg;
 				}
 			}
 			yOverlap--;
@@ -133,6 +133,6 @@ public class GenericProcessingOperations {
 			}
 			yOverlap--;
 		}
-		return new Point(lowestErrXOverlap, lowestErrYOverlap);
+		return new Point(lowestErrXOverlap, 0);
 	}
 }

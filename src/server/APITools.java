@@ -366,7 +366,7 @@ public class APITools {
 		LatLng cornerPivotCenter = Tools.getCenter(southwest, cornerPivotNE);
 		BufferedImage cornerPivotImage = APITools.DownloadStaticMapImage(cornerPivotCenter, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite, null);
 		cornerPivotImage = Tools.ClipLogo(cornerPivotImage);
-		//Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) + ".png");
+		Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) + ".png");
 		Point throwawayPoint = new Point();
 		HashMap<Point, BufferedImage> lonByLatImages = new HashMap<Point, BufferedImage>();
 		lonByLatImages.put(new Point(0,0), cornerPivotImage);
@@ -375,13 +375,22 @@ public class APITools {
 		int xDeltaMemory = 0;
 		int yDeltaMemory = 0;
 		
-		for (double spannedMetersLat = 0; spannedMetersLat < totalSpanningMetersLat; spannedMetersLat += metersSliceLat, iterY++)
+		
+		int prevStartY = totalImage.getHeight() - 1;
+		int prevEndX = 0;
+		
+		for (double spannedMetersLat = 0;; spannedMetersLat += metersSliceLat, iterY++)
 		{
+			if (prevStartY <= 0) break;
+			
 			currSouthwest.latitude = APITools.metersToLat(southwest, spannedMetersLat);
 			currNortheast.latitude = APITools.metersToLat(currSouthwest, metersSliceLat);
 			iterX = 0;
+			prevEndX = 0;
 			
-			for (double spannedMetersLon = 0; spannedMetersLon < totalSpanningMetersLon; spannedMetersLon += metersSliceLon, iterX++) {
+			
+			
+			for (double spannedMetersLon = 0;; spannedMetersLon += metersSliceLon, iterX++) {
 				
 				if (iterX == 0 && iterY == 0) continue;
 				
@@ -422,10 +431,19 @@ public class APITools {
 				
 				
 				
-				int startDrawX = Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS * iterX - delta.x;
-				int startDrawY = totalImage.getHeight() - (sliceImg.getHeight() * iterY - delta.y) - sliceImg.getHeight();
-				Tools.DrawOnImage(totalImage, sliceImg, startDrawX, startDrawY);
+				int startDrawX = (Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS * iterX) - (xDeltaMemory * iterX);
+				int posHeight = sliceImg.getHeight() - yDeltaMemory;
+				int startDrawY = totalImage.getHeight() - (posHeight * iterY) - (sliceImg.getHeight())   + (iterY * 4);
+ 				Tools.DrawOnImage(totalImage, sliceImg, startDrawX, startDrawY);
 				//Tools.WriteImage(totalImage, "testImages/TOTALTEST_" + (counterTEMP) + ".png");
+				
+				
+				
+				
+				prevStartY = startDrawY;
+				prevEndX = (startDrawX + sliceImg.getWidth());
+				
+				if (prevEndX >= totalImage.getWidth()) break;
 				
 				/*
 				Point startPoint;
