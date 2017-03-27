@@ -126,7 +126,7 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		List<Node> nodes = GraphTools.GenerateUniformNodes(12, southwest, northeast);
+		List<Node> nodes = GraphTools.GenerateUniformNodes(48, southwest, northeast);
 		List<Node> newNodes = GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
 		Graph g = new Graph(null, null, newNodes);
 		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
@@ -135,6 +135,7 @@ public class GraphTests {
 		g.setEndNode(endNodeIndex);
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		Tools.WriteImage(img, "testImages/b2.png");
+		g.addEnterExit();
 		g.setDistancesFromNodes(img, southwest, northeast);
 		// g.generateMatrix(img, southwest, northeast);
 		UserPrefs up = new UserPrefs(1, 0, false, false, false, 0, false, false);

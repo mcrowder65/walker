@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import generic.Tools;
-import server.JSONTools;
 
 public class Building extends WalkerObject {
 	private double latitude;
@@ -107,12 +106,6 @@ public class Building extends WalkerObject {
 
 	public Building() {
 
-	}
-
-	public String toJson() {
-
-		String jsonString = JSONTools.g.toJson(this);
-		return jsonString;
 	}
 
 	@Override

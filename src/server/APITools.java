@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import org.json.JSONObject;
 
 import generic.Config;
 import generic.Node;
-import generic.StaticMapResult;
 import generic.Tools;
 import googlemaps.LatLng;
 import server.processing.GenericProcessingOperations;
@@ -233,7 +231,7 @@ public class APITools {
 
 	public static Point2D.Double getImagePointFromLatLng(LatLng location, LatLng southwest, LatLng northeast, int sizeX,
 			int sizeY) {
-		return getImagePointFromLatLng(location, southwest, northeast, sizeX, sizeY, false);
+		return getImagePointFromLatLng(location, southwest, northeast, sizeX, sizeY, true);
 	}
 
 	public static Point2D.Double getImagePointFromLatLng(LatLng location, LatLng southwest, LatLng northeast, int sizeX,
@@ -362,18 +360,27 @@ public class APITools {
 		int spacingX = -1;
 		int spacingY = -1;
 
-		LatLng cornerPivotNE = new LatLng(APITools.metersToLat(southwest, metersSliceLat), APITools.metersToLon(southwest, metersSliceLon));
+		LatLng cornerPivotNE = new LatLng(APITools.metersToLat(southwest, metersSliceLat),
+				APITools.metersToLon(southwest, metersSliceLon));
 		LatLng cornerPivotCenter = Tools.getCenter(southwest, cornerPivotNE);
-		BufferedImage cornerPivotImage = APITools.DownloadStaticMapImage(cornerPivotCenter, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite, null);
+		BufferedImage cornerPivotImage = APITools.DownloadStaticMapImage(cornerPivotCenter,
+				Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite,
+				null);
 		cornerPivotImage = Tools.ClipLogo(cornerPivotImage);
+<<<<<<< HEAD
 		Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) + ".png");
+=======
+		// Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) +
+		// ".png");
+>>>>>>> 1639d1c65382c31c4aa818bc2a43f9284e6ed560
 		Point throwawayPoint = new Point();
 		HashMap<Point, BufferedImage> lonByLatImages = new HashMap<Point, BufferedImage>();
-		lonByLatImages.put(new Point(0,0), cornerPivotImage);
+		lonByLatImages.put(new Point(0, 0), cornerPivotImage);
 		Tools.DrawOnImage(totalImage, cornerPivotImage, 0, totalImage.getHeight() - cornerPivotImage.getHeight());
-		
+
 		int xDeltaMemory = 0;
 		int yDeltaMemory = 0;
+<<<<<<< HEAD
 		
 		
 		int prevStartY = totalImage.getHeight() - 1;
@@ -395,40 +402,55 @@ public class APITools {
 				if (iterX == 0 && iterY == 0) continue;
 				
 				
+=======
+
+		for (double spannedMetersLat = 0; spannedMetersLat < totalSpanningMetersLat; spannedMetersLat += metersSliceLat, iterY++) {
+			currSouthwest.latitude = APITools.metersToLat(southwest, spannedMetersLat);
+			currNortheast.latitude = APITools.metersToLat(currSouthwest, metersSliceLat);
+			iterX = 0;
+
+			for (double spannedMetersLon = 0; spannedMetersLon < totalSpanningMetersLon; spannedMetersLon += metersSliceLon, iterX++) {
+
+				if (iterX == 0 && iterY == 0)
+					continue;
+
+>>>>>>> 1639d1c65382c31c4aa818bc2a43f9284e6ed560
 				currSouthwest.longitude = APITools.metersToLon(southwest, spannedMetersLon);
 				currNortheast.longitude = APITools.metersToLon(currSouthwest, metersSliceLon);
 				LatLng currCenter = Tools.getCenter(currSouthwest, currNortheast);
 
-			    currCenter.longitude -= (0.001 * iterX);
+				currCenter.longitude -= (0.001 * iterX);
 				currCenter.latitude -= (0.001 * iterY);
-				
-				
-				BufferedImage sliceImg = APITools.DownloadStaticMapImage(currCenter, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite, null);
+
+				BufferedImage sliceImg = APITools.DownloadStaticMapImage(currCenter,
+						Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom,
+						isSatellite, null);
 				sliceImg = Tools.ClipLogo(sliceImg);
-				throwawayPoint.x = iterX; throwawayPoint.y = iterY;
+				throwawayPoint.x = iterX;
+				throwawayPoint.y = iterY;
 				lonByLatImages.put(new Point(iterX, iterY), sliceImg);
-				//Tools.WriteImage(sliceImg, "testImages/SLICETEST_" + (++counterTEMP) + ".png");
+				// Tools.WriteImage(sliceImg, "testImages/SLICETEST_" +
+				// (++counterTEMP) + ".png");
 				System.out.println("slice w: " + sliceImg.getWidth() + ", slice h: " + sliceImg.getHeight());
 
 				Point delta;
-				if (iterX == 0)
-				{
-					throwawayPoint.x = 0; throwawayPoint.y = iterY - 1;
-					delta = GenericProcessingOperations.getNorthStitchDelta(lonByLatImages.get(throwawayPoint), sliceImg);
+				if (iterX == 0) {
+					throwawayPoint.x = 0;
+					throwawayPoint.y = iterY - 1;
+					delta = GenericProcessingOperations.getNorthStitchDelta(lonByLatImages.get(throwawayPoint),
+							sliceImg);
 					yDeltaMemory = delta.y;
-				}
-				else if (iterY == 0)
-				{
-					throwawayPoint.x = iterX - 1; throwawayPoint.y = 0;
-					delta = GenericProcessingOperations.getEastStitchDelta(lonByLatImages.get(throwawayPoint), sliceImg);
+				} else if (iterY == 0) {
+					throwawayPoint.x = iterX - 1;
+					throwawayPoint.y = 0;
+					delta = GenericProcessingOperations.getEastStitchDelta(lonByLatImages.get(throwawayPoint),
+							sliceImg);
 					xDeltaMemory = delta.x;
-				}
-				else
-				{
+				} else {
 					delta = new Point(xDeltaMemory, yDeltaMemory);
-					
+
 				}
-				
+
 				
 				
 				int startDrawX = (Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS * iterX) - (xDeltaMemory * iterX);
@@ -444,41 +466,43 @@ public class APITools {
 				prevEndX = (startDrawX + sliceImg.getWidth());
 				
 				if (prevEndX >= totalImage.getWidth()) break;
-				
+
 				/*
-				Point startPoint;
-				Point endPoint;
-				
-				if (spacingX == -1) {
-					startPoint = APITools.getImagePointFromLatLngNorm(currSouthwest, southwest, northeast, imageWidth,
-							imageHeight);
-					LatLng boundedNortheast = new LatLng(Math.min(northeast.latitude, currNortheast.latitude),
-							Math.min(northeast.longitude, currNortheast.longitude));
-					endPoint = APITools.getImagePointFromLatLngNorm(boundedNortheast, southwest, northeast, imageWidth,
-							imageHeight);
-					spacingX = (int) (endPoint.x - startPoint.x);
-					spacingY = (int) (startPoint.y - endPoint.y);
-				} else {
-					startPoint = new Point(spacingX * iterX, (imageHeight - 1) - spacingY * iterY);
-					endPoint = new Point(Math.min(spacingX * (iterX + 1), imageWidth - 1),
-							Math.max((imageHeight - 1) - spacingY * (iterY + 1), 0));
-				}
-*/
+				 * Point startPoint; Point endPoint;
+				 * 
+				 * if (spacingX == -1) { startPoint =
+				 * APITools.getImagePointFromLatLngNorm(currSouthwest,
+				 * southwest, northeast, imageWidth, imageHeight); LatLng
+				 * boundedNortheast = new LatLng(Math.min(northeast.latitude,
+				 * currNortheast.latitude), Math.min(northeast.longitude,
+				 * currNortheast.longitude)); endPoint =
+				 * APITools.getImagePointFromLatLngNorm(boundedNortheast,
+				 * southwest, northeast, imageWidth, imageHeight); spacingX =
+				 * (int) (endPoint.x - startPoint.x); spacingY = (int)
+				 * (startPoint.y - endPoint.y); } else { startPoint = new
+				 * Point(spacingX * iterX, (imageHeight - 1) - spacingY *
+				 * iterY); endPoint = new Point(Math.min(spacingX * (iterX + 1),
+				 * imageWidth - 1), Math.max((imageHeight - 1) - spacingY *
+				 * (iterY + 1), 0)); }
+				 */
 
+				// if ((int)(endPoint.x - startPoint.x) == spacingX &&
+				// (int)(startPoint.y - endPoint.y) == spacingY)
+				// Tools.DrawOnImage(totalImage, sliceImg, (int)startPoint.x,
+				// (int)endPoint.y, true);
+				// else
+				// {
+				// int trueHeight = (int)(startPoint.y - endPoint.y);
+				// int trueWidth = (int)(endPoint.x - startPoint.x);
 
-				
-				//if ((int)(endPoint.x - startPoint.x) == spacingX && (int)(startPoint.y - endPoint.y) == spacingY)
-				//	Tools.DrawOnImage(totalImage, sliceImg, (int)startPoint.x, (int)endPoint.y, true);
-				//else
-				//{
-					//int trueHeight = (int)(startPoint.y - endPoint.y);
-					//int trueWidth = (int)(endPoint.x - startPoint.x);
-					
-					//BufferedImage trueCrop = sliceImg.getSubimage(0, sliceImg.getHeight() - trueHeight, trueWidth, trueHeight);
-					//Tools.DrawOnImage(totalImage, trueCrop, (int)startPoint.x, (int)endPoint.y, true);
-				//}
-				//Tools.WriteImage(totalImage, "testImages/TOTALTEST_" + (counterTEMP) + ".png");
-				
+				// BufferedImage trueCrop = sliceImg.getSubimage(0,
+				// sliceImg.getHeight() - trueHeight, trueWidth, trueHeight);
+				// Tools.DrawOnImage(totalImage, trueCrop, (int)startPoint.x,
+				// (int)endPoint.y, true);
+				// }
+				// Tools.WriteImage(totalImage, "testImages/TOTALTEST_" +
+				// (counterTEMP) + ".png");
+
 			}
 		}
 		return totalImage;
