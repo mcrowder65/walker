@@ -367,12 +367,9 @@ public class APITools {
 				Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, Config.GOOGLE_MAX_IMAGE_DIMENSIONS_PIXELS, zoom, isSatellite,
 				null);
 		cornerPivotImage = Tools.ClipLogo(cornerPivotImage);
-<<<<<<< HEAD
+
 		Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) + ".png");
-=======
-		// Tools.WriteImage(cornerPivotImage, "testImages/SLICETEST_" + (0) +
-		// ".png");
->>>>>>> 1639d1c65382c31c4aa818bc2a43f9284e6ed560
+
 		Point throwawayPoint = new Point();
 		HashMap<Point, BufferedImage> lonByLatImages = new HashMap<Point, BufferedImage>();
 		lonByLatImages.put(new Point(0, 0), cornerPivotImage);
@@ -380,8 +377,7 @@ public class APITools {
 
 		int xDeltaMemory = 0;
 		int yDeltaMemory = 0;
-<<<<<<< HEAD
-		
+
 		
 		int prevStartY = totalImage.getHeight() - 1;
 		int prevEndX = 0;
@@ -401,20 +397,7 @@ public class APITools {
 				
 				if (iterX == 0 && iterY == 0) continue;
 				
-				
-=======
-
-		for (double spannedMetersLat = 0; spannedMetersLat < totalSpanningMetersLat; spannedMetersLat += metersSliceLat, iterY++) {
-			currSouthwest.latitude = APITools.metersToLat(southwest, spannedMetersLat);
-			currNortheast.latitude = APITools.metersToLat(currSouthwest, metersSliceLat);
-			iterX = 0;
-
-			for (double spannedMetersLon = 0; spannedMetersLon < totalSpanningMetersLon; spannedMetersLon += metersSliceLon, iterX++) {
-
-				if (iterX == 0 && iterY == 0)
-					continue;
-
->>>>>>> 1639d1c65382c31c4aa818bc2a43f9284e6ed560
+			
 				currSouthwest.longitude = APITools.metersToLon(southwest, spannedMetersLon);
 				currNortheast.longitude = APITools.metersToLon(currSouthwest, metersSliceLon);
 				LatLng currCenter = Tools.getCenter(currSouthwest, currNortheast);
