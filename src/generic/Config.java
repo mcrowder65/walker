@@ -21,5 +21,5 @@ public class Config {
 	public static final int MAPS_WEIRD_OLIVE_PATH = 0xffB7B393; //A WEIRD OLIVE COLOR
 	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 0;
 	public static final int FILLCOLOR_MODE_RADIUS = 2;
-	public static final int FILLCOLOR_RGB_TOLERANCE = 4;
+	public static final int FILLCOLOR_RGB_TOLERANCE = 2;
 }

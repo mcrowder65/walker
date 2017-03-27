@@ -187,7 +187,15 @@ public class Tools {
 	
 	public static boolean colorIsProbablyBuilding(int rgb, int seedRGB)
 	{
-		return colorIsCloseEnough(rgb, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE);
+		//return colorIsCloseEnough(rgb, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE) ||
+		//		rgb == -1; //WHITE ;
+		
+		return 
+				 (!colorIsCloseEnough(rgb, Config.MAPS_BACKGROUND_RGB, Config.FILLCOLOR_RGB_TOLERANCE) &&
+				  !colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, Config.FILLCOLOR_RGB_TOLERANCE) &&
+				  !colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, Config.FILLCOLOR_RGB_TOLERANCE));
+		
+		
 	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
 	{
