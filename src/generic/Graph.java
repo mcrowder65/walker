@@ -283,7 +283,7 @@ public class Graph extends WalkerObject {
 			for (int z = 0; z < nodes.size(); z++) {
 				if (i == z) {
 					distance[i][z] = 0;
-				} else if (nodes.get(i).getBuilding() != null && nodes.get(z) != null) {
+				} else if (nodes.get(i).getBuilding() != null && nodes.get(z).getBuilding() != null) {
 					double d = calcBulidingDist(nodes.get(i), nodes.get(z));
 					distance[i][z] = d;
 				} else {
@@ -294,7 +294,7 @@ public class Graph extends WalkerObject {
 						distance[i][z] = checkRes;
 					} else {
 						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
-						if (pc.building == true) {
+						if (pc == null || pc.building == true) {
 							distance[i][z] = Double.MAX_VALUE;
 						} else {
 							LatLng locStartNode = startNode.getPosition();

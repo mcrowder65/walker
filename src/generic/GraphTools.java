@@ -274,6 +274,9 @@ public class GraphTools {
 			}
 			Point2D.Double p = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast, img.getWidth(),
 					img.getHeight());
+			if (p == null) {
+				continue;
+			}
 			int startX = (int) p.getX() - nodePixelRadius;
 			int startY = (int) p.getY() - nodePixelRadius;
 			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {

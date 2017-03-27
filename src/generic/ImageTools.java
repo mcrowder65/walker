@@ -23,12 +23,15 @@ public class ImageTools {
 		System.out.println(vals);
 	}
 
-	public static PathConstituents analyzeImage(BufferedImage img, Node startNode, Node endNode, LatLng southwest, LatLng northeast) {
+	public static PathConstituents analyzeImage(BufferedImage img, Node startNode, Node endNode, LatLng southwest,
+			LatLng northeast) {
 		Point2D.Double startPnt = APITools.getImagePointFromLatLng(startNode.getPosition(), southwest, northeast,
 				img.getWidth(), img.getHeight());
 		Point2D.Double endPnt = APITools.getImagePointFromLatLng(endNode.getPosition(), southwest, northeast,
 				img.getWidth(), img.getHeight());
-
+		if (startPnt == null || endPnt == null) {
+			return null;
+		}
 		int x1 = (int) startPnt.x;
 		int y1 = (int) startPnt.y;
 		int x2 = (int) endPnt.x;
