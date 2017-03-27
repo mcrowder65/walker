@@ -1,7 +1,5 @@
 package generic.objects;
 
-import server.JSONTools;
-
 public class Entrance extends WalkerObject {
 
 	@Override
@@ -68,12 +66,6 @@ public class Entrance extends WalkerObject {
 
 	public Entrance() {
 
-	}
-
-	@Override
-	public String toJson() {
-		String jsonString = JSONTools.g.toJson(this);
-		return jsonString;
 	}
 
 }
