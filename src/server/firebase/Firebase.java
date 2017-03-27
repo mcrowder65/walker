@@ -212,6 +212,39 @@ public class Firebase {
 		this.set(setStairsChangedPath, graph.gStairs());
 	}
 
+	public void updateGraph(String path, GraphFirebaseWrapper graph) {
+		String id = graph.getId();
+		String setIdPath = path + "/" + id + "/id";
+		set(setIdPath, id);
+
+		String setDistancesChangedPath = path + "/" + id + "/distance";
+		this.set(setDistancesChangedPath, graph.gDistance());
+
+		String setElevationsChangedPath = path + "/" + id + "/elevation";
+		this.set(setElevationsChangedPath, graph.gElevation());
+
+		String setGrassChangedPath = path + "/" + id + "/grass";
+		this.set(setGrassChangedPath, graph.gGrass());
+
+		String setWildernessChangedPath = path + "/" + id + "/wilderness";
+		this.set(setWildernessChangedPath, graph.gWilderness());
+
+		String setBuildingChangedPath = path + "/" + id + "/building";
+		this.set(setBuildingChangedPath, graph.gBuilding());
+
+		String setParkingChangedPath = path + "/" + id + "/parking";
+		this.set(setParkingChangedPath, graph.gParking());
+
+		String setStairsChangedPath = path + "/" + id + "/stairs";
+		this.set(setStairsChangedPath, graph.gStairs());
+
+		String setNamePath = path + "/" + id + "/name";
+		this.set(setNamePath, graph.getName());
+
+		String setNodesPath = path + "/" + id + "/nodes";
+		this.set(setNodesPath, graph.getNodes());
+	}
+
 	public void delete(String path) {
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
 		DatabaseReference ref = database.getReference(path);

@@ -20,14 +20,15 @@ public class GraphDAO {
 
 	public static void createOrUpdate(Graph graph) {
 		graph.setName("BYU");
-		// if (graph.getId() == null || graph.getName() == null) {
-		// create
-		GraphFirebaseWrapper graphFirebaseWrapper = new GraphFirebaseWrapper(graph);
-		Tools.firebase.createGraph("graphs", graphFirebaseWrapper);
-		// } else {
-		// update
+		GraphFirebaseWrapper wrapper = new GraphFirebaseWrapper(graph);
+		if (graph.getId() == null || graph.getName() == null) {
+			// create
+			Tools.firebase.createGraph("graphs", wrapper);
+		} else {
+			// update
 
-		// }
+			Tools.firebase.updateGraph("graphs", wrapper);
+		}
 	}
 
 }
