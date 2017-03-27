@@ -185,12 +185,9 @@ public class Tools {
 //		}
 	}
 	
-	public static boolean colorIsProbablyBuilding(int rgb, int tolerance)
+	public static boolean colorIsProbablyBuilding(int rgb, int seedRGB)
 	{
-		return !(colorIsCloseEnough(rgb, Config.MAPS_WEIRD_OLIVE_PATH, tolerance) || 
-				 colorIsCloseEnough(rgb, Config.MAPS_BACKGROUND_RGB, tolerance) ||
-				 colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, tolerance) ||
-				 colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, tolerance)); 
+		return colorIsCloseEnough(rgb, seedRGB, Config.FILLCOLOR_RGB_TOLERANCE);
 	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
 	{

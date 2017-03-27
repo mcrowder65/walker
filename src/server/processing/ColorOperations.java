@@ -146,7 +146,7 @@ public class ColorOperations {
 					}
 					*/
 					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, seedRGB)) {
 						tolerated = true;
 						break;
 					}
@@ -177,7 +177,7 @@ public class ColorOperations {
 					}
 					*/
 					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, seedRGB)) {
 						tolerated = true;
 						break;
 					}
@@ -208,7 +208,7 @@ public class ColorOperations {
 					}
 					*/
 					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB, seedRGB)) {
 						tolerated = true;
 						break;
 					}
@@ -238,7 +238,7 @@ public class ColorOperations {
 					}
 					*/
 					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					if (Tools.colorIsProbablyBuilding(neighborRGB,seedRGB)) {
 						tolerated = true;
 						break;
 					}
