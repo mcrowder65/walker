@@ -37,6 +37,7 @@ public class TravelHandler extends WalkerHandler {
 	}
 
 	private void asdf() {
+		// this won't work. see graphtests or something for reference
 		LatLng start = new LatLng(40.249403, -111.650154);
 		LatLng end = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(start, end);
@@ -63,7 +64,7 @@ public class TravelHandler extends WalkerHandler {
 		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
 		nodes.addAll(newNodes);
 		Graph g = new Graph(null, null, nodes);
-		g.setDistancesFromNodes();
+		// g.setDistancesFromNodes();
 		g.setElevationsFromNodes();
 		GraphDAO.createOrUpdate(g);
 	}

@@ -98,7 +98,7 @@ public class GraphTests {
 		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
 		nodes.addAll(newNodes);
 		Graph g = new Graph(null, null, nodes);
-		g.setDistancesFromNodes();
+		g.setDistancesFromNodes(img, southwest, northeast);
 		g.setElevationsFromNodes();
 
 		List<Integer> path = GraphTools.dijkstra(g.start(), g, g.end());
@@ -135,9 +135,10 @@ public class GraphTests {
 		g.setEndNode(endNodeIndex);
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		Tools.WriteImage(img, "testImages/b2.png");
-		g.setDistancesFromNodes();
-		g.generateMatrix(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, true, false, false, 0, false, false);
+		g.addEnterExit();
+		g.setDistancesFromNodes(img, southwest, northeast);
+		// g.generateMatrix(img, southwest, northeast);
+		UserPrefs up = new UserPrefs(1, 0, false, false, false, 0, false, false);
 		g.sumMatricies(up);
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);

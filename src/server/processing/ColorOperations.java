@@ -188,7 +188,7 @@ public class ColorOperations {
 					visited[currX][currY - 1] = 2;
 					xStack.push(currX);
 					yStack.push(currY - 1);
-				} else if (currY - 1 < target.getHeight())
+				} else if (currY - 1 >= 0)
 					visited[currX][currY - 1] = 1;
 			}
 

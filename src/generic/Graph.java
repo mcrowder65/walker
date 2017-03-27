@@ -4,9 +4,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import generic.objects.Building;
+import generic.objects.Entrance;
 import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
+import server.dao.BuildingDAO;
 import server.dao.GraphFirebaseWrapper;
 
 public class Graph extends WalkerObject {
@@ -217,15 +220,35 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				totalCost[i][j] = distance[i][j];
-				boolean g = grass[i][j];
-				boolean b = building[i][j];
-				if (up.getGrass() && g) {
-					totalCost[i][j] = Double.MAX_VALUE;
+				if (up.getGrass()) {
+					boolean g = grass[i][j];
+					if (g) {
+						totalCost[i][j] = Double.MAX_VALUE;
+					}
 				}
-				if (up.getBuildingWeight() && b) {
-					totalCost[i][j] = Double.MAX_VALUE;
+				if (up.getBuildingWeight()) {
+					boolean b = building[i][j];
+					if (b) {
+						totalCost[i][j] = Double.MAX_VALUE;
+					}
 				}
 			}
+		}
+	}
+
+	public void addEnterExit() {
+		BuildingDAO bd = new BuildingDAO();
+		List<Building> buildings = bd.getAll();
+		for (int i = 0; i < buildings.size(); i++) {
+			Building b = buildings.get(i);
+			List<Entrance> entrances = b.getResolvedEntrances();
+			for (int j = 0; j < entrances.size(); j++) {
+				Entrance entrance = entrances.get(j);
+				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+				Node n = new Node(position, b);
+				this.nodes.add(n);
+			}
+
 		}
 	}
 
@@ -316,7 +339,21 @@ public class Graph extends WalkerObject {
 		return total;
 	}
 
-	public void setDistancesFromNodes() {
+	public double checkEntrences(Node start, Node end) {
+
+		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
+			LatLng locStartNode = start.getPosition();
+			LatLng locEndNode = end.getPosition();
+			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+			double dist = longDiff + latDiff;
+			return dist;
+		}
+		return -1;
+
+	}
+
+	public void setDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int z = 0; z < nodes.size(); z++) {
@@ -328,14 +365,25 @@ public class Graph extends WalkerObject {
 				} else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
-					LatLng locStartNode = startNode.getPosition();
-					LatLng locEndNode = endNode.getPosition();
-					double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-					double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
-					double longSqr = longDiff * longDiff;
-					double latSqr = latDiff * latDiff;
-					double res = Math.sqrt(longSqr + latSqr);
-					distance[i][z] = res;
+					double checkRes = checkEntrences(startNode, endNode);
+					if (checkRes != -1) {
+						distance[i][z] = checkRes;
+					} else {
+						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+						if (pc.building == true) {
+							distance[i][z] = Double.MAX_VALUE;
+						} else {
+							LatLng locStartNode = startNode.getPosition();
+							LatLng locEndNode = endNode.getPosition();
+							double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+							double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+							double longSqr = longDiff * longDiff;
+							double latSqr = latDiff * latDiff;
+							double res = Math.sqrt(longSqr + latSqr);
+							distance[i][z] = res;
+						}
+
+					}
 				}
 			}
 		}
