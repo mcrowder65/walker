@@ -8,6 +8,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import generic.objects.WalkerObject;
@@ -113,6 +114,39 @@ public class Firebase {
 		return objects.get(0);
 	}
 
+	public WalkerObject getAllBy(String path, String key, String value, WalkerObject obj) {
+		final FirebaseDatabase database = FirebaseDatabase.getInstance();
+		Query query = database.getReference(path).orderByChild(key).equalTo(value);
+		DatabaseReference ref = query.getRef();
+		List<WalkerObject> objects = new ArrayList<>();
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onCancelled(DatabaseError arg0) {
+
+			}
+
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+
+				for (DataSnapshot child : dataSnapshot.getChildren()) {
+					WalkerObject object = child.getValue(obj.getClass());
+					objects.add(object);
+				}
+
+				semaphore.release();
+			}
+
+		});
+
+		try {
+			semaphore.acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return objects.get(0);
+	}
+
 	public void update(String path, WalkerObject obj) {
 
 		final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -156,13 +190,26 @@ public class Firebase {
 		String setIdPath = path + "/" + id + "/id";
 		set(setIdPath, id);
 
-		String setDistancesChangedPath = path + "/" + id + "/distancesChanged";
-		// this.set(setDistancesChangedPath, g.distancesChanged());
-		// String setElevationsChangedPath = path + "/" + id +
-		// "/elevationsChanged";
-		// this.set(setElevationsChangedPath, g.elevationsChanged());
-		// System.out.println("set some distances and elevations!");
-		// TODO do me
+		String setDistancesChangedPath = path + "/" + id + "/distance";
+		this.set(setDistancesChangedPath, graph.gDistance());
+
+		String setElevationsChangedPath = path + "/" + id + "/elevation";
+		this.set(setElevationsChangedPath, graph.gElevation());
+
+		String setGrassChangedPath = path + "/" + id + "/grass";
+		this.set(setGrassChangedPath, graph.gGrass());
+
+		String setWildernessChangedPath = path + "/" + id + "/wilderness";
+		this.set(setWildernessChangedPath, graph.gWilderness());
+
+		String setBuildingChangedPath = path + "/" + id + "/building";
+		this.set(setBuildingChangedPath, graph.gBuilding());
+
+		String setParkingChangedPath = path + "/" + id + "/parking";
+		this.set(setParkingChangedPath, graph.gParking());
+
+		String setStairsChangedPath = path + "/" + id + "/stairs";
+		this.set(setStairsChangedPath, graph.gStairs());
 	}
 
 	public void delete(String path) {

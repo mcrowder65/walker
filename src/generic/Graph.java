@@ -7,7 +7,6 @@ import java.util.List;
 import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
-import server.JSONTools;
 import server.dao.GraphFirebaseWrapper;
 
 public class Graph extends WalkerObject {
@@ -26,18 +25,21 @@ public class Graph extends WalkerObject {
 	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
 		super();
 		this.setId(graphFirebaseWrapper.getId());
-		distance = convertToDoubles(graphFirebaseWrapper.getDistance());
-		elevation = convertToDoubles(graphFirebaseWrapper.getElevation());
-		grass = convertToBooleans(graphFirebaseWrapper.getGrass());
-		wilderness = convertToBooleans(graphFirebaseWrapper.getWilderness());
-		building = convertToBooleans(graphFirebaseWrapper.getBuilding());
-		parking = convertToBooleans(graphFirebaseWrapper.getParking());
-		stairs = convertToDoubles(graphFirebaseWrapper.getStairs());
+		distance = convertToDoubles(graphFirebaseWrapper.gDistance());
+		elevation = convertToDoubles(graphFirebaseWrapper.gElevation());
+		grass = convertToBooleans(graphFirebaseWrapper.gGrass());
+		wilderness = convertToBooleans(graphFirebaseWrapper.gWilderness());
+		building = convertToBooleans(graphFirebaseWrapper.gBuilding());
+		parking = convertToBooleans(graphFirebaseWrapper.gParking());
+		stairs = convertToDoubles(graphFirebaseWrapper.gStairs());
 		name = graphFirebaseWrapper.getName();
 		nodes = graphFirebaseWrapper.getNodes();
 	}
 
 	private double[][] convertToDoubles(List<String> list) {
+		if (list == null) {
+			return null;
+		}
 		double[][] matrix = new double[list.size()][list.size()];
 		for (int x = 0; x < list.size(); x++) {
 			String[] arr = list.get(x).split(",");
@@ -49,6 +51,9 @@ public class Graph extends WalkerObject {
 	}
 
 	private boolean[][] convertToBooleans(List<String> list) {
+		if (list == null) {
+			return null;
+		}
 		boolean[][] matrix = new boolean[list.size()][list.size()];
 		for (int x = 0; x < list.size(); x++) {
 			String[] arr = list.get(x).split(",");
@@ -403,12 +408,6 @@ public class Graph extends WalkerObject {
 
 	public void setElevation(double[][] elevation) {
 		this.elevation = elevation;
-	}
-
-	@Override
-	public String toJson() {
-		String jsonString = JSONTools.g.toJson(this);
-		return jsonString;
 	}
 
 }

@@ -3,10 +3,11 @@ package server.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.annotations.SerializedName;
+
 import generic.Graph;
 import generic.Node;
 import generic.objects.WalkerObject;
-import server.JSONTools;
 
 public class GraphFirebaseWrapper extends WalkerObject {
 	transient private double[][] originalDistance;
@@ -17,15 +18,27 @@ public class GraphFirebaseWrapper extends WalkerObject {
 	transient private boolean[][] originalParking;
 	transient private double[][] originalStairs;
 
+	@SerializedName("name")
 	private String name;
+	@SerializedName("nodes")
 	private List<Node> nodes;
+	@SerializedName("distance")
 	private List<String> distance;
+	@SerializedName("elevation")
 	private List<String> elevation;
+	@SerializedName("grass")
 	private List<String> grass;
+	@SerializedName("wilderness")
 	private List<String> wilderness;
+	@SerializedName("building")
 	private List<String> building;
+	@SerializedName("grass")
 	private List<String> parking;
+	@SerializedName("stairs")
 	private List<String> stairs;
+
+	public GraphFirebaseWrapper() {
+	}
 
 	public GraphFirebaseWrapper(Graph graph) {
 		this.originalDistance = graph.getDistance();
@@ -35,7 +48,7 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.originalBuilding = graph.getBuilding();
 		this.originalParking = graph.getParking();
 		this.originalStairs = graph.getStairs();
-		this.name = graph.getName();
+		this.name = "BYU";// graph.getName();
 		this.nodes = graph.getNodes();
 		this.setId(graph.getId());
 		distance = convert(originalDistance);
@@ -64,7 +77,9 @@ public class GraphFirebaseWrapper extends WalkerObject {
 	}
 
 	private List<String> convert(double[][] matrix) {
-
+		if (matrix == null) {
+			return null;
+		}
 		List<String> temp = new ArrayList<>();
 		for (int x = 0; x < matrix.length; x++) {
 			StringBuilder str = new StringBuilder();
@@ -81,7 +96,9 @@ public class GraphFirebaseWrapper extends WalkerObject {
 	}
 
 	private List<String> convert(boolean[][] matrix) {
-
+		if (matrix == null) {
+			return null;
+		}
 		List<String> temp = new ArrayList<>();
 		for (int x = 0; x < matrix.length; x++) {
 			StringBuilder str = new StringBuilder();
@@ -97,62 +114,6 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		return temp;
 	}
 
-	public double[][] getOriginalDistance() {
-		return originalDistance;
-	}
-
-	public void setOriginalDistance(double[][] originalDistance) {
-		this.originalDistance = originalDistance;
-	}
-
-	public double[][] getOriginalElevation() {
-		return originalElevation;
-	}
-
-	public void setOriginalElevation(double[][] originalElevation) {
-		this.originalElevation = originalElevation;
-	}
-
-	public boolean[][] getOriginalGrass() {
-		return originalGrass;
-	}
-
-	public void setOriginalGrass(boolean[][] originalGrass) {
-		this.originalGrass = originalGrass;
-	}
-
-	public boolean[][] getOriginalWilderness() {
-		return originalWilderness;
-	}
-
-	public void setOriginalWilderness(boolean[][] originalWilderness) {
-		this.originalWilderness = originalWilderness;
-	}
-
-	public boolean[][] getOriginalBuilding() {
-		return originalBuilding;
-	}
-
-	public void setOriginalBuilding(boolean[][] originalBuilding) {
-		this.originalBuilding = originalBuilding;
-	}
-
-	public boolean[][] getOriginalParking() {
-		return originalParking;
-	}
-
-	public void setOriginalParking(boolean[][] originalParking) {
-		this.originalParking = originalParking;
-	}
-
-	public double[][] getOriginalStairs() {
-		return originalStairs;
-	}
-
-	public void setOriginalStairs(double[][] originalStairs) {
-		this.originalStairs = originalStairs;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -165,11 +126,39 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		return nodes;
 	}
 
+	public List<String> getDistance() {
+		return null;
+	}
+
+	public List<String> getElevation() {
+		return null;
+	}
+
+	public List<String> getGrass() {
+		return null;
+	}
+
+	public List<String> getWilderness() {
+		return null;
+	}
+
+	public List<String> getBuilding() {
+		return null;
+	}
+
+	public List<String> getParking() {
+		return null;
+	}
+
+	public List<String> getStairs() {
+		return null;
+	}
+
 	public void setNodes(List<Node> nodes) {
 		this.nodes = nodes;
 	}
 
-	public List<String> getDistance() {
+	public List<String> gDistance() {
 		return distance;
 	}
 
@@ -177,7 +166,7 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.distance = distance;
 	}
 
-	public List<String> getElevation() {
+	public List<String> gElevation() {
 		return elevation;
 	}
 
@@ -185,7 +174,7 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.elevation = elevation;
 	}
 
-	public List<String> getGrass() {
+	public List<String> gGrass() {
 		return grass;
 	}
 
@@ -193,7 +182,7 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.grass = grass;
 	}
 
-	public List<String> getWilderness() {
+	public List<String> gWilderness() {
 		return wilderness;
 	}
 
@@ -201,7 +190,7 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.wilderness = wilderness;
 	}
 
-	public List<String> getBuilding() {
+	public List<String> gBuilding() {
 		return building;
 	}
 
@@ -209,7 +198,7 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.building = building;
 	}
 
-	public List<String> getParking() {
+	public List<String> gParking() {
 		return parking;
 	}
 
@@ -217,17 +206,12 @@ public class GraphFirebaseWrapper extends WalkerObject {
 		this.parking = parking;
 	}
 
-	public List<String> getStairs() {
+	public List<String> gStairs() {
 		return stairs;
 	}
 
 	public void setStairs(List<String> stairs) {
 		this.stairs = stairs;
-	}
-
-	@Override
-	public String toJson() {
-		return JSONTools.g.toJson(this);
 	}
 
 }
