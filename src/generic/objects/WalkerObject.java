@@ -1,7 +1,8 @@
 package generic.objects;
 
+import server.JSONTools;
+
 public abstract class WalkerObject {
-	public abstract String toJson();
 
 	protected String id;
 
@@ -25,6 +26,10 @@ public abstract class WalkerObject {
 
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	final public String toJson() {
+		return JSONTools.g.toJson(this);
 	}
 
 }

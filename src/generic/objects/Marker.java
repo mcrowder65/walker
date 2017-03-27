@@ -2,8 +2,6 @@ package generic.objects;
 
 import java.util.HashMap;
 
-import server.JSONTools;
-
 public class Marker extends WalkerObject {
 	private double latitude;
 	private double longitude;
@@ -144,8 +142,4 @@ public class Marker extends WalkerObject {
 
 	}
 
-	public String toJson() {
-		String jsonString = JSONTools.g.toJson(this);
-		return jsonString;
-	}
 }
