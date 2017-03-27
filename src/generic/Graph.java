@@ -265,7 +265,7 @@ public class Graph extends WalkerObject {
 
 	public double checkEntrences(Node start, Node end) {
 
-		if (start.getBuilding() == end.getBuilding()) {
+		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 			LatLng locStartNode = start.getPosition();
 			LatLng locEndNode = end.getPosition();
 			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
