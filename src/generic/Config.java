@@ -19,7 +19,7 @@ public class Config {
 	public static final int MAPS_NORMALPATH_RGB = 0xff000000; //BLACK
 	public static final int MAPS_BUILDING_RGB = 0xffff0000; //RED
 	public static final int MAPS_WEIRD_OLIVE_PATH = 0xffB7B393; //A WEIRD OLIVE COLOR
-	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 7;
+	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 0;
 	public static final int FILLCOLOR_MODE_RADIUS = 2;
-	public static final int FILLCOLOR_RGB_TOLERANCE = 3;
+	public static final int FILLCOLOR_RGB_TOLERANCE = 2;
 }
