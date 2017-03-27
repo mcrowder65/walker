@@ -111,7 +111,7 @@ public class GenericProcessingOperations {
 		
 
 		System.out.println("Optimal delta found as x=" + lowestErrJiggle +", y=" + lowestErrOffset + " with err " + lowestError);
-		return new Point(-lowestErrJiggle, lowestErrOffset);
+		return new Point(0, lowestErrOffset);
 	}
 
 	public static Point getNorthEastStitchDelta(BufferedImage southernImage, BufferedImage westernImage, BufferedImage northeastImage)
