@@ -269,6 +269,9 @@ public class GraphTools {
 	public static void DrawLines(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor, Graph g) {
 		for (Node n : g.getNodes()) {
+			if (n.getBuilding() != null) {
+				nodeColor = Color.BLUE;
+			}
 			Point2D.Double p = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast, img.getWidth(),
 					img.getHeight());
 			int startX = (int) p.getX() - nodePixelRadius;

@@ -135,6 +135,7 @@ public class GraphTests {
 		g.setEndNode(endNodeIndex);
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		Tools.WriteImage(img, "testImages/b2.png");
+		g.addEnterExit();
 		g.setDistancesFromNodes(img, southwest, northeast);
 		// g.generateMatrix(img, southwest, northeast);
 		UserPrefs up = new UserPrefs(1, 0, false, false, false, 0, false, false);
