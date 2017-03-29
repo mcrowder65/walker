@@ -289,7 +289,9 @@ public class Graph extends WalkerObject {
 				Entrance entrance = entrances.get(j);
 				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
 				Node n = new Node(position, b);
-				this.nodes.add(n);
+				int index = findClosestNodeIndex(n);
+				this.nodes.get(index).setBuilding(b);
+				;
 			}
 
 		}
@@ -400,41 +402,34 @@ public class Graph extends WalkerObject {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int z = 0; z < nodes.size(); z++) {
+				Node startNode = nodes.get(i);
+				Node endNode = nodes.get(z);
 				if (i == z) {
 					distance[i][z] = 0;
-				} else if (nodes.get(i).getBuilding() != null && nodes.get(z).getBuilding() != null) {
-					double d = calcBulidingDist(nodes.get(i), nodes.get(z));
-					distance[i][z] = d;
-				} else {
-					Node startNode = nodes.get(i);
-					Node endNode = nodes.get(z);
-					double checkRes = checkEntrences(startNode, endNode);
-					if (checkRes != -1) {
-						distance[i][z] = checkRes;
-					} else {
-						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
-						if (pc == null || pc.building == true) {
-							distance[i][z] = Double.MAX_VALUE;
-						} else {
-							LatLng locStartNode = startNode.getPosition();
-							LatLng locEndNode = endNode.getPosition();
-							double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-							double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
-							double longSqr = longDiff * longDiff;
-							double latSqr = latDiff * latDiff;
-							double res = Math.sqrt(longSqr + latSqr);
-							distance[i][z] = res;
-						}
 
+				} else if ((startNode.getBuilding() != null && endNode.getBuilding() != null)
+						&& startNode.getBuilding() == endNode.getBuilding()) {
+					distance[i][z] = calcBulidingDist(startNode, endNode);
+				} else {
+					PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+					if (pc == null || pc.building == true) {
+						distance[i][z] = Double.MAX_VALUE;
+					} else {
+						LatLng locStartNode = startNode.getPosition();
+						LatLng locEndNode = endNode.getPosition();
+						double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+						double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+						double longSqr = longDiff * longDiff;
+						double latSqr = latDiff * latDiff;
+						double res = Math.sqrt(longSqr + latSqr);
+						distance[i][z] = res;
 					}
 				}
 			}
 		}
-
 	}
 
-	
-	
+
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -476,6 +471,7 @@ public class Graph extends WalkerObject {
 
 	}
 	
+
 	public void setElevationsFromNodes() {
 		double[] elevs = APITools.GetAllElevations(nodes);
 
