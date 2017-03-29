@@ -111,7 +111,7 @@ public class ColorOperations {
 			if (currRGB == Config.MAPS_BUILDING_RGB)
 				return;
 			
-		} while ( !Tools.colorIsProbablyBuilding(currRGB, Config.FILLCOLOR_RGB_TOLERANCE));
+		} while (false);
 		currX--;
 		currY--;
 
@@ -145,8 +145,9 @@ public class ColorOperations {
 							continue;
 					}
 					*/
-					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					//neighborRGB = orig.getRGB(currX, y);
+					neighborRGB = getMode(orig, currX, y);
+					if (Tools.colorIsProbablyBuilding(neighborRGB, seedRGB)) {
 						tolerated = true;
 						break;
 					}
@@ -176,8 +177,9 @@ public class ColorOperations {
 							continue;
 					}
 					*/
-					neighborRGB = orig.getRGB(currX, y);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					//neighborRGB = orig.getRGB(currX, y);
+					neighborRGB = getMode(orig, currX, y);
+					if (Tools.colorIsProbablyBuilding(neighborRGB, seedRGB)) {
 						tolerated = true;
 						break;
 					}
@@ -207,8 +209,9 @@ public class ColorOperations {
 							continue;
 					}
 					*/
-					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+				//	neighborRGB = orig.getRGB(x, currY);
+					neighborRGB = getMode(orig, x, currY);
+					if (Tools.colorIsProbablyBuilding(neighborRGB, seedRGB)) {
 						tolerated = true;
 						break;
 					}
@@ -237,8 +240,9 @@ public class ColorOperations {
 							continue;
 					}
 					*/
-					neighborRGB = orig.getRGB(x, currY);
-					if (Tools.colorIsProbablyBuilding(neighborRGB, Config.FILLCOLOR_RGB_TOLERANCE)) {
+					//neighborRGB = orig.getRGB(x, currY);
+					neighborRGB = getMode(orig, x, currY);
+					if (Tools.colorIsProbablyBuilding(neighborRGB,seedRGB)) {
 						tolerated = true;
 						break;
 					}

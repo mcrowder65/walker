@@ -146,8 +146,8 @@ public class APITests {
 	public void tilingTest()
 	{
 		LatLng southwest = new LatLng(40.244803, -111.657854);
-		LatLng northeast = new LatLng(40.2519803, -111.645854);
-		int zoom = 17;
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		int zoom = 18;
 		BufferedImage img = APITools.GetTiledImage(southwest, northeast, zoom, false);
 		Tools.WriteImage(img, "testImages/tilingTest.png");
 		

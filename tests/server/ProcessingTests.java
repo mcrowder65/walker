@@ -98,8 +98,10 @@ public class ProcessingTests {
 		Color c = new Color(255, 0, 0);
 		System.out.println(c.getRGB());
 		// LatLng buildingPoint = new LatLng(40.249403, -111.651154);  //TALMAGE
-		LatLng buildingPoint = new LatLng(40.249603, -111.650054); //JKB
+		//LatLng buildingPoint = new LatLng(40.249603, -111.650054); //JKB
 		//LatLng buildingPoint = new LatLng(40.249403, -111.650154); //Some part of the path (should produce bad results)
+		LatLng buildingPoint = new LatLng(40.2499803, -111.647854);//HFAC
+		
 		LatLng endPoint = new LatLng(40.249218, -111.648338);
 		LatLng center = Tools.getCenter(buildingPoint, endPoint);
 		int sizeX = 640;
