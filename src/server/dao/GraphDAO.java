@@ -5,7 +5,7 @@ import generic.Tools;
 
 public class GraphDAO {
 	/**
-	 * For name the name is always BYU
+	 * For name the name is always BYU for now.
 	 * 
 	 * @param name
 	 * @return

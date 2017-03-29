@@ -1,11 +1,35 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../walker-map/walker-map.html">
 
 <dom-module id="walker-app">
   <template>
+    <style>
+    .rightWrapper {
+      margin: 0px;
+      display: inline-block;
+    }
+
+    .leftWrapper {
+      margin: 0px;
+      display: inline-block;
+    }
+    </style>
       <redux-store root-reducer="[[rootReducer]]"></redux-store>
-      <walker-map id="walker-map"></walker-map>
+      <span class="leftWrapper">
+        <walker-map id="walker-map"></walker-map>
+      </span>
+      <span class="rightWrapper">
+        <paper-card>
+          Wilderness
+          <paper-slider value="50"></paper-slider>
+          Booty calls
+          <paper-slider value="50"></paper-slider>
+        </paper-card>
+      </span>
+
   </template>
 
   <script src="walker-app.ts"></script>

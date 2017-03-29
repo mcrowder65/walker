@@ -2,6 +2,9 @@
 <link href="../../bower_components/paper-toast/paper-toast.html" rel="import" >
 
 <dom-module id="walker-notification">
+
+
+  <template>
   <style>
       #errorToastContainer{
         --paper-toast-background-color: red;
@@ -12,8 +15,6 @@
         width: 100%;
       }
   </style>
-
-  <template>
     <paper-toast id="errorToastContainer" text=[[toastText]]></paper-toast>
     <paper-toast id="successToastContainer" text=[[toastText]]></paper-toast>
   </template>

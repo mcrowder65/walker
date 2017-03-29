@@ -14,7 +14,7 @@
   ],
   "dependencies": {
     "redux-store-element": "^0.4.2",
-    "polymer": "^1.7.1",
+    "polymer": "^1.8.1",
     "paper-button": "^1.0.14",
     "google-map": "^1.2.0",
     "paper-dialog": "^1.1.0",
@@ -24,6 +24,8 @@
     "paper-dropdown-menu": "^1.5.0",
     "paper-listbox": "^1.1.2",
     "paper-dialog-scrollable": "^1.1.5",
-    "paper-item": "^1.2.1"
+    "paper-item": "^1.2.1",
+    "paper-slider": "^1.0.14",
+    "paper-card": "PolymerElements/paper-card#^1.1.2"
   }
 }
