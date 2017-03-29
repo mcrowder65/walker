@@ -194,25 +194,68 @@ public class Graph extends WalkerObject {
 	public void setEndNode(int index) {
 		nodes.get(index).setEnd(true);
 	}
-
-	public void generateMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
+	
+	public void generateLimitedMatrix(BufferedImage img, LatLng southwest, LatLng northeast)
+	{
 		building = new boolean[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
-			for (int j = 0; j < nodes.size(); j++) {
+			System.out.println("i = " + i + "/ " + nodes.size());
+			for (int j = i; j < nodes.size(); j++) {
 				Node s_node = nodes.get(i);
 				Node e_node = nodes.get(j);
 				if (i == j) {
 					building[i][j] = false;
 					grass[i][j] = false;
+					continue;
+				}
+				if (s_node.getPosition().distSquared(e_node.getPosition()) > Config.MAX_BLOCK_DIST_SQUARED)
+					continue;
+
+				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node, southwest, northeast);
+				building[i][j] = pc.building;
+				grass[i][j] = pc.grass;
+			}
+		}
+		
+		for (int j = 0; j < nodes.size(); j++)
+		{
+			for (int i = j + 1; i < nodes.size(); i++)
+			{
+				building[i][j] = building[j][i];
+				grass[i][j] = grass[j][i];
+			}
+		}
+	}
+
+	public void generateMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
+		building = new boolean[nodes.size()][nodes.size()];
+		grass = new boolean[nodes.size()][nodes.size()];
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int j = i; j < nodes.size(); j++) {
+				Node s_node = nodes.get(i);
+				Node e_node = nodes.get(j);
+				if (i == j) {
+					building[i][j] = false;
+					grass[i][j] = false;
+					continue;
 				}
 
 				PathConstituents pc = ImageTools.analyzeImage(img, s_node, e_node, southwest, northeast);
 				building[i][j] = pc.building;
 				grass[i][j] = pc.grass;
-				building[i][j] = pc.building;
 			}
 		}
+		
+		for (int j = 0; j < nodes.size(); j++)
+		{
+			for (int i = j + 1; i < nodes.size(); i++)
+			{
+				building[i][j] = building[j][i];
+				grass[i][j] = grass[j][i];
+			}
+		}
+		
 	}
 
 	public void sumMatricies(UserPrefs up) {
@@ -390,6 +433,49 @@ public class Graph extends WalkerObject {
 
 	}
 
+	
+	
+	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
+		distance = new double[nodes.size()][nodes.size()];
+		for (int i = 0; i < nodes.size(); i++) {
+			for (int z = 0; z < nodes.size(); z++) {
+				if (i == z) {
+					distance[i][z] = 0;
+				} else if (nodes.get(i).getBuilding() != null && nodes.get(z).getBuilding() != null) {
+					double d = calcBulidingDist(nodes.get(i), nodes.get(z));
+					distance[i][z] = d;
+				} else {
+					Node startNode = nodes.get(i);
+					Node endNode = nodes.get(z);
+					double checkRes = checkEntrences(startNode, endNode);
+					if (checkRes != -1) {
+						distance[i][z] = checkRes;
+					} else {
+						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+						if (pc == null || pc.building == true) {
+							distance[i][z] = Double.MAX_VALUE;
+						} else {
+							LatLng locStartNode = startNode.getPosition();
+							LatLng locEndNode = endNode.getPosition();
+							double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+							double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+							double longSqr = longDiff * longDiff;
+							double latSqr = latDiff * latDiff;
+							double res = Math.sqrt(longSqr + latSqr);
+							distance[i][z] = res;
+						}
+
+					}
+				}
+				
+				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED )
+					distance[i][z] = Double.MAX_VALUE;
+				
+			}
+		}
+
+	}
+	
 	public void setElevationsFromNodes() {
 		double[] elevs = APITools.GetAllElevations(nodes);
 

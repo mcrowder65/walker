@@ -122,6 +122,13 @@ public class GraphTools {
 
 			}
 		}
+		
+		//Set the MAX_BLOCK_DIST while we're here
+		double blockDistLat =   APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE * meterSpacing) - southwest.latitude;
+		double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE * meterSpacing) - southwest.longitude;
+		Config.MAX_BLOCK_DIST_SQUARED = blockDistLat * blockDistLat + blockDistLon * blockDistLon;
+		
+		
 		return nodes;
 	}
 
@@ -216,6 +223,9 @@ public class GraphTools {
 			int startY = (int) p.getY() - nodePixelRadius;
 			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
 				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
+					if (x < 0 || y < 0 || x > img.getWidth() - 1 || y > img.getHeight() - 1) continue;
+					
+					
 					if (!n.isStart() && !n.isEnd()) {
 						Tools.setImageRGB(img, x, y, nodeColor);
 					} else {
