@@ -22,4 +22,8 @@ public class Config {
 	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 0;
 	public static final int FILLCOLOR_MODE_RADIUS = 2;
 	public static final int FILLCOLOR_RGB_TOLERANCE = 2;
+	
+	
+	public static final int MAX_BLOCK_SIZE = 10;
+	public static double MAX_BLOCK_DIST_SQUARED;
 }

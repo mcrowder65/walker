@@ -127,6 +127,17 @@ public class Tools {
 		}
 
 	}
+	public static BufferedImage ReadImage(String path) {
+		File file = new File(path);
+
+		try {
+			return ImageIO.read(file);
+		} catch (IOException e) {
+			System.out.println("Could not write image.");
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public static BufferedImage ClipLogo(BufferedImage img) {
 
