@@ -6,6 +6,7 @@ import {Action} from '../typings/action';
 export function rootReducer(state: State = InitialState, action: Action): State {
     switch(action.type) {
       case 'SET_MARKERS': {
+        console.log('set markers reducers');
         return {
           ...state,
           markers: action.markers
@@ -46,6 +47,50 @@ export function rootReducer(state: State = InitialState, action: Action): State 
           endMarker: action.endMarker
         };
       }
+
+      case 'SET_ELEVATION': {
+        return {
+          ...state,
+          elevation: action.elevation
+        };
+      }
+
+      case 'SET_STAIRS': {
+        console.log('set stairs redux');
+        return {
+          ...state,
+          stairs: action.stairs
+        };
+      }
+
+      case 'SET_WILDERNESS': {
+        return {
+          ...state,
+          wilderness: action.wilderness
+        };
+      }
+
+      case 'SET_GRASS': {
+        return {
+          ...state,
+          grass: action.grass
+        };
+      }
+
+      case 'SET_BUILDING': {
+        return {
+          ...state,
+          building: action.building
+        };
+      }
+
+      case 'SET_PARKING_LOTS': {
+        return {
+          ...state,
+          parkingLots: action.parkingLots
+        };
+      }
+
       default: {
           return state;
       }
