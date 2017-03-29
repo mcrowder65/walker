@@ -512,6 +512,9 @@
         },
         "bower_components/paper-material/paper-material.html": {
             "parentImport": true
+        },
+        "bower_components/paper-checkbox/paper-checkbox.html": {
+            "parentImport": true
         }
     }
 }

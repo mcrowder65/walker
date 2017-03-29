@@ -26,6 +26,7 @@
     "paper-dialog-scrollable": "^1.1.5",
     "paper-item": "^1.2.1",
     "paper-slider": "^1.0.14",
-    "paper-card": "PolymerElements/paper-card#^1.1.2"
+    "paper-card": "PolymerElements/paper-card#^1.1.2",
+    "paper-checkbox": "^1.4.2"
   }
 }

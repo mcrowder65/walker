@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../walker-map/walker-map.html">
 
 <dom-module id="walker-app">
@@ -10,6 +11,7 @@
     .rightWrapper {
       margin: 0px;
       display: inline-block;
+      width: 200px;
     }
 
     .leftWrapper {
@@ -23,10 +25,17 @@
       </span>
       <span class="rightWrapper">
         <paper-card>
-          Wilderness
+          Stairs
           <paper-slider value="50"></paper-slider>
-          Booty calls
+          Elevation
           <paper-slider value="50"></paper-slider>
+          <paper-checkbox></paper-checkbox>Wilderness<br>
+
+          <paper-checkbox></paper-checkbox>Grass<br>
+
+          <paper-checkbox></paper-checkbox>Building<br>
+
+          <paper-checkbox></paper-checkbox>Parking lots<br>
         </paper-card>
       </span>
 
