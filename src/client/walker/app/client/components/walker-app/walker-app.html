@@ -1,11 +1,44 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../walker-map/walker-map.html">
 
 <dom-module id="walker-app">
   <template>
+    <style>
+    .rightWrapper {
+      margin: 0px;
+      display: inline-block;
+      width: 200px;
+    }
+
+    .leftWrapper {
+      margin: 0px;
+      display: inline-block;
+    }
+    </style>
       <redux-store root-reducer="[[rootReducer]]"></redux-store>
-      <walker-map id="walker-map"></walker-map>
+      <span class="leftWrapper">
+        <walker-map id="walker-map"></walker-map>
+      </span>
+      <span class="rightWrapper">
+        <paper-card>
+          Stairs
+          <paper-slider value="50"></paper-slider>
+          Elevation
+          <paper-slider value="50"></paper-slider>
+          <paper-checkbox></paper-checkbox>Wilderness<br>
+
+          <paper-checkbox></paper-checkbox>Grass<br>
+
+          <paper-checkbox></paper-checkbox>Building<br>
+
+          <paper-checkbox></paper-checkbox>Parking lots<br>
+        </paper-card>
+      </span>
+
   </template>
 
   <script src="walker-app.ts"></script>
