@@ -12,7 +12,8 @@ export interface Action {
         'SET_WILDERNESS' |
         'SET_GRASS' |
         'SET_BUILDING' |
-        'SET_PARKING_LOTS';
+        'SET_PARKING_LOTS' |
+        'SET_PREFER_DESIGNATED_PATHS';
   markers?: Marker[];
   currentMarker?: Marker;
   startMarker?: Marker;
@@ -23,4 +24,5 @@ export interface Action {
   grass?: boolean;
   building?: boolean;
   parkingLots?: boolean;
+  preferDesignatedPaths?: boolean;
 }

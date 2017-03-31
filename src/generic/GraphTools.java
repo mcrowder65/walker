@@ -9,6 +9,7 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 
+import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
 import server.APITools;
@@ -122,13 +123,14 @@ public class GraphTools {
 
 			}
 		}
-		
-		//Set the MAX_BLOCK_DIST while we're here
-		double blockDistLat =   APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE * meterSpacing) - southwest.latitude;
-		double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE * meterSpacing) - southwest.longitude;
+
+		// Set the MAX_BLOCK_DIST while we're here
+		double blockDistLat = APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE * meterSpacing)
+				- southwest.latitude;
+		double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE * meterSpacing)
+				- southwest.longitude;
 		Config.MAX_BLOCK_DIST_SQUARED = blockDistLat * blockDistLat + blockDistLon * blockDistLon;
-		
-		
+
 		return nodes;
 	}
 
@@ -223,9 +225,9 @@ public class GraphTools {
 			int startY = (int) p.getY() - nodePixelRadius;
 			for (int x = startX; x <= startX + (nodePixelRadius * 2); x++) {
 				for (int y = startY; y <= startY + (nodePixelRadius * 2); y++) {
-					if (x < 0 || y < 0 || x > img.getWidth() - 1 || y > img.getHeight() - 1) continue;
-					
-					
+					if (x < 0 || y < 0 || x > img.getWidth() - 1 || y > img.getHeight() - 1)
+						continue;
+
 					if (!n.isStart() && !n.isEnd()) {
 						Tools.setImageRGB(img, x, y, nodeColor);
 					} else {
@@ -328,7 +330,7 @@ public class GraphTools {
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, false, false, false, 0, false, false));
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, false, false, false, false, false));
 
 	}
 

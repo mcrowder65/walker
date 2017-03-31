@@ -12,6 +12,7 @@ import generic.Graph;
 import generic.Node;
 import generic.Tools;
 import generic.objects.Marker;
+import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import server.APITools;
 import server.JSONTools;
@@ -33,7 +34,8 @@ public class TravelHandler extends WalkerHandler {
 		Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
 		Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
 		// TODO handle!!!!!!!!
-		// GraphDAO.getByName("BYU");
+		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
+		System.out.println(userPrefs);
 	}
 
 	private void asdf() {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import generic.objects.Building;
 import generic.objects.Entrance;
+import generic.objects.UserPrefs;
 import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
@@ -194,9 +195,8 @@ public class Graph extends WalkerObject {
 	public void setEndNode(int index) {
 		nodes.get(index).setEnd(true);
 	}
-	
-	public void generateLimitedMatrix(BufferedImage img, LatLng southwest, LatLng northeast)
-	{
+
+	public void generateLimitedMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
 		building = new boolean[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -217,11 +217,9 @@ public class Graph extends WalkerObject {
 				grass[i][j] = pc.grass;
 			}
 		}
-		
-		for (int j = 0; j < nodes.size(); j++)
-		{
-			for (int i = j + 1; i < nodes.size(); i++)
-			{
+
+		for (int j = 0; j < nodes.size(); j++) {
+			for (int i = j + 1; i < nodes.size(); i++) {
 				building[i][j] = building[j][i];
 				grass[i][j] = grass[j][i];
 			}
@@ -246,16 +244,14 @@ public class Graph extends WalkerObject {
 				grass[i][j] = pc.grass;
 			}
 		}
-		
-		for (int j = 0; j < nodes.size(); j++)
-		{
-			for (int i = j + 1; i < nodes.size(); i++)
-			{
+
+		for (int j = 0; j < nodes.size(); j++) {
+			for (int i = j + 1; i < nodes.size(); i++) {
 				building[i][j] = building[j][i];
 				grass[i][j] = grass[j][i];
 			}
 		}
-		
+
 	}
 
 	public void sumMatricies(UserPrefs up) {
@@ -263,13 +259,13 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				totalCost[i][j] = distance[i][j];
-				if (up.getGrass()) {
+				if (up.isGrass()) {
 					boolean g = grass[i][j];
 					if (g) {
 						totalCost[i][j] = Double.MAX_VALUE;
 					}
 				}
-				if (up.getBuildingWeight()) {
+				if (up.isBuilding()) {
 					boolean b = building[i][j];
 					if (b) {
 						totalCost[i][j] = Double.MAX_VALUE;
@@ -429,7 +425,6 @@ public class Graph extends WalkerObject {
 		}
 	}
 
-
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -462,15 +457,14 @@ public class Graph extends WalkerObject {
 
 					}
 				}
-				
-				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED )
+
+				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
 					distance[i][z] = Double.MAX_VALUE;
-				
+
 			}
 		}
 
 	}
-	
 
 	public void setElevationsFromNodes() {
 		double[] elevs = APITools.GetAllElevations(nodes);
