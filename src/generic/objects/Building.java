@@ -108,11 +108,4 @@ public class Building extends WalkerObject {
 
 	}
 
-	@Override
-	public String toString() {
-		return "Building [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + ", openingTime="
-				+ openingTime + ", closingTime=" + closingTime + ", entrances=" + entrances + ", resolvedEntrances="
-				+ resolvedEntrances + "]";
-	}
-
 }

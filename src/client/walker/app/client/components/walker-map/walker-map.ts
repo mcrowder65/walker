@@ -1,4 +1,3 @@
-import {rootReducer} from '../../redux/reducers';
 import {State} from '../../typings/state';
 import {Action} from '../../typings/action';
 import {Actions} from '../../redux/actions';
@@ -7,6 +6,7 @@ import {StatechangeEvent} from '../../typings/statechange-event';
 import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
 import {Options} from '../../typings/options';
 import {UtilitiesService} from '../../services/utilities-service';
+import {UserOptions} from '../../typings/user-options';
 
 export class WalkerMap {
   public is: string;
@@ -31,6 +31,14 @@ export class WalkerMap {
   public searchValue: string;
   public startLongitude: number;
   public startLatitude: number;
+  public stairs: number;
+  public elevation: number;
+  public wilderness: boolean = false;
+  public building: boolean = false;
+  public grass: boolean = false;
+  public parkingLots: boolean = false;
+  public preferDesignatedPaths: boolean = false;
+
   beforeRegister(): void {
     this.is = 'walker-map';
     this.properties = {
@@ -204,7 +212,16 @@ export class WalkerMap {
    * Called from dom
    */
   go(): void {
-    Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker());
+    const userOptions: UserOptions = {
+      stairs: this.stairs || 0,
+      elevation: this.elevation || 0,
+      wilderness: this.wilderness || false,
+      building: this.building || false,
+      grass: this.grass || false,
+      parkingLots: this.parkingLots || false,
+      preferDesignatedPaths: this.preferDesignatedPaths || false
+    };
+    Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
   }
 
   private getStartMarker(): Marker {
@@ -246,6 +263,13 @@ export class WalkerMap {
                           && !this.settingEndMarker;
     this.displayCancelButton = UtilitiesService.isDefined(this.getStartMarker())
                             || UtilitiesService.isDefined(this.getEndMarker());
+    this.stairs = state.stairs;
+    this.elevation = state.elevation;
+    this.wilderness = state.wilderness;
+    this.grass = state.grass;
+    this.building = state.building;
+    this.parkingLots = state.parkingLots;
+    this.preferDesignatedPaths = state.preferDesignatedPaths;
   }
 
 }

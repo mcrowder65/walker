@@ -1,8 +1,10 @@
 import {WalkerMap} from '../components/walker-map/walker-map';
+import {WalkerUserOptions} from '../components/walker-user-options/walker-user-options';
 import {Marker} from '../typings/marker';
 import {WalkerMarkerModal} from '../components/walker-marker-modal/walker-marker-modal';
 import {Options} from '../typings/options';
 import {ConstantsService} from '../services/constants-service';
+import {UserOptions} from '../typings/user-options';
 
 const defaultAction = (context: any) => {
     context.action = {
@@ -102,18 +104,69 @@ const POST = async (url: string, data?: string): Promise<any> => {
   });
 };
 
-const travel = async (context: WalkerMap, url: string, startMarker: Marker, endMarker: Marker): Promise<any> => {
+const travel = async (context: WalkerMap, url: string, startMarker: Marker, endMarker: Marker, userOptions: UserOptions): Promise<any> => {
     try {
       const body = {
         startMarker,
-        endMarker
+        endMarker,
+        userOptions
       };
+      console.log('body ', body);
       const response = await POST(url, JSON.stringify(body));
     } catch(error) {
       throw error;
     }
 };
 
+const setStairs = (context: any, stairs: number): void => {
+  context.action = {
+    type: 'SET_STAIRS',
+    stairs
+  };
+}
+
+const setElevation = (context: WalkerUserOptions, elevation: number): void => {
+  context.action = {
+    type: 'SET_ELEVATION',
+    elevation
+  };
+}
+
+const setWilderness = (context: WalkerUserOptions, wilderness: boolean): void => {
+  context.action = {
+    type: 'SET_WILDERNESS',
+    wilderness
+  };
+}
+
+const setGrass = (context: WalkerUserOptions, grass: boolean): void => {
+  context.action = {
+    type: 'SET_GRASS',
+    grass
+  };
+}
+
+const setBuilding = (context: WalkerUserOptions, building: boolean): void => {
+  context.action = {
+    type: 'SET_BUILDING',
+    building
+  };
+}
+
+const setParkingLots = (context: WalkerUserOptions, parkingLots: boolean): void => {
+  context.action = {
+    type: 'SET_PARKING_LOTS',
+    parkingLots
+  }
+
+}
+
+const setPreferDesignatedPaths = (context: WalkerUserOptions, preferDesignatedPaths: boolean): void => {
+  context.action = {
+    type: 'SET_PREFER_DESIGNATED_PATHS',
+    preferDesignatedPaths
+  };
+}
 export const Actions = {
     defaultAction,
     setMarkers,
@@ -124,5 +177,12 @@ export const Actions = {
     setCurrentMarker,
     resetMarkerModal,
     POST,
-    travel
+    travel,
+    setStairs,
+    setElevation,
+    setWilderness,
+    setGrass,
+    setBuilding,
+    setParkingLots,
+    setPreferDesignatedPaths
 };
