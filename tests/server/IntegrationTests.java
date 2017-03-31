@@ -13,7 +13,10 @@ import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.Tools;
+import generic.objects.Building;
 import googlemaps.LatLng;
+import server.dao.BuildingDAO;
+import server.handlers.building.GetBuildingsHandler;
 
 public class IntegrationTests {
 
@@ -34,8 +37,13 @@ public class IntegrationTests {
 		List<Node> nodes = generic.GraphTools.GenerateUniformNodes(6, southwest, northeast);
 		GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
 		
+		BuildingDAO bDAO = new BuildingDAO();
+		List<Building> buildings = bDAO.getAll();
+		
+		
 		Graph g = new Graph(null, null, nodes);
-		g.generateLimitedMatrix(img, southwest, northeast);
+		g.setLimitedDistancesFromNodes(img, southwest, northeast);
+		//g.generateLimitedMatrix(img, southwest, northeast);
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		img = Tools.ClipLogo(img);
 		Tools.WriteImage(img, "testImages/fullCampus.png");
