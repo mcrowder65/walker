@@ -194,9 +194,8 @@ public class Graph extends WalkerObject {
 	public void setEndNode(int index) {
 		nodes.get(index).setEnd(true);
 	}
-	
-	public void generateLimitedMatrix(BufferedImage img, LatLng southwest, LatLng northeast)
-	{
+
+	public void generateLimitedMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
 		building = new boolean[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -217,11 +216,9 @@ public class Graph extends WalkerObject {
 				grass[i][j] = pc.grass;
 			}
 		}
-		
-		for (int j = 0; j < nodes.size(); j++)
-		{
-			for (int i = j + 1; i < nodes.size(); i++)
-			{
+
+		for (int j = 0; j < nodes.size(); j++) {
+			for (int i = j + 1; i < nodes.size(); i++) {
 				building[i][j] = building[j][i];
 				grass[i][j] = grass[j][i];
 			}
@@ -246,16 +243,14 @@ public class Graph extends WalkerObject {
 				grass[i][j] = pc.grass;
 			}
 		}
-		
-		for (int j = 0; j < nodes.size(); j++)
-		{
-			for (int i = j + 1; i < nodes.size(); i++)
-			{
+
+		for (int j = 0; j < nodes.size(); j++) {
+			for (int i = j + 1; i < nodes.size(); i++) {
 				building[i][j] = building[j][i];
 				grass[i][j] = grass[j][i];
 			}
 		}
-		
+
 	}
 
 	public void sumMatricies(UserPrefs up) {
@@ -294,6 +289,29 @@ public class Graph extends WalkerObject {
 				;
 			}
 
+		}
+	}
+
+	public void addBlackNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
+		int imgHeight = img.getHeight();
+		int imgWidth = img.getWidth();
+		int pixelsSinceLastNode = 0; // holds how many pixels we have
+										// looped over since we last put a node,
+
+		List<Node> allNodes = GraphTools.GenerateUniformNodes(.1, southwest, northeast);
+		for (int i = 0; i < imgHeight; i++) {
+			for (int j = 0; j < imgWidth; j++) {
+				int rgb = img.getRGB(j, i);
+				pixelsSinceLastNode++;
+				boolean isBlack = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
+				if (isBlack == true) {
+					if (pixelsSinceLastNode >= 5) {
+						// create new node
+
+						pixelsSinceLastNode = 0;
+					}
+				}
+			}
 		}
 	}
 
@@ -429,7 +447,6 @@ public class Graph extends WalkerObject {
 		}
 	}
 
-
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -462,15 +479,14 @@ public class Graph extends WalkerObject {
 
 					}
 				}
-				
-				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED )
+
+				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
 					distance[i][z] = Double.MAX_VALUE;
-				
+
 			}
 		}
 
 	}
-	
 
 	public void setElevationsFromNodes() {
 		double[] elevs = APITools.GetAllElevations(nodes);
