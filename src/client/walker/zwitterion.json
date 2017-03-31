@@ -515,6 +515,12 @@
         },
         "bower_components/paper-checkbox/paper-checkbox.html": {
             "parentImport": true
+        },
+        "components/walker-user-options/walker-user-options.html": {
+            "parentImport": true
+        },
+        "components/walker-user-options/walker-user-options.ts": {
+            "parentImport": true
         }
     }
 }
