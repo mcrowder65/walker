@@ -46,6 +46,49 @@ export function rootReducer(state: State = InitialState, action: Action): State 
           endMarker: action.endMarker
         };
       }
+
+      case 'SET_ELEVATION': {
+        return {
+          ...state,
+          elevation: action.elevation
+        };
+      }
+
+      case 'SET_STAIRS': {
+        return {
+          ...state,
+          stairs: action.stairs
+        };
+      }
+
+      case 'SET_WILDERNESS': {
+        return {
+          ...state,
+          wilderness: action.wilderness
+        };
+      }
+
+      case 'SET_GRASS': {
+        return {
+          ...state,
+          grass: action.grass
+        };
+      }
+
+      case 'SET_BUILDING': {
+        return {
+          ...state,
+          building: action.building
+        };
+      }
+
+      case 'SET_PARKING_LOTS': {
+        return {
+          ...state,
+          parkingLots: action.parkingLots
+        };
+      }
+
       default: {
           return state;
       }

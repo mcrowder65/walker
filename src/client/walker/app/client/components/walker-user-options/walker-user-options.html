@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/redux-store-element/redux-store.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="walker-user-options">
+  <template>
+    <redux-store action="[[action]]" on-statechange="mapStateToThis"></redux-store>
+    <paper-card>
+
+      Stairs<paper-slider id="stairs" min="0" max="100" value="[[stairs]]" pin="true" on-value-change="change"></paper-slider>
+      Elevation<paper-slider id="elevation" min="0" max="100" value="[[elevation]]" pin="true" on-value-change="change"></paper-slider>
+      <paper-checkbox id="wilderness" on-change="change"></paper-checkbox>Wilderness<br>
+
+      <paper-checkbox id="grass" on-change="change"></paper-checkbox>Grass<br>
+
+      <paper-checkbox id="building" on-change="change"></paper-checkbox>Building<br>
+
+      <paper-checkbox id="parkingLots" on-change="change"></paper-checkbox>Parking lots<br>
+    </paper-card>
+
+  </template>
+
+  <script src="walker-user-options.ts"></script>
+</dom-module>
