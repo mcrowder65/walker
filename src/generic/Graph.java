@@ -6,6 +6,7 @@ import java.util.List;
 
 import generic.objects.Building;
 import generic.objects.Entrance;
+import generic.objects.UserPrefs;
 import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
@@ -258,13 +259,13 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				totalCost[i][j] = distance[i][j];
-				if (up.getGrass()) {
+				if (up.isGrass()) {
 					boolean g = grass[i][j];
 					if (g) {
 						totalCost[i][j] = Double.MAX_VALUE;
 					}
 				}
-				if (up.getBuildingWeight()) {
+				if (up.isBuilding()) {
 					boolean b = building[i][j];
 					if (b) {
 						totalCost[i][j] = Double.MAX_VALUE;

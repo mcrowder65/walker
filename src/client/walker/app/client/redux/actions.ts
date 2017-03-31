@@ -161,6 +161,12 @@ const setParkingLots = (context: WalkerUserOptions, parkingLots: boolean): void 
 
 }
 
+const setPreferDesignatedPaths = (context: WalkerUserOptions, preferDesignatedPaths: boolean): void => {
+  context.action = {
+    type: 'SET_PREFER_DESIGNATED_PATHS',
+    preferDesignatedPaths
+  };
+}
 export const Actions = {
     defaultAction,
     setMarkers,
@@ -177,5 +183,6 @@ export const Actions = {
     setWilderness,
     setGrass,
     setBuilding,
-    setParkingLots
+    setParkingLots,
+    setPreferDesignatedPaths
 };

@@ -120,11 +120,6 @@ public class Marker extends WalkerObject {
 		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "Marker [latitude=" + latitude + ", longitude=" + longitude + ", title=" + title + ", id=" + id + "]";
-	}
-
 	public Marker(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;

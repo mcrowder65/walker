@@ -11,4 +11,5 @@ export interface State {
   grass?: boolean;
   building?: boolean;
   parkingLots?: boolean;
+  preferDesignatedPaths?: boolean;
 }

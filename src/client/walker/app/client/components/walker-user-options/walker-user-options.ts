@@ -11,6 +11,7 @@ export class WalkerUserOptions {
   public building: boolean = false;
   public grass: boolean = false;
   public parkingLots: boolean = false;
+  public preferDesignatedPaths: boolean = false;
   public properties: any;
   public action: Action;
   public querySelector: any;
@@ -38,6 +39,9 @@ export class WalkerUserOptions {
     if(this.querySelector('#parkingLots')) {
       Actions.setParkingLots(this, this.querySelector('#parkingLots').checked);
     }
+    if(this.querySelector('#preferDesignatedPaths')) {
+      Actions.setPreferDesignatedPaths(this, this.querySelector('#preferDesignatedPaths').checked);
+    }
   }
 
   mapStateToThis(e: StatechangeEvent): void {
@@ -48,6 +52,7 @@ export class WalkerUserOptions {
     this.grass = state.grass;
     this.building = state.building;
     this.parkingLots = state.parkingLots;
+    this.preferDesignatedPaths = state.preferDesignatedPaths;
   }
 }
 
