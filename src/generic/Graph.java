@@ -1,5 +1,6 @@
 package generic;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -296,22 +297,21 @@ public class Graph extends WalkerObject {
 	public void addBlackNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		int imgHeight = img.getHeight();
 		int imgWidth = img.getWidth();
-		int pixelsSinceLastNode = 0; // holds how many pixels we have
-										// looped over since we last put a node,
-
-		List<Node> allNodes = GraphTools.GenerateUniformNodes(.1, southwest, northeast);
-		for (int i = 0; i < imgHeight; i++) {
-			for (int j = 0; j < imgWidth; j++) {
-				int rgb = img.getRGB(j, i);
-				pixelsSinceLastNode++;
+		int nodesSinceLastNode = 0; // holds how many pixels we have
+									// looped over since we last put a node,
+		List<Node> allNodes = GraphTools.GenerateUniformNodes(.3, southwest, northeast);
+		for (int i = 0; i < allNodes.size(); i++) {
+			nodesSinceLastNode++;
+			if (nodesSinceLastNode >= 5) {
+				Node n = allNodes.get(i);
+				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
+						img.getWidth(), img.getHeight());
+				int rgb = img.getRGB((int) point.x, (int) point.y);
 				boolean isBlack = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
 				if (isBlack == true) {
-					if (pixelsSinceLastNode >= 5) {
-						// create new node
-
-						pixelsSinceLastNode = 0;
-					}
+					nodes.add(n);
 				}
+				nodesSinceLastNode = 0;
 			}
 		}
 	}
