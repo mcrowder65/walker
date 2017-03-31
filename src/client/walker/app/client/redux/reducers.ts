@@ -89,6 +89,12 @@ export function rootReducer(state: State = InitialState, action: Action): State 
         };
       }
 
+      case 'SET_PREFER_DESIGNATED_PATHS': {
+        return {
+          ...state,
+          preferDesignatedPaths: action.preferDesignatedPaths
+        }
+      }
       default: {
           return state;
       }

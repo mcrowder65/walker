@@ -32,4 +32,8 @@ public abstract class WalkerObject {
 		return JSONTools.g.toJson(this);
 	}
 
+	final public String toString() {
+		return toJson();
+	}
+
 }

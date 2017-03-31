@@ -37,6 +37,8 @@ export class WalkerMap {
   public building: boolean = false;
   public grass: boolean = false;
   public parkingLots: boolean = false;
+  public preferDesignatedPaths: boolean = false;
+
   beforeRegister(): void {
     this.is = 'walker-map';
     this.properties = {
@@ -216,7 +218,8 @@ export class WalkerMap {
       wilderness: this.wilderness || false,
       building: this.building || false,
       grass: this.grass || false,
-      parkingLots: this.parkingLots || false
+      parkingLots: this.parkingLots || false,
+      preferDesignatedPaths: this.preferDesignatedPaths || false
     };
     Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
   }
@@ -266,6 +269,7 @@ export class WalkerMap {
     this.grass = state.grass;
     this.building = state.building;
     this.parkingLots = state.parkingLots;
+    this.preferDesignatedPaths = state.preferDesignatedPaths;
   }
 
 }

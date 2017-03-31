@@ -20,7 +20,7 @@ import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.Tools;
-import generic.UserPrefs;
+import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 
 public class GraphTests {
@@ -65,8 +65,9 @@ public class GraphTests {
 			nodes.add(new Node());
 		}
 		Graph g = new Graph(distance, null, nodes);
-		List<Integer> path = GraphTools.dijkstra(0, g, 4, UserPrefs.DISTANCE_ONLY);
-		System.out.println(path);
+		// List<Integer> path = GraphTools.dijkstra(0, g, 4,
+		// UserPrefs.DISTANCE_ONLY);
+		// System.out.println(path);
 
 	}
 
@@ -138,7 +139,7 @@ public class GraphTests {
 		g.addEnterExit();
 		g.setDistancesFromNodes(img, southwest, northeast);
 		// g.generateMatrix(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, false, false, false, 0, false, false);
+		UserPrefs up = new UserPrefs(1, 0, false, false, false, false, false);
 		g.sumMatricies(up);
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);

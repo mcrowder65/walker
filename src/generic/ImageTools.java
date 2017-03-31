@@ -1,12 +1,15 @@
 package generic;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import generic.objects.Building;
 import googlemaps.LatLng;
 import server.APITools;
+import server.processing.ColorOperations;
 
 public class ImageTools {
 
@@ -155,4 +158,20 @@ public class ImageTools {
 
 	}
 
+	
+	
+	public static BufferedImage fillBuildings(BufferedImage img, List<Building> buildings, LatLng southwest, LatLng northeast)
+	{
+		LatLng[] seedPoints = new LatLng[buildings.size()];
+		for (int n = 0; n < seedPoints.length; n++)
+		{
+			seedPoints[n] = new LatLng(buildings.get(n).getLatitude(), buildings.get(n).getLongitude());
+		}
+		
+		
+		BufferedImage newImg = ColorOperations.filledImage(img, new Color( Config.MAPS_BUILDING_RGB), southwest, northeast, seedPoints);
+		
+		
+		return newImg;
+	}
 }

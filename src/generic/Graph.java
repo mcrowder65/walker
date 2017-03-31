@@ -7,6 +7,7 @@ import java.util.List;
 
 import generic.objects.Building;
 import generic.objects.Entrance;
+import generic.objects.UserPrefs;
 import generic.objects.WalkerObject;
 import googlemaps.LatLng;
 import server.APITools;
@@ -259,13 +260,13 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
 				totalCost[i][j] = distance[i][j];
-				if (up.getGrass()) {
+				if (up.isGrass()) {
 					boolean g = grass[i][j];
 					if (g) {
 						totalCost[i][j] = Double.MAX_VALUE;
 					}
 				}
-				if (up.getBuildingWeight()) {
+				if (up.isBuilding()) {
 					boolean b = building[i][j];
 					if (b) {
 						totalCost[i][j] = Double.MAX_VALUE;
@@ -449,40 +450,54 @@ public class Graph extends WalkerObject {
 
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
+		grass = new boolean[nodes.size()][nodes.size()];
+		
+		
 		for (int i = 0; i < nodes.size(); i++) {
-			for (int z = 0; z < nodes.size(); z++) {
+			System.out.println("i = " + i);
+			for (int z = i; z < nodes.size(); z++) {
 				if (i == z) {
 					distance[i][z] = 0;
-				} else if (nodes.get(i).getBuilding() != null && nodes.get(z).getBuilding() != null) {
-					double d = calcBulidingDist(nodes.get(i), nodes.get(z));
-					distance[i][z] = d;
-				} else {
+				}
+				else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
 					double checkRes = checkEntrences(startNode, endNode);
 					if (checkRes != -1) {
 						distance[i][z] = checkRes;
 					} else {
-						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
-						if (pc == null || pc.building == true) {
+						LatLng locStartNode = startNode.getPosition();
+						LatLng locEndNode = endNode.getPosition();
+						double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+						double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+						double longSqr = longDiff * longDiff;
+						double latSqr = latDiff * latDiff;
+						double res = Math.sqrt(longSqr + latSqr);
+						distance[i][z] = res;
+						
+						if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED )
 							distance[i][z] = Double.MAX_VALUE;
-						} else {
-							LatLng locStartNode = startNode.getPosition();
-							LatLng locEndNode = endNode.getPosition();
-							double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-							double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
-							double longSqr = longDiff * longDiff;
-							double latSqr = latDiff * latDiff;
-							double res = Math.sqrt(longSqr + latSqr);
-							distance[i][z] = res;
+						else
+						{
+							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+							if (pc.building) 
+								distance[i][z] = Double.MAX_VALUE;
+							
+							grass[i][z] = pc.grass;
 						}
 
 					}
 				}
 
-				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
-					distance[i][z] = Double.MAX_VALUE;
-
+			}
+		}
+		
+		for (int j = 0; j < nodes.size(); j++)
+		{
+			for (int i = j + 1; i < nodes.size(); i++)
+			{
+				distance[i][j] = distance[j][i];
+				grass[i][j] = grass[j][i];
 			}
 		}
 

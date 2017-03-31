@@ -5,4 +5,5 @@ export interface UserOptions {
   building: boolean;
   grass: boolean;
   parkingLots: boolean;
+  preferDesignatedPaths: boolean;
 };
