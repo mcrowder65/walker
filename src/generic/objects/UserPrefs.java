@@ -30,6 +30,10 @@ public class UserPrefs extends WalkerObject {
 	}
 
 	public double getStairs() {
+		if (stairs > 1) {
+			System.err
+					.println("why is stairs greater than 1??? something is going wrong, did you do setStairs before?");
+		}
 		return stairs;
 	}
 
@@ -44,7 +48,10 @@ public class UserPrefs extends WalkerObject {
 	}
 
 	public double getElevation() {
-
+		if (elevation > 1) {
+			System.err.println(
+					"why is elevation greater than 1??? something is going wrong, did you do setElevation before?");
+		}
 		return elevation;
 	}
 
