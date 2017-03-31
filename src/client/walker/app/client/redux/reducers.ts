@@ -6,7 +6,6 @@ import {Action} from '../typings/action';
 export function rootReducer(state: State = InitialState, action: Action): State {
     switch(action.type) {
       case 'SET_MARKERS': {
-        console.log('set markers reducers');
         return {
           ...state,
           markers: action.markers
@@ -56,7 +55,6 @@ export function rootReducer(state: State = InitialState, action: Action): State 
       }
 
       case 'SET_STAIRS': {
-        console.log('set stairs redux');
         return {
           ...state,
           stairs: action.stairs

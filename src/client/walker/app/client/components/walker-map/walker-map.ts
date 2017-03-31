@@ -211,12 +211,12 @@ export class WalkerMap {
    */
   go(): void {
     const userOptions: UserOptions = {
-      stairs: this.stairs,
-      elevation: this.elevation,
-      wilderness: this.wilderness,
-      building: this.building,
-      grass: this.grass,
-      parkingLots: this.parkingLots
+      stairs: this.stairs || 0,
+      elevation: this.elevation || 0,
+      wilderness: this.wilderness || false,
+      building: this.building || false,
+      grass: this.grass || false,
+      parkingLots: this.parkingLots || false
     };
     Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
   }

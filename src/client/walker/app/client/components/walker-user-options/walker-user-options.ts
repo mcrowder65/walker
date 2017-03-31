@@ -13,46 +13,32 @@ export class WalkerUserOptions {
   public parkingLots: boolean = false;
   public properties: any;
   public action: Action;
+  public querySelector: any;
 
   beforeRegister(): void {
     this.is = 'walker-user-options';
-    this.properties = {
-      stairs: {
-        type: Number,
-        observer: 'change'
-      },
-      elevation: {
-        type: Number,
-        observer: 'change'
-      },
-      wilderness: {
-        type: Boolean,
-        observer: 'change'
-      },
-      building: {
-        type: Boolean,
-        observer: 'change'
-      },
-      grass: {
-        type: Boolean,
-        observer: 'change'
-      },
-      parkingLots: {
-        type: Boolean,
-        observer: 'change'
-      }
-    }
   }
 
   change(): void {
-    Actions.setStairs(this, this.stairs);
-    // Actions.setElevation(this, this.elevation);
-    // Actions.setWilderness(this, this.wilderness);
-    // Actions.setGrass(this, this.grass);
-    // Actions.setBuilding(this, this.building);
-    // Actions.setParkingLots(this, this.parkingLots);
+    if(this.querySelector('#stairs')) {
+      Actions.setStairs(this, this.querySelector('#stairs').value);
+    }
+    if(this.querySelector('#elevation')) {
+      Actions.setElevation(this, this.querySelector('#elevation').value);
+    }
+    if(this.querySelector('#wilderness')) {
+      Actions.setWilderness(this, this.querySelector('#wilderness').checked);
+    }
+    if(this.querySelector('#grass')) {
+      Actions.setGrass(this, this.querySelector('#grass').checked);
+    }
+    if(this.querySelector('#building')) {
+      Actions.setBuilding(this, this.querySelector('#building').checked);
+    }
+    if(this.querySelector('#parkingLots')) {
+      Actions.setParkingLots(this, this.querySelector('#parkingLots').checked);
+    }
   }
-
 
   mapStateToThis(e: StatechangeEvent): void {
     const state: State = e.detail.state;

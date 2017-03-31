@@ -119,8 +119,6 @@ const travel = async (context: WalkerMap, url: string, startMarker: Marker, endM
 };
 
 const setStairs = (context: any, stairs: number): void => {
-  console.log('set stairs');
-  console.log('context ', context);
   context.action = {
     type: 'SET_STAIRS',
     stairs
@@ -159,7 +157,8 @@ const setParkingLots = (context: WalkerUserOptions, parkingLots: boolean): void 
   context.action = {
     type: 'SET_PARKING_LOTS',
     parkingLots
-  };
+  }
+
 }
 
 export const Actions = {
