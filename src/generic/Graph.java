@@ -298,7 +298,7 @@ public class Graph extends WalkerObject {
 		int imgWidth = img.getWidth();
 		int nodesSinceLastNode = 0; // holds how many pixels we have
 									// looped over since we last put a node,
-		List<Node> allNodes = GraphTools.GenerateUniformNodes(.1, southwest, northeast);
+		List<Node> allNodes = GraphTools.GenerateUniformNodes(.3, southwest, northeast);
 		for (int i = 0; i < allNodes.size(); i++) {
 			nodesSinceLastNode++;
 			if (nodesSinceLastNode >= 5) {
