@@ -112,7 +112,7 @@ public class GraphTests {
 		Tools.WriteImage(img, "testImages/dTest1.png");
 	}
 
-	@Test
+	// @Test
 	public void findPathTest() {
 		LatLng start = new LatLng(40.248904, -111.651412);
 		LatLng end = new LatLng(40.249121, -111.648808);
@@ -150,6 +150,28 @@ public class GraphTests {
 
 		Tools.WriteImage(img_clean, "testImages/final.png");
 		// //
+	}
+
+	@Test
+	public void addBlackNodesTest() {
+		LatLng start = new LatLng(40.248904, -111.651412);
+		LatLng end = new LatLng(40.249121, -111.648808);
+
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+		List<Node> nodes = new ArrayList();
+		Graph g = new Graph(null, null, nodes);
+		g.addBlackNodes(img, southwest, northeast);
+		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
+		Tools.WriteImage(img, "testImages/blackNodesOnly.png");
+
 	}
 
 }

@@ -1,5 +1,6 @@
 package generic;
 
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -293,6 +294,28 @@ public class Graph extends WalkerObject {
 		}
 	}
 
+	public void addBlackNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
+		int imgHeight = img.getHeight();
+		int imgWidth = img.getWidth();
+		int nodesSinceLastNode = 0; // holds how many pixels we have
+									// looped over since we last put a node,
+		List<Node> allNodes = GraphTools.GenerateUniformNodes(.3, southwest, northeast);
+		for (int i = 0; i < allNodes.size(); i++) {
+			nodesSinceLastNode++;
+			if (nodesSinceLastNode >= 5) {
+				Node n = allNodes.get(i);
+				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
+						img.getWidth(), img.getHeight());
+				int rgb = img.getRGB((int) point.x, (int) point.y);
+				boolean isBlack = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
+				if (isBlack == true) {
+					nodes.add(n);
+				}
+				nodesSinceLastNode = 0;
+			}
+		}
+	}
+
 	public int findClosestNodeIndex(Node n) {
 		LatLng latLong = n.getPosition();
 		int closestNodeIndex = 0;
@@ -427,40 +450,54 @@ public class Graph extends WalkerObject {
 
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
+		grass = new boolean[nodes.size()][nodes.size()];
+		
+		
 		for (int i = 0; i < nodes.size(); i++) {
-			for (int z = 0; z < nodes.size(); z++) {
+			System.out.println("i = " + i);
+			for (int z = i; z < nodes.size(); z++) {
 				if (i == z) {
 					distance[i][z] = 0;
-				} else if (nodes.get(i).getBuilding() != null && nodes.get(z).getBuilding() != null) {
-					double d = calcBulidingDist(nodes.get(i), nodes.get(z));
-					distance[i][z] = d;
-				} else {
+				}
+				else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
 					double checkRes = checkEntrences(startNode, endNode);
 					if (checkRes != -1) {
 						distance[i][z] = checkRes;
 					} else {
-						PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
-						if (pc == null || pc.building == true) {
+						LatLng locStartNode = startNode.getPosition();
+						LatLng locEndNode = endNode.getPosition();
+						double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+						double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+						double longSqr = longDiff * longDiff;
+						double latSqr = latDiff * latDiff;
+						double res = Math.sqrt(longSqr + latSqr);
+						distance[i][z] = res;
+						
+						if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED )
 							distance[i][z] = Double.MAX_VALUE;
-						} else {
-							LatLng locStartNode = startNode.getPosition();
-							LatLng locEndNode = endNode.getPosition();
-							double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-							double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
-							double longSqr = longDiff * longDiff;
-							double latSqr = latDiff * latDiff;
-							double res = Math.sqrt(longSqr + latSqr);
-							distance[i][z] = res;
+						else
+						{
+							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
+							if (pc.building) 
+								distance[i][z] = Double.MAX_VALUE;
+							
+							grass[i][z] = pc.grass;
 						}
 
 					}
 				}
 
-				if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
-					distance[i][z] = Double.MAX_VALUE;
-
+			}
+		}
+		
+		for (int j = 0; j < nodes.size(); j++)
+		{
+			for (int i = j + 1; i < nodes.size(); i++)
+			{
+				distance[i][j] = distance[j][i];
+				grass[i][j] = grass[j][i];
 			}
 		}
 
