@@ -451,15 +451,13 @@ public class Graph extends WalkerObject {
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
-		
-		
+
 		for (int i = 0; i < nodes.size(); i++) {
 			System.out.println("i = " + i);
 			for (int z = i; z < nodes.size(); z++) {
 				if (i == z) {
 					distance[i][z] = 0;
-				}
-				else {
+				} else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
 					double checkRes = checkEntrences(startNode, endNode);
@@ -474,15 +472,15 @@ public class Graph extends WalkerObject {
 						double latSqr = latDiff * latDiff;
 						double res = Math.sqrt(longSqr + latSqr);
 						distance[i][z] = res;
-						
-						if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED )
+
+						if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
 							distance[i][z] = Double.MAX_VALUE;
-						else
-						{
-							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest, northeast);
-							if (pc.building) 
+						else {
+							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest,
+									northeast);
+							if (pc.building)
 								distance[i][z] = Double.MAX_VALUE;
-							
+
 							grass[i][z] = pc.grass;
 						}
 
@@ -491,11 +489,9 @@ public class Graph extends WalkerObject {
 
 			}
 		}
-		
-		for (int j = 0; j < nodes.size(); j++)
-		{
-			for (int i = j + 1; i < nodes.size(); i++)
-			{
+
+		for (int j = 0; j < nodes.size(); j++) {
+			for (int i = j + 1; i < nodes.size(); i++) {
 				distance[i][j] = distance[j][i];
 				grass[i][j] = grass[j][i];
 			}
