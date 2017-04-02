@@ -24,6 +24,7 @@ public class Graph extends WalkerObject {
 	private boolean[][] parking;
 	private double[][] stairs;
 	private double[][] totalCost;
+	private double[][] normalPath;
 	private String name;
 	private List<Node> nodes;
 
@@ -309,6 +310,7 @@ public class Graph extends WalkerObject {
 				int rgb = img.getRGB((int) point.x, (int) point.y);
 				boolean isBlack = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
 				if (isBlack == true) {
+					n.setBlack();
 					nodes.add(n);
 				}
 				nodesSinceLastNode = 0;
@@ -451,6 +453,7 @@ public class Graph extends WalkerObject {
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
+		normalPath = new double[nodes.size()][nodes.size()];
 
 		for (int i = 0; i < nodes.size(); i++) {
 			// System.out.println("i = " + i);
@@ -463,6 +466,7 @@ public class Graph extends WalkerObject {
 					double checkRes = checkEntrences(startNode, endNode);
 					if (checkRes != -1) {
 						distance[i][z] = checkRes;
+						normalPath[i][z] = checkRes;
 					} else {
 						LatLng locStartNode = startNode.getPosition();
 						LatLng locEndNode = endNode.getPosition();
@@ -472,6 +476,34 @@ public class Graph extends WalkerObject {
 						double latSqr = latDiff * latDiff;
 						double res = Math.sqrt(longSqr + latSqr);
 						distance[i][z] = res;
+
+						if (startNode.getBlack() || endNode.getBlack()) {
+							if (startNode.getBlack() && endNode.getBlack()) {
+								if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED_BLACK)
+									normalPath[i][z] = Double.MAX_VALUE;
+								else {
+									normalPath[i][z] = distance[i][z];
+								}
+							} else if (startNode.getBlack() && endNode.getBuilding() != null) {
+								if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED_BLACK)
+									normalPath[i][z] = Double.MAX_VALUE;
+								else {
+									normalPath[i][z] = distance[i][z];
+								}
+							} else if (endNode.getBlack() && startNode.getBuilding() != null) {
+								if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED_BLACK)
+									normalPath[i][z] = Double.MAX_VALUE;
+								else {
+									normalPath[i][z] = distance[i][z];
+								}
+							} else {
+								normalPath[i][z] = Double.MAX_VALUE;
+							}
+							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest,
+									northeast);
+							if (pc.building)
+								normalPath[i][z] = Double.MAX_VALUE;
+						}
 
 						if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
 							distance[i][z] = Double.MAX_VALUE;
