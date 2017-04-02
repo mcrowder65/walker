@@ -176,8 +176,10 @@ public class GraphTests {
 
 	@Test
 	public void testLimitedDist() {
-		LatLng start = new LatLng(40.248904, -111.651412);
-		LatLng end = new LatLng(40.249121, -111.648808);
+		// LatLng start = new LatLng(40.248904, -111.651412);
+		// LatLng end = new LatLng(40.249121, -111.648808);
+		LatLng start = new LatLng(40.249304, -111.649816);
+		LatLng end = new LatLng(40.250478, -111.648631);
 
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
@@ -196,7 +198,7 @@ public class GraphTests {
 		g.setEndNode(endNodeIndex);
 		g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, false, false, false, false, false);
+		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, false);
 		g.sumMatricies(up);
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
