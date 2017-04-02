@@ -227,7 +227,7 @@ public class Graph extends WalkerObject {
 			}
 		}
 	}
-
+/*
 	public void generateMatrix(BufferedImage img, LatLng southwest, LatLng northeast) {
 		building = new boolean[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
@@ -255,7 +255,7 @@ public class Graph extends WalkerObject {
 		}
 
 	}
-
+*/
 	public void sumMatricies(UserPrefs up) {
 		totalCost = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -300,10 +300,10 @@ public class Graph extends WalkerObject {
 		int imgWidth = img.getWidth();
 		int nodesSinceLastNode = 0; // holds how many pixels we have
 									// looped over since we last put a node,
-		List<Node> allNodes = GraphTools.GenerateUniformNodes(.3, southwest, northeast);
+		List<Node> allNodes = GraphTools.GenerateUniformNodes(.4, southwest, northeast, true);
 		for (int i = 0; i < allNodes.size(); i++) {
 			nodesSinceLastNode++;
-			if (nodesSinceLastNode >= 5) {
+			if (nodesSinceLastNode >= 15) {
 				Node n = allNodes.get(i);
 				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
 						img.getWidth(), img.getHeight());
@@ -419,6 +419,7 @@ public class Graph extends WalkerObject {
 
 	}
 
+	/*
 	public void setDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
@@ -449,7 +450,7 @@ public class Graph extends WalkerObject {
 			}
 		}
 	}
-
+*/
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		distance = new double[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
@@ -474,46 +475,55 @@ public class Graph extends WalkerObject {
 						double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
 						double longSqr = longDiff * longDiff;
 						double latSqr = latDiff * latDiff;
-						double res = Math.sqrt(longSqr + latSqr);
-						distance[i][z] = res;
+						double squaredDist = longSqr + latSqr; //Calculating square root is slow, only do it if we have to
+						
+						
 
 						if (startNode.getBlack() || endNode.getBlack()) {
 							if (startNode.getBlack() && endNode.getBlack()) {
-								if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED_BLACK)
+								if (squaredDist > Config.MAX_BLOCK_DIST_SQUARED_BLACK) {
+									distance[i][z] = Double.MAX_VALUE;
 									normalPath[i][z] = Double.MAX_VALUE;
+								}
 								else {
+									double rootDist = Math.sqrt(squaredDist);
+									distance[i][z] = rootDist;
 									normalPath[i][z] = distance[i][z];
 								}
-							} else if (startNode.getBlack() && endNode.getBuilding() != null) {
-								if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED_BLACK)
+							} else if (endNode.getBuilding() != null || startNode.getBuilding() != null) { //we already know one of them is going to be black anyway, no need to check again
+								if (squaredDist > Config.MAX_BLOCK_DIST_SQUARED_BLACK) {
+									distance[i][z] = Double.MAX_VALUE;
 									normalPath[i][z] = Double.MAX_VALUE;
-								else {
-									normalPath[i][z] = distance[i][z];
 								}
-							} else if (endNode.getBlack() && startNode.getBuilding() != null) {
-								if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED_BLACK)
-									normalPath[i][z] = Double.MAX_VALUE;
 								else {
+									double rootDist = Math.sqrt(squaredDist);
+									distance[i][z] = rootDist;
 									normalPath[i][z] = distance[i][z];
 								}
 							} else {
+								distance[i][z] = Double.MAX_VALUE;
 								normalPath[i][z] = Double.MAX_VALUE;
 							}
-							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest,
-									northeast);
-							if (pc.building)
-								normalPath[i][z] = Double.MAX_VALUE;
+							
 						}
-
-						if (distance[i][z] * distance[i][z] > Config.MAX_BLOCK_DIST_SQUARED)
-							distance[i][z] = Double.MAX_VALUE;
-						else {
-							PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest,
-									northeast);
-							if (pc.building)
+						else
+						{
+							//normalPath[i][z] = Double.MAX_VALUE; //Eric says: We have the absolute shortest distance matrix. Can we just infinity this out? 
+							
+							if (squaredDist > Config.MAX_BLOCK_DIST_SQUARED)
 								distance[i][z] = Double.MAX_VALUE;
-
-							grass[i][z] = pc.grass;
+							else {
+								PathConstituents pc = ImageTools.analyzeImage(img, startNode, endNode, southwest,
+										northeast);
+								if (pc.building)
+									distance[i][z] = Double.MAX_VALUE;
+								else
+								{
+									double rootDist = Math.sqrt(squaredDist);
+									distance[i][z] = rootDist;
+								}
+								grass[i][z] = pc.grass;
+							}
 						}
 
 					}
