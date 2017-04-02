@@ -453,7 +453,7 @@ public class Graph extends WalkerObject {
 		grass = new boolean[nodes.size()][nodes.size()];
 
 		for (int i = 0; i < nodes.size(); i++) {
-			System.out.println("i = " + i);
+			// System.out.println("i = " + i);
 			for (int z = i; z < nodes.size(); z++) {
 				if (i == z) {
 					distance[i][z] = 0;
