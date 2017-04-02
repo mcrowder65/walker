@@ -196,6 +196,7 @@ public class GraphTests {
 		int endNodeIndex = g.findClosestNodeIndex(new Node(end.latitude, end.longitude, null, false, true));
 		g.setStartNode(startNodeIndex);
 		g.setEndNode(endNodeIndex);
+		g.addBlackNodes(img, southwest, northeast);
 		g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
 		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, false);
