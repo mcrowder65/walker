@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import generic.Tools;
+import generic.ZoningTools;
+import googlemaps.LatLng;
 
 public class Building extends WalkerObject {
 	private double latitude;
@@ -79,6 +81,11 @@ public class Building extends WalkerObject {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+	
+	public LatLng toLatLng()
+	{
+		return new LatLng(latitude, longitude);
+	}
 
 	public String getTitle() {
 		return title;
@@ -103,6 +110,30 @@ public class Building extends WalkerObject {
 	public void setClosingTime(String closingTime) {
 		this.closingTime = closingTime;
 	}
+	
+	private int getHourOfTime(String time)
+	{
+		int h;
+		if (time.length() == 4) //e.g. 7:00
+			h = Integer.parseInt(time.substring(0, 1));
+		else
+			h = Integer.parseInt(time.substring(0, 2));
+		
+		return h;
+	}
+	
+	public boolean isCurrentlyOpen()
+	{
+		LatLng coord = toLatLng();
+	    int hour = ZoningTools.GetHour(coord);
+	    
+	    int openingHour = getHourOfTime(openingTime);
+	    int closingHour = getHourOfTime(closingTime); //~~~I know who I want to take me home~~~
+	    
+	    return hour >= openingHour && hour < closingHour;
+	    
+	}
+	
 
 	public Building() {
 
