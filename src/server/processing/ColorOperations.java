@@ -65,9 +65,12 @@ public class ColorOperations {
 			LatLng... seedPoints) {
 		BufferedImage copy = Tools.ImageDeepCopy(orig);
 		for (LatLng latlng : seedPoints) {
+			
 			Point2D.Double point = APITools.getImagePointFromLatLng(latlng, southwest, northeast, copy.getWidth(),
 					copy.getHeight());
-			beginFilling(orig, copy, fillColor, point);
+			
+			if (point != null) //Null means the point is not in the visible window
+				beginFilling(orig, copy, fillColor, point);
 		}
 		return copy;
 	}
