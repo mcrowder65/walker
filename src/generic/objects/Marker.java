@@ -11,9 +11,10 @@ public class Marker extends WalkerObject {
 	private boolean building;
 	private String buildingId;
 	private HashMap<String, String> entrances;
+	private boolean isStairs;
 
 	public Marker(double latitude, double longitude, String title, String openingTime, String closingTime,
-			boolean building, String buildingId, HashMap<String, String> entrances) {
+			boolean building, String buildingId, HashMap<String, String> entrances, boolean isStairs) {
 		super();
 		this.latitude = latitude;
 		this.longitude = longitude;
@@ -23,6 +24,7 @@ public class Marker extends WalkerObject {
 		this.building = building;
 		this.buildingId = buildingId;
 		this.entrances = entrances;
+		this.isStairs = isStairs;
 	}
 
 	public HashMap<String, String> getEntrances() {
@@ -78,6 +80,14 @@ public class Marker extends WalkerObject {
 
 	public void setOpeningTime(String openingTime) {
 		this.openingTime = openingTime;
+	}
+
+	public boolean isStairs() {
+		return isStairs;
+	}
+
+	public void setStairs(boolean isStairs) {
+		this.isStairs = isStairs;
 	}
 
 	public String getClosingTime() {
