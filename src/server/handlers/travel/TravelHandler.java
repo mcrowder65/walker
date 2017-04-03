@@ -2,6 +2,8 @@ package server.handlers.travel;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -35,6 +37,9 @@ public class TravelHandler extends WalkerHandler {
 		Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
 		// TODO handle!!!!!!!!
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
+		Calendar cal = new GregorianCalendar();
+
+		int currentHourInMilitaryTime = cal.get(Calendar.HOUR_OF_DAY);
 		System.out.println(userPrefs);
 	}
 
