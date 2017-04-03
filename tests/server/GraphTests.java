@@ -191,14 +191,12 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		
+
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		img = Tools.ClipLogo(img);
-		
+
 		List<Building> buildings = BuildingDAO.getAll();
 		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
-		
-		
 
 		List<Node> nodes = GraphTools.GenerateUniformNodes(10, southwest, northeast, false);
 		List<Node> newNodes = GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
@@ -208,10 +206,11 @@ public class GraphTests {
 		g.setStartNode(startNodeIndex);
 		g.setEndNode(endNodeIndex);
 		g.addBlackNodes(img, southwest, northeast);
-		
-		//GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
-		//Tools.WriteImage(img, "testImages/allNodes.png");
-		
+
+		// GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest,
+		// northeast);
+		// Tools.WriteImage(img, "testImages/allNodes.png");
+
 		g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
 		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, false);
