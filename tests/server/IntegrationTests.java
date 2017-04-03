@@ -51,7 +51,7 @@ public class IntegrationTests {
 		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
 		
 		
-		List<Node> nodes = generic.GraphTools.GenerateUniformNodes(6, southwest, northeast);
+		List<Node> nodes = generic.GraphTools.GenerateUniformNodes(6, southwest, northeast, false);
 		GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
 		
 

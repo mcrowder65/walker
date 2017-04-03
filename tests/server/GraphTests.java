@@ -18,10 +18,13 @@ import com.google.firebase.FirebaseOptions;
 import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
+import generic.ImageTools;
 import generic.Node;
 import generic.Tools;
+import generic.objects.Building;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
+import server.dao.BuildingDAO;
 
 public class GraphTests {
 
@@ -99,7 +102,7 @@ public class GraphTests {
 		List<Node> newNodes = generic.GraphTools.GenerateRandomNodes(nodes, 10, southwest, northeast);
 		nodes.addAll(newNodes);
 		Graph g = new Graph(null, null, nodes);
-		g.setDistancesFromNodes(img, southwest, northeast);
+		g.setLimitedDistancesFromNodes(img, southwest, northeast);
 		g.setElevationsFromNodes();
 
 		List<Integer> path = GraphTools.dijkstra(g.start(), g, g.end());
@@ -127,7 +130,7 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-		List<Node> nodes = GraphTools.GenerateUniformNodes(10, southwest, northeast);
+		List<Node> nodes = GraphTools.GenerateUniformNodes(10, southwest, northeast, false);
 		List<Node> newNodes = GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
 		Graph g = new Graph(null, null, newNodes);
 		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
@@ -137,7 +140,7 @@ public class GraphTests {
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		Tools.WriteImage(img, "testImages/b2.png");
 		g.addEnterExit();
-		g.setDistancesFromNodes(img, southwest, northeast);
+		g.setLimitedDistancesFromNodes(img, southwest, northeast);
 		// g.generateMatrix(img, southwest, northeast);
 		UserPrefs up = new UserPrefs(1, 0, false, false, false, false, false);
 		g.sumMatricies(up);
@@ -152,7 +155,7 @@ public class GraphTests {
 		// //
 	}
 
-	@Test
+	// @Test
 	public void addBlackNodesTest() {
 		LatLng start = new LatLng(40.248904, -111.651412);
 		LatLng end = new LatLng(40.249121, -111.648808);
@@ -172,6 +175,50 @@ public class GraphTests {
 		GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest, northeast);
 		Tools.WriteImage(img, "testImages/blackNodesOnly.png");
 
+	}
+
+	@Test
+	public void testLimitedDist() {
+		// LatLng start = new LatLng(40.248904, -111.651412);
+		// LatLng end = new LatLng(40.249121, -111.648808);
+		LatLng start = new LatLng(40.249304, -111.649816);
+		LatLng end = new LatLng(40.250478, -111.648631);
+
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		img = Tools.ClipLogo(img);
+
+		List<Building> buildings = BuildingDAO.getAll();
+		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
+
+		List<Node> nodes = GraphTools.GenerateUniformNodes(10, southwest, northeast, false);
+		List<Node> newNodes = GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
+		Graph g = new Graph(null, null, newNodes);
+		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
+		int endNodeIndex = g.findClosestNodeIndex(new Node(end.latitude, end.longitude, null, false, true));
+		g.setStartNode(startNodeIndex);
+		g.setEndNode(endNodeIndex);
+		g.addBlackNodes(img, southwest, northeast);
+
+		// GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest,
+		// northeast);
+		// Tools.WriteImage(img, "testImages/allNodes.png");
+
+		g.addEnterExit();
+		g.setLimitedDistancesFromNodes(img, southwest, northeast);
+		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, false);
+		g.sumMatricies(up);
+		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
+		List<Node> nodesToDraw = g.getNodesFromPath(path);
+		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
+		Tools.WriteImage(img, "testImages/throughBuilding.png");
 	}
 
 }

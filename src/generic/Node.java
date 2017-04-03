@@ -9,9 +9,18 @@ public class Node {
 	transient private boolean endNode = false;
 	private LatLng position;
 	private Building building;
+	private boolean isBlack = false;
 
 	public LatLng getPosition() {
 		return position;
+	}
+
+	public void setBlack() {
+		isBlack = true;
+	}
+
+	public boolean getBlack() {
+		return isBlack;
 	}
 
 	@Override
@@ -55,6 +64,7 @@ public class Node {
 	public Node(LatLng position, Building building) {
 		this.position = position;
 		this.building = building;
+		this.isBlack = false;
 	}
 
 	public Node(double latitude, double longitude, Building building, boolean isStartNode, boolean isEndNode) {
@@ -62,6 +72,7 @@ public class Node {
 		this.building = building;
 		this.startNode = isStartNode;
 		this.endNode = isEndNode;
+		this.isBlack = false;
 	}
 
 	public Node() {
