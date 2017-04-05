@@ -521,6 +521,9 @@
         },
         "components/walker-user-options/walker-user-options.ts": {
             "parentImport": true
+        },
+        "markers/blue_MarkerA.png": {
+            "parentImport": true
         }
     }
 }

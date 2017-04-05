@@ -27,15 +27,25 @@
           <paper-radio-button name="no" on-tap="thisIsNotABuilding">No</paper-radio-button>
         </paper-radio-group>
         <br>
+
         <template is="dom-if" if="[[!building]]">
-          Which building does this entrance belong to?
-          <paper-dropdown-menu label="Buildings">
-            <paper-listbox class="dropdown-content" selected="[[selectedBuildingIndex]]">
-              <template is="dom-repeat" items="[[buildings]]">
-                <paper-item id="[[item.id]]" on-tap="setBuilding">[[item.title]]</paper-item>
-              </template>
-            </paper-listbox>
-          </paper-dropdown-menu>
+          Is it stairs?
+          <paper-radio-group selected="[[isStairs]]">
+            <paper-radio-button name="yes" on-tap="thisIsStairs">Yes</paper-radio-button>
+            <paper-radio-button name="no" on-tap="thisIsNotStairs">No</paper-radio-button>
+          </paper-radio-group>
+        </template>
+        <template is="dom-if" if="[[!isStairs]]">
+          <template is="dom-if" if="[[!building]]">
+            Which building does this entrance belong to?
+            <paper-dropdown-menu label="Buildings">
+              <paper-listbox class="dropdown-content" selected="[[selectedBuildingIndex]]">
+                <template is="dom-repeat" items="[[buildings]]">
+                  <paper-item id="[[item.id]]" on-tap="setBuilding">[[item.title]]</paper-item>
+                </template>
+              </paper-listbox>
+            </paper-dropdown-menu>
+          </template>
         </template>
 
         <template is="dom-if" if="[[building]]">
