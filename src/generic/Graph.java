@@ -426,7 +426,6 @@ public class Graph extends WalkerObject {
 			return dist;
 		}
 		return -1;
-
 	}
 
 	/*
@@ -539,6 +538,11 @@ public class Graph extends WalkerObject {
 	// }
 
 	public void createNormalPathMatrix(Node startNode, Node endNode, int i, int z) {
+		double dist = checkEntrences(startNode, endNode);
+		if (dist != -1) {
+			normalPath[i][z] = dist;
+			return;
+		}
 		if (!startNode.getBlack() && !endNode.getBlack()) {
 			normalPath[i][z] = Double.MAX_VALUE;
 			return;
@@ -568,6 +572,7 @@ public class Graph extends WalkerObject {
 		for (int i = 0; i < nodes.size(); i++) {
 			// System.out.println("i = " + i);
 			for (int z = i; z < nodes.size(); z++) {
+				createNormalPathMatrix(nodes.get(i), nodes.get(z), i, z);
 				if (i == z) {
 					distance[i][z] = 0;
 				} else {
