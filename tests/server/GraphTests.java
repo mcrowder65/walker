@@ -177,7 +177,7 @@ public class GraphTests {
 
 	}
 
-	@Test
+	// @Test
 	public void testLimitedDist() {
 		// LatLng start = new LatLng(40.248904, -111.651412);
 		// LatLng end = new LatLng(40.249121, -111.648808);
@@ -223,8 +223,8 @@ public class GraphTests {
 
 	@Test
 	public void testingNormalPaths() {
-		LatLng start = new LatLng(40.249304, -111.649816);
-		LatLng end = new LatLng(40.250478, -111.648631);
+		LatLng start = new LatLng(40.249021, -111.650779);
+		LatLng end = new LatLng(40.249127, -111.648735);
 
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
@@ -248,15 +248,26 @@ public class GraphTests {
 		g.setStartNode(startNodeIndex);
 		g.setEndNode(endNodeIndex);
 		g.addBlackNodes(img, southwest, northeast);
-
-		g.addEnterExit();
+		// g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, false);
+		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, true);
 		g.sumMatricies(up);
-		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
-		List<Node> nodesToDraw = g.getNodesFromPath(path);
-		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
-		Tools.WriteImage(img, "testImages/normalPath.png");
+		if (up.isPreferDesignatedPaths()) {
+			int startIndex = g.findClosestBlackNodeIndex(g.getNodes().get(g.getStartIndex()));
+			int endIndex = g.findClosestBlackNodeIndex(g.getNodes().get(g.getEndIndex()));
+			List<Integer> path = GraphTools.dijkstra(startIndex, g, endIndex);
+			List<Node> nodesToDraw = g.getNodesFromPath(path);
+			nodesToDraw.add(0, g.getStartNode());
+			nodesToDraw.add(g.getEndNode());
+			GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
+			Tools.WriteImage(img, "testImages/normalPath.png");
+
+		} else {
+			List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
+			List<Node> nodesToDraw = g.getNodesFromPath(path);
+			GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
+			Tools.WriteImage(img, "testImages/normalPath.png");
+		}
 	}
 
 }

@@ -185,6 +185,24 @@ public class Graph extends WalkerObject {
 		return -1;
 	}
 
+	public Node getStartNode() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isStart() == true) {
+				return nodes.get(i);
+			}
+		}
+		return null;
+	}
+
+	public Node getEndNode() {
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).isEnd() == true) {
+				return nodes.get(i);
+			}
+		}
+		return null;
+	}
+
 	public void printNodes() {
 		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
@@ -251,7 +269,11 @@ public class Graph extends WalkerObject {
 
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
-				totalCost[i][j] = distance[i][j];
+				if (up.isPreferDesignatedPaths()) {
+					totalCost[i][j] = this.normalPath[i][j];
+				} else {
+					totalCost[i][j] = distance[i][j];
+				}
 				if (up.isGrass()) {
 					boolean g = grass[i][j];
 					if (g) {
@@ -280,7 +302,6 @@ public class Graph extends WalkerObject {
 				Node n = new Node(position, b);
 				int index = findClosestNodeIndex(n);
 				this.nodes.get(index).setBuilding(b);
-				;
 			}
 
 		}
