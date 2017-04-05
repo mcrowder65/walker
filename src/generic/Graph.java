@@ -543,6 +543,21 @@ public class Graph extends WalkerObject {
 			normalPath[i][z] = Double.MAX_VALUE;
 			return;
 		}
+		if (startNode.getBlack() && endNode.getBlack()) {
+			LatLng locStartNode = startNode.getPosition();
+			LatLng locEndNode = endNode.getPosition();
+			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+			double longSqr = longDiff * longDiff;
+			double latSqr = latDiff * latDiff;
+			double squaredDist = Math.sqrt(longSqr + latSqr);
+			if (squaredDist > Config.MAX_BLOCK_DIST_SQUARED_BLACK) {
+				normalPath[i][z] = Double.MAX_VALUE;
+			} else {
+				normalPath[i][z] = squaredDist;
+			}
+			return;
+		}
 
 	}
 
