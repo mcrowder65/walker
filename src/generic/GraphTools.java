@@ -106,7 +106,88 @@ public class GraphTools {
 		return nodes;
 	}
 
-	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBlackPath) {
+	public static double calcDist(Node start, Node end) {
+		double longDiff = Math.abs(start.getPosition().longitude - end.getPosition().longitude);
+		double latDiff = Math.abs(start.getPosition().latitude - end.getPosition().latitude);
+		double total = Math.sqrt((latDiff * latDiff) + (longDiff * longDiff));
+		return total;
+	}
+
+	public static double calcBuildingDist(Node start, Node end) {
+		double longDiff = Math.abs(start.getPosition().longitude - end.getPosition().longitude);
+		double latDiff = Math.abs(start.getPosition().latitude - end.getPosition().latitude);
+		return longDiff + latDiff;
+	}
+
+	public static double getCosts(Node start, Node end, UserPrefs up) {
+		if (end.code == NodeCode.Building || start.code == NodeCode.Building) {
+			return Double.MAX_VALUE;
+		}
+		if (up.isBuilding()) {
+			if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
+				return calcBuildingDist(start, end);
+			}
+		}
+		if (up.isPreferDesignatedPaths()) {
+			if (start.code == NodeCode.Normal && end.code == NodeCode.Normal) {
+				return calcDist(start, end);
+			}
+			if ((start.code == NodeCode.Normal && end.getBuilding() != null)
+					|| (end.code == NodeCode.Normal && start.getBuilding() != null)) {
+				return calcDist(start, end);
+			}
+			return Double.MAX_VALUE;
+		}
+		if (!up.isGrass() && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
+			return Double.MAX_VALUE;
+		}
+		if (start.code == NodeCode.Building || end.code == NodeCode.Building) {
+			return Double.MAX_VALUE;
+		}
+
+		return calcDist(start, end);
+
+	}
+
+	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath,
+			BufferedImage img) {
+		double latLen = APITools.getLatitudeDifference(southwest, northeast);
+		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
+
+		int latNodes = (int) (latLen / meterSpacing);
+		int lonNodes = (int) (lonLen / meterSpacing);
+
+		double latOffset = Math.abs((latNodes * meterSpacing) - latLen) / 2;
+		double lonOffset = Math.abs((lonNodes * meterSpacing) - lonLen) / 2;
+
+		Node[][] allNodes = new Node[lonNodes][latNodes];
+
+		for (int x = 0; x < lonNodes; x++) {
+			double currentLon = APITools.metersToLon(southwest, x * meterSpacing + lonOffset);
+			for (int y = 0; y < latNodes; y++) {
+				double currentLat = APITools.metersToLat(southwest, y * meterSpacing + latOffset);
+				Node n = new Node(currentLat, currentLon, null, false, false);
+				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
+						img.getWidth(), img.getHeight());
+				int rgb = img.getRGB((int) point.x, (int) point.y);
+				boolean isNormalPath = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
+				boolean isGrass = Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, 3);
+				boolean isBuilding = Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, 3);
+				if (isNormalPath) {
+					n.code = NodeCode.Normal;
+				} else if (isGrass) {
+					n.code = NodeCode.Grass;
+				} else if (isBuilding) {
+					n.code = NodeCode.Building;
+				}
+				allNodes[x][y] = n;
+			}
+		}
+		return allNodes;
+	}
+
+	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast,
+			boolean isBlackPath) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
 
@@ -128,22 +209,19 @@ public class GraphTools {
 		}
 
 		// Set the MAX_BLOCK_DIST{_BLACK} while we're here
-		
-		if (isBlackPath)
-		{
+
+		if (isBlackPath) {
 			double blockDistLat = APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE_BLACK * meterSpacing)
 					- southwest.latitude;
 			double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE_BLACK * meterSpacing)
 					- southwest.longitude;
 			Config.MAX_BLOCK_DIST_SQUARED_BLACK = blockDistLat * blockDistLat + blockDistLon * blockDistLon;
-		}
-		else
-		{
+		} else {
 			double blockDistLat = APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE * meterSpacing)
 					- southwest.latitude;
 			double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE * meterSpacing)
 					- southwest.longitude;
-			
+
 			Config.MAX_BLOCK_DIST_SQUARED = blockDistLat * blockDistLat + blockDistLon * blockDistLon;
 		}
 
@@ -417,6 +495,7 @@ public class GraphTools {
 		return currPath;
 	}
 
+<<<<<<< HEAD
 	
 	private static void initInfinity(Graph g, HashMap<NodeIndex,Double> map)
 	{
@@ -522,6 +601,27 @@ public class GraphTools {
 		gScore.put(start, 0d);
 		
 		HashMap<NodeIndex, Double> fScore = new HashMap<NodeIndex, Double>();
+=======
+	private static void initInfinity(Graph g, HashMap<Node, Double> map) {
+		for (int x = 0; x < g.nodes2.length; x++) {
+			for (int y = 0; y < g.nodes2.length; y++) {
+				map.put(g.nodes2[x][y], Double.MAX_VALUE);
+			}
+		}
+	}
+
+	public static List<Node> A_Star(Graph g, Node start, Node end, UserPrefs prefs) {
+		HashSet<Node> closedSet = new HashSet<Node>();
+		HashSet<Node> openSet = new HashSet<Node>();
+		openSet.add(start);
+		HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
+
+		HashMap<Node, Double> gScore = new HashMap<Node, Double>();
+		initInfinity(g, gScore);
+		gScore.put(start, 0d);
+
+		HashMap<Node, Double> fScore = new HashMap<Node, Double>();
+>>>>>>> 46c6bdad06eb12a01841ce17c622d4cc8a7cd6f1
 		initInfinity(g, fScore);
 		
 		fScore.put(start, g.getFromIndex(start).getPosition().dist(g.getFromIndex(end).getPosition()));
@@ -571,5 +671,5 @@ public class GraphTools {
 		
 		return null;
 	}
-	
+
 }

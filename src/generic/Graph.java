@@ -27,8 +27,9 @@ public class Graph extends WalkerObject {
 	private double[][] normalPath;
 	private String name;
 	private List<Node> nodes;
-	
+
 	public Node[][] nodes2;
+
 	
 	public boolean isValidIndex(NodeIndex indx)
 	{
@@ -54,6 +55,7 @@ public class Graph extends WalkerObject {
 		else
 			return nodes2[x][y];
 	}
+
 	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
 		super();
 		this.setId(graphFirebaseWrapper.getId());
@@ -212,18 +214,24 @@ public class Graph extends WalkerObject {
 	}
 
 	public Node getStartNode() {
-		for (int i = 0; i < nodes.size(); i++) {
-			if (nodes.get(i).isStart() == true) {
-				return nodes.get(i);
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				if (n.isStart()) {
+					return n;
+				}
 			}
 		}
 		return null;
 	}
 
 	public Node getEndNode() {
-		for (int i = 0; i < nodes.size(); i++) {
-			if (nodes.get(i).isEnd() == true) {
-				return nodes.get(i);
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				if (n.isEnd()) {
+					return n;
+				}
 			}
 		}
 		return null;
@@ -392,6 +400,56 @@ public class Graph extends WalkerObject {
 		return closestNodeIndex;
 	}
 
+	public Node getClosestBlackNode(Node n) {
+		LatLng latLong = n.getPosition();
+		double distance = Double.MAX_VALUE;
+		int closest_i = -1;
+		int closest_j = -1;
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n2 = nodes2[i][j];
+				if (n2.code == NodeCode.Normal) {
+					double longDiff = Math.abs(latLong.longitude - nodes.get(i).getPosition().longitude);
+					double latDiff = Math.abs(latLong.latitude - nodes.get(i).getPosition().latitude);
+					double total = latDiff + longDiff;
+					if (total < distance) {
+						distance = total;
+						closest_i = i;
+						closest_j = j;
+					}
+				}
+			}
+		}
+		if (closest_i != -1 && closest_j != -1) {
+			return nodes2[closest_i][closest_j];
+		}
+		return null;
+	}
+
+	public Node getClosestNode(Node n) {
+		LatLng latLong = n.getPosition();
+		double distance = Double.MAX_VALUE;
+		int closest_i = -1;
+		int closest_j = -1;
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n2 = nodes2[i][j];
+				double longDiff = Math.abs(latLong.longitude - nodes.get(i).getPosition().longitude);
+				double latDiff = Math.abs(latLong.latitude - nodes.get(i).getPosition().latitude);
+				double total = latDiff + longDiff;
+				if (total < distance) {
+					distance = total;
+					closest_i = i;
+					closest_j = j;
+				}
+			}
+		}
+		if (closest_i != -1 && closest_j != -1) {
+			return nodes2[closest_i][closest_j];
+		}
+		return null;
+	}
+
 	public void generateWildernessMatrix() {
 
 	}
@@ -451,16 +509,13 @@ public class Graph extends WalkerObject {
 		return nodes.size() - 1;
 	}
 
-	
-
 	public double checkEntrences(Node start, Node end, int hour) {
 
 		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 			LatLng locStartNode = start.getPosition();
 			if (!start.getBuilding().isCurrentlyOpenFast(hour))
 				return Double.MAX_VALUE;
-				
-				
+
 			LatLng locEndNode = end.getPosition();
 			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
 			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
@@ -580,11 +635,11 @@ public class Graph extends WalkerObject {
 	// }
 
 	public void createNormalPathMatrix(Node startNode, Node endNode, int i, int z) {
-		double dist = checkEntrences(startNode, endNode);
-		if (dist != -1) {
-			normalPath[i][z] = dist;
-			return;
-		}
+		// double dist = checkEntrences(startNode, endNode);
+		// if (dist != -1) {
+		// normalPath[i][z] = dist;
+		// return;
+		// }
 		if (!startNode.getBlack() && !endNode.getBlack()) {
 			normalPath[i][z] = Double.MAX_VALUE;
 			return;
@@ -609,7 +664,7 @@ public class Graph extends WalkerObject {
 
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		int hour = ZoningTools.GetHour(southwest);
-		
+
 		distance = new double[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		normalPath = new double[nodes.size()][nodes.size()];
