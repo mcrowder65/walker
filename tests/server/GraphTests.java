@@ -177,7 +177,7 @@ public class GraphTests {
 
 	}
 
-	@Test
+	// @Test
 	public void testLimitedDist() {
 		// LatLng start = new LatLng(40.248904, -111.651412);
 		// LatLng end = new LatLng(40.249121, -111.648808);
@@ -219,6 +219,55 @@ public class GraphTests {
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
 		GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
 		Tools.WriteImage(img, "testImages/throughBuilding.png");
+	}
+
+	@Test
+	public void testingNormalPaths() {
+		LatLng start = new LatLng(40.249021, -111.650779);
+		LatLng end = new LatLng(40.249127, -111.648735);
+
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		img = Tools.ClipLogo(img);
+
+		List<Building> buildings = BuildingDAO.getAll();
+		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
+
+		List<Node> nodes = GraphTools.GenerateUniformNodes(10, southwest, northeast, false);
+		List<Node> newNodes = GraphTools.RemoveBuildingNodes(nodes, img, southwest, northeast);
+		Graph g = new Graph(null, null, newNodes);
+		int startNodeIndex = g.findClosestNodeIndex(new Node(start.latitude, start.longitude, null, true, false));
+		int endNodeIndex = g.findClosestNodeIndex(new Node(end.latitude, end.longitude, null, false, true));
+		g.setStartNode(startNodeIndex);
+		g.setEndNode(endNodeIndex);
+		g.addBlackNodes(img, southwest, northeast);
+		// g.addEnterExit();
+		g.setLimitedDistancesFromNodes(img, southwest, northeast);
+		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, true);
+		g.sumMatricies(up);
+		if (up.isPreferDesignatedPaths()) {
+			int startIndex = g.findClosestBlackNodeIndex(g.getNodes().get(g.getStartIndex()));
+			int endIndex = g.findClosestBlackNodeIndex(g.getNodes().get(g.getEndIndex()));
+			List<Integer> path = GraphTools.dijkstra(startIndex, g, endIndex);
+			List<Node> nodesToDraw = g.getNodesFromPath(path);
+			nodesToDraw.add(0, g.getStartNode());
+			nodesToDraw.add(g.getEndNode());
+			GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
+			Tools.WriteImage(img, "testImages/normalPath.png");
+
+		} else {
+			List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
+			List<Node> nodesToDraw = g.getNodesFromPath(path);
+			GraphTools.DrawLines(img, nodesToDraw, Color.BLUE, 1, southwest, northeast, Color.ORANGE, g);
+			Tools.WriteImage(img, "testImages/normalPath.png");
+		}
 	}
 
 }

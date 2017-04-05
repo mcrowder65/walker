@@ -24,6 +24,7 @@ export class WalkerMarkerModal {
   public buildings: Marker[];
   public buildingId: string;
   public selectedBuildingIndex: number;
+  public isStairs: boolean;
 
   beforeRegister(): void {
     this.is = 'walker-marker-modal';
@@ -33,7 +34,12 @@ export class WalkerMarkerModal {
       }
     }
   }
-
+  thisIsStairs(): void {
+    this.isStairs = true;
+  }
+  thisIsNotStairs(): void {
+    this.isStairs = false;
+  }
   thisIsABuilding(): void {
     this.building = true;
   }
@@ -90,7 +96,8 @@ export class WalkerMarkerModal {
         openingTime: this.openingTime,
         closingTime: this.closingTime,
         building: this.building,
-        buildingId: this.buildingId
+        buildingId: this.buildingId,
+        isStairs: this.isStairs
       };
 
       await Actions.POST('setMarker', JSON.stringify(marker));
