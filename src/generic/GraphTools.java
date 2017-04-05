@@ -105,7 +105,7 @@ public class GraphTools {
 		return nodes;
 	}
 
-	public static void genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath,
+	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath,
 			BufferedImage img) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
@@ -139,7 +139,7 @@ public class GraphTools {
 				allNodes[x][y] = n;
 			}
 		}
-
+		return allNodes;
 	}
 
 	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast,
