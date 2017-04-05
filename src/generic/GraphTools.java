@@ -11,6 +11,7 @@ import java.util.Random;
 
 import com.google.common.collect.Lists;
 
+import generic.objects.Building;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
@@ -417,29 +418,158 @@ public class GraphTools {
 	}
 
 	
-	private static void initInfinity(Graph g, HashMap<Node,Double> map)
+	private static void initInfinity(Graph g, HashMap<NodeIndex,Double> map)
 	{
 		for (int x = 0; x < g.nodes2.length; x++)
 		{
 			for (int y = 0; y < g.nodes2.length; y++)
 			{
-				map.put(g.nodes2[x][y], Double.MAX_VALUE);
+				map.put(new NodeIndex(x,y), Double.MAX_VALUE);
 			}
 		}
 	}
-	public static List<Node> A_Star(Graph g, Node start, Node end, UserPrefs prefs)
+	private static NodeIndex getLowestInMap(HashSet<NodeIndex> available, HashMap<NodeIndex,Double> map)
 	{
-		HashSet<Node> closedSet = new HashSet<Node>();
-		HashSet<Node> openSet = new HashSet<Node>();
-		openSet.add(start);
-		HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
+		double min = Double.MAX_VALUE;
+		NodeIndex minNode = null;
+		for (NodeIndex n : available)
+		{
+			if (map.get(n) < min)
+			{
+				min = map.get(n);
+				minNode = n;
+			}
+		}
+		return minNode;
+	}
+	
+	
+	public static List<NodeIndex> reconstructPath(HashMap<NodeIndex, NodeIndex> cameFrom, NodeIndex current)
+	{
+		List<NodeIndex> total = new ArrayList<NodeIndex>();
+		total.add(current);
+		while (cameFrom.keySet().contains(current))
+		{
+			current = cameFrom.get(current);
+			total.add(current);
+		}
+		return total;
+	}
+	
+	
+	private static void expandSimilarEntrances(Graph g, NodeIndex current,NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, HashSet<NodeIndex> openSet, HashSet<NodeIndex> closedSet, HashMap<NodeIndex, Double> fScore, HashMap<NodeIndex,Double> gScore)
+	{
+		Building currBuilding = g.getFromIndex(current).getBuilding();
+		if (currBuilding == null)
+			return;
 		
-		HashMap<Node, Double> gScore = new HashMap<Node, Double>();
+		for (int x = 0; x < g.nodes2.length; x++)
+		{
+			for (int y = 0; y < g.nodes2[0].length; y++)
+			{
+				NodeIndex neighbor = createNodeIndexOrFromCache(g, x, y);
+				if (g.nodes2[x][y].getBuilding() == currBuilding && !closedSet.contains(neighbor))
+				{
+					expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore);
+				}
+			}
+		}
+	}
+	
+	private static void expand(Graph g, NodeIndex current, NodeIndex neighbor, NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, HashSet<NodeIndex> openSet, HashMap<NodeIndex, Double> fScore, HashMap<NodeIndex,Double> gScore)
+	{
+		double tentative_gScore = gScore.get(current); //TODO: + distance between current/neighbor
+		openSet.add(neighbor);
+		if (tentative_gScore >= gScore.get(neighbor))
+			return;
+		
+		cameFrom.put(neighbor, current);
+		gScore.put(neighbor, tentative_gScore);
+		fScore.put(neighbor, gScore.get(neighbor) + g.getFromIndex(neighbor).getPosition().dist(g.getFromIndex(end).getPosition()));
+		
+		
+	}
+	
+	private static HashSet<NodeIndex> nodeCache = new HashSet<NodeIndex>();
+	private static NodeIndex createNodeIndexOrFromCache(Graph g, int x, int y)
+	{
+		if (!g.isValidIndex(x, y))
+			return null;
+		
+		for (NodeIndex n : nodeCache)
+		{
+			if (n.x == x && n.y == y)
+				return n;
+		}
+	
+		return new NodeIndex(x,y);
+	}
+	
+	
+	
+	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs)
+	{
+		nodeCache.add(start); nodeCache.add(end);
+		
+		
+		HashSet<NodeIndex> closedSet = new HashSet<NodeIndex>();
+		HashSet<NodeIndex> openSet = new HashSet<NodeIndex>();
+		openSet.add(start);
+		HashMap<NodeIndex, NodeIndex> cameFrom = new HashMap<NodeIndex, NodeIndex>();
+		
+		HashMap<NodeIndex, Double> gScore = new HashMap<NodeIndex, Double>();
 		initInfinity(g, gScore);
 		gScore.put(start, 0d);
 		
-		HashMap<Node, Double> fScore = new HashMap<Node, Double>();
+		HashMap<NodeIndex, Double> fScore = new HashMap<NodeIndex, Double>();
 		initInfinity(g, fScore);
+		
+		fScore.put(start, g.getFromIndex(start).getPosition().dist(g.getFromIndex(end).getPosition()));
+		while (!openSet.isEmpty())
+		{
+			NodeIndex current = getLowestInMap(openSet, fScore);
+			if (current == end)
+				return reconstructPath(cameFrom, current);
+			
+			openSet.remove(current);
+			closedSet.add(current);
+			
+			//Neighbors
+			NodeIndex neighbor;
+			
+			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y - 1);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y + 1);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			
+			neighbor = createNodeIndexOrFromCache(g, current.x, current.y - 1);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			neighbor = createNodeIndexOrFromCache(g, current.x, current.y + 1);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			
+			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y - 1);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y + 1);
+			if (neighbor != null && !closedSet.contains(neighbor))
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+			
+			
+			expandSimilarEntrances(g, current, end, cameFrom, openSet, closedSet, fScore, gScore);
+			
+		}
+		
+		return null;
 	}
 	
 }

@@ -30,8 +30,30 @@ public class Graph extends WalkerObject {
 	
 	public Node[][] nodes2;
 	
-	
-
+	public boolean isValidIndex(NodeIndex indx)
+	{
+		return !(indx.x < 0 || indx.y < 0 || indx.x > nodes2.length - 1 || indx.y > nodes2[0].length - 1);
+		
+	}
+	public boolean isValidIndex(int x, int y)
+	{
+		return !(x < 0 || y < 0 || x > nodes2.length - 1 || y > nodes2[0].length - 1);
+		
+	}
+	public Node getFromIndex(NodeIndex indx)
+	{
+		if (indx.x < 0 || indx.y < 0 || indx.x > nodes2.length - 1 || indx.y > nodes2[0].length - 1)
+			return null;
+		else
+			return nodes2[indx.x][indx.y];
+	}
+	public Node getFromIndex(int x, int y)
+	{
+		if (x < 0 || y < 0 || x > nodes2.length - 1 || y > nodes2[0].length - 1)
+			return null;
+		else
+			return nodes2[x][y];
+	}
 	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
 		super();
 		this.setId(graphFirebaseWrapper.getId());
