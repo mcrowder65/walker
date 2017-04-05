@@ -105,6 +105,49 @@ public class GraphTools {
 		return nodes;
 	}
 
+	public static double calcDist(Node start, Node end) {
+		double longDiff = Math.abs(start.getPosition().longitude - end.getPosition().longitude);
+		double latDiff = Math.abs(start.getPosition().latitude - end.getPosition().latitude);
+		double total = Math.sqrt((latDiff * latDiff) + (longDiff * longDiff));
+		return total;
+	}
+
+	public static double calcBuildingDist(Node start, Node end) {
+		double longDiff = Math.abs(start.getPosition().longitude - end.getPosition().longitude);
+		double latDiff = Math.abs(start.getPosition().latitude - end.getPosition().latitude);
+		return longDiff + latDiff;
+	}
+
+	public static double getCosts(Node start, Node end, UserPrefs up) {
+		if (end.code == NodeCode.Building || start.code == NodeCode.Building) {
+			return Double.MAX_VALUE;
+		}
+		if (up.isBuilding()) {
+			if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
+				return calcBuildingDist(start, end);
+			}
+		}
+		if (up.isPreferDesignatedPaths()) {
+			if (start.code == NodeCode.Normal && end.code == NodeCode.Normal) {
+				return calcDist(start, end);
+			}
+			if ((start.code == NodeCode.Normal && end.getBuilding() != null)
+					|| (end.code == NodeCode.Normal && start.getBuilding() != null)) {
+				return calcDist(start, end);
+			}
+			return Double.MAX_VALUE;
+		}
+		if (!up.isGrass() && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
+			return Double.MAX_VALUE;
+		}
+		if (start.code == NodeCode.Building || end.code == NodeCode.Building) {
+			return Double.MAX_VALUE;
+		}
+
+		return calcDist(start, end);
+
+	}
+
 	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath,
 			BufferedImage img) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
