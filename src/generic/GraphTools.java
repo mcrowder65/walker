@@ -105,11 +105,8 @@ public class GraphTools {
 		return nodes;
 	}
 
-	public static void setCodes() {
-
-	}
-
-	public static void genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath) {
+	public static void genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath,
+			BufferedImage img) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
 
@@ -126,8 +123,20 @@ public class GraphTools {
 			for (int y = 0; y < latNodes; y++) {
 				double currentLat = APITools.metersToLat(southwest, y * meterSpacing + latOffset);
 				Node n = new Node(currentLat, currentLon, null, false, false);
+				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
+						img.getWidth(), img.getHeight());
+				int rgb = img.getRGB((int) point.x, (int) point.y);
+				boolean isNormalPath = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
+				boolean isGrass = Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, 3);
+				boolean isBuilding = Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, 3);
+				if (isNormalPath) {
+					n.code = NodeCode.Normal;
+				} else if (isGrass) {
+					n.code = NodeCode.Grass;
+				} else if (isBuilding) {
+					n.code = NodeCode.Building;
+				}
 				allNodes[x][y] = n;
-
 			}
 		}
 
@@ -442,30 +451,26 @@ public class GraphTools {
 		return currPath;
 	}
 
-	
-	private static void initInfinity(Graph g, HashMap<Node,Double> map)
-	{
-		for (int x = 0; x < g.nodes2.length; x++)
-		{
-			for (int y = 0; y < g.nodes2.length; y++)
-			{
+	private static void initInfinity(Graph g, HashMap<Node, Double> map) {
+		for (int x = 0; x < g.nodes2.length; x++) {
+			for (int y = 0; y < g.nodes2.length; y++) {
 				map.put(g.nodes2[x][y], Double.MAX_VALUE);
 			}
 		}
 	}
-	public static List<Node> A_Star(Graph g, Node start, Node end, UserPrefs prefs)
-	{
+
+	public static List<Node> A_Star(Graph g, Node start, Node end, UserPrefs prefs) {
 		HashSet<Node> closedSet = new HashSet<Node>();
 		HashSet<Node> openSet = new HashSet<Node>();
 		openSet.add(start);
 		HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
-		
+
 		HashMap<Node, Double> gScore = new HashMap<Node, Double>();
 		initInfinity(g, gScore);
 		gScore.put(start, 0d);
-		
+
 		HashMap<Node, Double> fScore = new HashMap<Node, Double>();
 		initInfinity(g, fScore);
 	}
-	
+
 }

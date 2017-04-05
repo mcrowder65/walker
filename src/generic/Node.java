@@ -10,6 +10,7 @@ public class Node {
 	private LatLng position;
 	private Building building;
 	private boolean isBlack = false;
+	public NodeCode code;
 
 	public LatLng getPosition() {
 		return position;
