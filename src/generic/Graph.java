@@ -27,6 +27,10 @@ public class Graph extends WalkerObject {
 	private double[][] normalPath;
 	private String name;
 	private List<Node> nodes;
+	
+	public Node[][] nodes2;
+	
+	
 
 	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
 		super();
@@ -425,21 +429,16 @@ public class Graph extends WalkerObject {
 		return nodes.size() - 1;
 	}
 
-	public double calcBulidingDist(Node start, Node end) {
-		LatLng locStartNode = start.getPosition();
-		LatLng locEndNode = end.getPosition();
-		double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-		double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+	
 
-		double total = latDiff + longDiff;
-
-		return total;
-	}
-
-	public double checkEntrences(Node start, Node end) {
+	public double checkEntrences(Node start, Node end, int hour) {
 
 		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 			LatLng locStartNode = start.getPosition();
+			if (!start.getBuilding().isCurrentlyOpenFast(hour))
+				return Double.MAX_VALUE;
+				
+				
 			LatLng locEndNode = end.getPosition();
 			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
 			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
@@ -587,6 +586,8 @@ public class Graph extends WalkerObject {
 	}
 
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
+		int hour = ZoningTools.GetHour(southwest);
+		
 		distance = new double[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		normalPath = new double[nodes.size()][nodes.size()];
@@ -599,7 +600,7 @@ public class Graph extends WalkerObject {
 				} else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
-					double checkRes = checkEntrences(startNode, endNode);
+					double checkRes = checkEntrences(startNode, endNode, hour);
 					if (checkRes != -1) {
 						distance[i][z] = checkRes;
 					} else {

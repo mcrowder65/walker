@@ -133,6 +133,13 @@ public class Building extends WalkerObject {
 	    return hour >= openingHour && hour < closingHour;
 	    
 	}
+	public boolean isCurrentlyOpenFast(int hour)
+	{
+	    int openingHour = getHourOfTime(openingTime);
+	    int closingHour = getHourOfTime(closingTime); //~~~I know who I want to take me home~~~
+	    
+	    return hour >= openingHour && hour < closingHour;
+	}
 	
 
 	public Building() {
