@@ -8,4 +8,5 @@ export interface Marker {
   building?: boolean;
   buildingId?: string;
   entrances?: { [entranceId: string]: string } | string[];
+  isStairs?: boolean;
 }

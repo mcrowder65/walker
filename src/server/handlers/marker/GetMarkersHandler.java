@@ -8,6 +8,7 @@ import com.sun.net.httpserver.HttpExchange;
 import generic.Tools;
 import generic.objects.Building;
 import generic.objects.Entrance;
+import generic.objects.Stairs;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
@@ -30,7 +31,9 @@ public class GetMarkersHandler extends WalkerHandler {
 			String data = getRequestBodyAndSetHeaders(exchange);
 			List<String> buildings = Tools.firebase.getAllAsJson("buildings", building);
 			List<String> entrances = Tools.firebase.getAllAsJson("entrances", entrance);
+			List<String> stairs = Tools.firebase.getAllAsJson("stairs", new Stairs());
 			buildings.addAll(entrances);
+			buildings.addAll(stairs);
 			String json = JSONTools.g.toJson(buildings);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 			exchange.getResponseBody().write(json.getBytes());

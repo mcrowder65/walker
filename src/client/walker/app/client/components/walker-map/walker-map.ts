@@ -38,6 +38,7 @@ export class WalkerMap {
   public grass: boolean = false;
   public parkingLots: boolean = false;
   public preferDesignatedPaths: boolean = false;
+  public stairsMarkers: Marker[];
 
   beforeRegister(): void {
     this.is = 'walker-map';
@@ -189,11 +190,13 @@ export class WalkerMap {
         const building: boolean = UtilitiesService.isDefined(oldMarker.closingTime)
                                || UtilitiesService.isDefined(oldMarker.openingTime)
                                || UtilitiesService.isDefined(oldMarker.title);
+        const isStairs: boolean = !building && !oldMarker.buildingId;
         const newMarker: Marker = {
           ...oldMarker,
           latitude,
           longitude,
-          building
+          building,
+          isStairs
         };
         Actions.POST('setMarker', JSON.stringify(newMarker));
         Actions.initMarkers(this, 'getMarkers');
@@ -239,6 +242,8 @@ export class WalkerMap {
     const base: string = 'http://localhost:8000/markers/';
     if(UtilitiesService.isDefined(marker.buildingId)) {
       return base + 'yellow_marker.png';
+    } else if(marker.isStairs) {
+      return base + 'blue_marker.png';
     } else {
       return base + 'red_marker.png';
     }

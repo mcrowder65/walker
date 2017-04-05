@@ -8,6 +8,7 @@ import generic.Tools;
 import generic.objects.Building;
 import generic.objects.Entrance;
 import generic.objects.Marker;
+import generic.objects.Stairs;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
@@ -32,6 +33,10 @@ public class SetMarkerHandler extends WalkerHandler {
 						Building building = new Building(marker);
 						Tools.firebase.update(path, building);
 
+					} else if (marker.isStairs()) {
+						String path = "stairs/" + marker.getId();
+						Stairs stairs = new Stairs(marker);
+						Tools.firebase.update(path, stairs);
 					} else if (!marker.isBuilding()) {
 						String path = "entrances/" + marker.getId();
 						Entrance entrance = new Entrance(marker);
@@ -46,6 +51,10 @@ public class SetMarkerHandler extends WalkerHandler {
 						Building building = new Building(marker);
 						Tools.firebase.create(path, building);
 
+					} else if (marker.isStairs()) {
+						String path = "stairs" + marker.getId();
+						Stairs stairs = new Stairs(marker);
+						Tools.firebase.create(path, stairs);
 					} else if (!marker.isBuilding()) {
 						String path = "entrances";
 						Entrance entrance = new Entrance(marker);
