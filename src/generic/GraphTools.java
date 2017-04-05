@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -414,4 +416,30 @@ public class GraphTools {
 		return currPath;
 	}
 
+	
+	private static void initInfinity(Graph g, HashMap<Node,Double> map)
+	{
+		for (int x = 0; x < g.nodes2.length; x++)
+		{
+			for (int y = 0; y < g.nodes2.length; y++)
+			{
+				map.put(g.nodes2[x][y], Double.MAX_VALUE);
+			}
+		}
+	}
+	public static List<Node> A_Star(Graph g, Node start, Node end, UserPrefs prefs)
+	{
+		HashSet<Node> closedSet = new HashSet<Node>();
+		HashSet<Node> openSet = new HashSet<Node>();
+		openSet.add(start);
+		HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
+		
+		HashMap<Node, Double> gScore = new HashMap<Node, Double>();
+		initInfinity(g, gScore);
+		gScore.put(start, 0d);
+		
+		HashMap<Node, Double> fScore = new HashMap<Node, Double>();
+		initInfinity(g, fScore);
+	}
+	
 }

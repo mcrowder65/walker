@@ -27,6 +27,10 @@ public class Graph extends WalkerObject {
 	private double[][] normalPath;
 	private String name;
 	private List<Node> nodes;
+	
+	public Node[][] nodes2;
+	
+	
 
 	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
 		super();
