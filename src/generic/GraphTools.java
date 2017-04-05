@@ -103,7 +103,36 @@ public class GraphTools {
 		return nodes;
 	}
 
-	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBlackPath) {
+	public static void setCodes() {
+
+	}
+
+	public static void genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath) {
+		double latLen = APITools.getLatitudeDifference(southwest, northeast);
+		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
+
+		int latNodes = (int) (latLen / meterSpacing);
+		int lonNodes = (int) (lonLen / meterSpacing);
+
+		double latOffset = Math.abs((latNodes * meterSpacing) - latLen) / 2;
+		double lonOffset = Math.abs((lonNodes * meterSpacing) - lonLen) / 2;
+
+		Node[][] allNodes = new Node[lonNodes][latNodes];
+
+		for (int x = 0; x < lonNodes; x++) {
+			double currentLon = APITools.metersToLon(southwest, x * meterSpacing + lonOffset);
+			for (int y = 0; y < latNodes; y++) {
+				double currentLat = APITools.metersToLat(southwest, y * meterSpacing + latOffset);
+				Node n = new Node(currentLat, currentLon, null, false, false);
+				allNodes[x][y] = n;
+
+			}
+		}
+
+	}
+
+	public static List<Node> GenerateUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast,
+			boolean isBlackPath) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
 
@@ -125,22 +154,19 @@ public class GraphTools {
 		}
 
 		// Set the MAX_BLOCK_DIST{_BLACK} while we're here
-		
-		if (isBlackPath)
-		{
+
+		if (isBlackPath) {
 			double blockDistLat = APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE_BLACK * meterSpacing)
 					- southwest.latitude;
 			double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE_BLACK * meterSpacing)
 					- southwest.longitude;
 			Config.MAX_BLOCK_DIST_SQUARED_BLACK = blockDistLat * blockDistLat + blockDistLon * blockDistLon;
-		}
-		else
-		{
+		} else {
 			double blockDistLat = APITools.metersToLat(southwest, Config.MAX_BLOCK_SIZE * meterSpacing)
 					- southwest.latitude;
 			double blockDistLon = APITools.metersToLon(southwest, Config.MAX_BLOCK_SIZE * meterSpacing)
 					- southwest.longitude;
-			
+
 			Config.MAX_BLOCK_DIST_SQUARED = blockDistLat * blockDistLat + blockDistLon * blockDistLon;
 		}
 
