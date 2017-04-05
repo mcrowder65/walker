@@ -21,6 +21,14 @@ public class Stairs extends WalkerObject {
 		this.setLatitude(marker.getLatitude());
 	}
 
+	public void setIsStairs(boolean bool) {
+		this.isStairs = bool;
+	}
+
+	public boolean isStairs() {
+		return isStairs;
+	}
+
 	public double getLongitude() {
 		return longitude;
 	}
