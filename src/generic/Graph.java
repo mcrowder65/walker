@@ -30,26 +30,24 @@ public class Graph extends WalkerObject {
 
 	public Node[][] nodes2;
 
-	
-	public boolean isValidIndex(NodeIndex indx)
-	{
+	public boolean isValidIndex(NodeIndex indx) {
 		return !(indx.x < 0 || indx.y < 0 || indx.x > nodes2.length - 1 || indx.y > nodes2[0].length - 1);
-		
+
 	}
-	public boolean isValidIndex(int x, int y)
-	{
+
+	public boolean isValidIndex(int x, int y) {
 		return !(x < 0 || y < 0 || x > nodes2.length - 1 || y > nodes2[0].length - 1);
-		
+
 	}
-	public Node getFromIndex(NodeIndex indx)
-	{
+
+	public Node getFromIndex(NodeIndex indx) {
 		if (indx.x < 0 || indx.y < 0 || indx.x > nodes2.length - 1 || indx.y > nodes2[0].length - 1)
 			return null;
 		else
 			return nodes2[indx.x][indx.y];
 	}
-	public Node getFromIndex(int x, int y)
-	{
+
+	public Node getFromIndex(int x, int y) {
 		if (x < 0 || y < 0 || x > nodes2.length - 1 || y > nodes2[0].length - 1)
 			return null;
 		else
@@ -426,16 +424,15 @@ public class Graph extends WalkerObject {
 		return null;
 	}
 
-	public Node getClosestNode(Node n) {
-		LatLng latLong = n.getPosition();
+	public NodeIndex getClosestNodeLoc(LatLng latLong) {
 		double distance = Double.MAX_VALUE;
 		int closest_i = -1;
 		int closest_j = -1;
 		for (int i = 0; i < nodes2.length; i++) {
 			for (int j = 0; j < nodes2[i].length; j++) {
-				Node n2 = nodes2[i][j];
-				double longDiff = Math.abs(latLong.longitude - nodes.get(i).getPosition().longitude);
-				double latDiff = Math.abs(latLong.latitude - nodes.get(i).getPosition().latitude);
+				Node n = nodes2[i][j];
+				double longDiff = Math.abs(latLong.longitude - n.getPosition().longitude);
+				double latDiff = Math.abs(latLong.latitude - n.getPosition().latitude);
 				double total = latDiff + longDiff;
 				if (total < distance) {
 					distance = total;
@@ -445,7 +442,7 @@ public class Graph extends WalkerObject {
 			}
 		}
 		if (closest_i != -1 && closest_j != -1) {
-			return nodes2[closest_i][closest_j];
+			return new NodeIndex(closest_i, closest_j);
 		}
 		return null;
 	}
