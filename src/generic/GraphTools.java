@@ -147,7 +147,7 @@ public class GraphTools {
 
 	}
 
-	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, boolean isBalckPath,
+	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast,
 			BufferedImage img) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
@@ -177,6 +177,8 @@ public class GraphTools {
 					n.code = NodeCode.Grass;
 				} else if (isBuilding) {
 					n.code = NodeCode.Building;
+				} else {
+					n.code = NodeCode.Other;
 				}
 				allNodes[x][y] = n;
 			}
@@ -338,6 +340,25 @@ public class GraphTools {
 		}
 	}
 
+	public static void WriteAStarPathToImage(BufferedImage img, Graph g, List<NodeIndex> backpath,LatLng southwest, LatLng northeast, Color lineColor)
+	{
+		Point2D.Double prevPoint = null;
+		
+		for (int nIndex = 0; nIndex < backpath.size(); nIndex++)
+		{
+			Point2D.Double p = APITools.getImagePointFromLatLng(g.getFromIndex(backpath.get(nIndex)).getPosition(), southwest, northeast, img.getWidth(),
+					img.getHeight());
+			if (prevPoint != null) {
+				Point2D.Double minX = p.x < prevPoint.x ? p : prevPoint;
+				Point2D.Double maxX = minX == prevPoint ? p : prevPoint;
+				bresenham2(img, minX, maxX, lineColor);
+			}
+			prevPoint = p;
+		}
+	
+	}
+	
+	
 	public static void DrawRouteOnly(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor) {
 
@@ -534,7 +555,7 @@ public class GraphTools {
 	}
 	
 	
-	private static void expandSimilarEntrances(Graph g, NodeIndex current,NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, HashSet<NodeIndex> openSet, HashSet<NodeIndex> closedSet, HashMap<NodeIndex, Double> fScore, HashMap<NodeIndex,Double> gScore)
+	private static void expandSimilarEntrances(Graph g, NodeIndex current,NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, HashSet<NodeIndex> openSet, HashSet<NodeIndex> closedSet, HashMap<NodeIndex, Double> fScore, HashMap<NodeIndex,Double> gScore, UserPrefs up)
 	{
 		Building currBuilding = g.getFromIndex(current).getBuilding();
 		if (currBuilding == null)
@@ -547,22 +568,22 @@ public class GraphTools {
 				NodeIndex neighbor = createNodeIndexOrFromCache(g, x, y);
 				if (g.nodes2[x][y].getBuilding() == currBuilding && !closedSet.contains(neighbor))
 				{
-					expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore);
+					expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, up);
 				}
 			}
 		}
 	}
 	
-	private static void expand(Graph g, NodeIndex current, NodeIndex neighbor, NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, HashSet<NodeIndex> openSet, HashMap<NodeIndex, Double> fScore, HashMap<NodeIndex,Double> gScore)
+	private static void expand(Graph g, NodeIndex current, NodeIndex neighbor, NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, HashSet<NodeIndex> openSet, HashMap<NodeIndex, Double> fScore, HashMap<NodeIndex,Double> gScore, UserPrefs up)
 	{
-		double tentative_gScore = gScore.get(current); //TODO: + distance between current/neighbor
+		double tentative_gScore = gScore.get(current) + getCosts(g.getFromIndex(current), g.getFromIndex(neighbor), up); 
 		openSet.add(neighbor);
 		if (tentative_gScore >= gScore.get(neighbor))
 			return;
 		
 		cameFrom.put(neighbor, current);
 		gScore.put(neighbor, tentative_gScore);
-		fScore.put(neighbor, gScore.get(neighbor) + g.getFromIndex(neighbor).getPosition().dist(g.getFromIndex(end).getPosition()));
+		fScore.put(neighbor, gScore.get(neighbor) + calcDist(g.getFromIndex(neighbor), g.getFromIndex(end))); //must be optimistic
 		
 		
 	}
@@ -578,8 +599,9 @@ public class GraphTools {
 			if (n.x == x && n.y == y)
 				return n;
 		}
-	
-		return new NodeIndex(x,y);
+		NodeIndex newNode = new NodeIndex(x,y);
+		nodeCache.add(newNode);
+		return newNode;
 	}
 	
 	
@@ -602,7 +624,7 @@ public class GraphTools {
 
 		initInfinity(g, fScore);
 		
-		fScore.put(start, g.getFromIndex(start).getPosition().dist(g.getFromIndex(end).getPosition()));
+		fScore.put(start, getCosts(g.getFromIndex(start), g.getFromIndex(end), prefs));
 		while (!openSet.isEmpty())
 		{
 			NodeIndex current = getLowestInMap(openSet, fScore);
@@ -617,33 +639,33 @@ public class GraphTools {
 			
 			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y - 1);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y + 1);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			
 			neighbor = createNodeIndexOrFromCache(g, current.x, current.y - 1);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x, current.y + 1);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			
 			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y - 1);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y + 1);
 			if (neighbor != null && !closedSet.contains(neighbor))
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore);
+				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
 			
 			
-			expandSimilarEntrances(g, current, end, cameFrom, openSet, closedSet, fScore, gScore);
+			expandSimilarEntrances(g, current, end, cameFrom, openSet, closedSet, fScore, gScore, prefs);
 			
 		}
 		
