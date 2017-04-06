@@ -141,9 +141,7 @@ public class GraphTools {
 		if (!up.isGrass() && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
 			return Double.MAX_VALUE;
 		}
-		if (start.code == NodeCode.Building || end.code == NodeCode.Building) {
-			return Double.MAX_VALUE;
-		}
+		
 
 		return calcDist(start, end);
 
@@ -495,7 +493,7 @@ public class GraphTools {
 		return currPath;
 	}
 
-<<<<<<< HEAD
+
 	
 	private static void initInfinity(Graph g, HashMap<NodeIndex,Double> map)
 	{
@@ -601,27 +599,7 @@ public class GraphTools {
 		gScore.put(start, 0d);
 		
 		HashMap<NodeIndex, Double> fScore = new HashMap<NodeIndex, Double>();
-=======
-	private static void initInfinity(Graph g, HashMap<Node, Double> map) {
-		for (int x = 0; x < g.nodes2.length; x++) {
-			for (int y = 0; y < g.nodes2.length; y++) {
-				map.put(g.nodes2[x][y], Double.MAX_VALUE);
-			}
-		}
-	}
 
-	public static List<Node> A_Star(Graph g, Node start, Node end, UserPrefs prefs) {
-		HashSet<Node> closedSet = new HashSet<Node>();
-		HashSet<Node> openSet = new HashSet<Node>();
-		openSet.add(start);
-		HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
-
-		HashMap<Node, Double> gScore = new HashMap<Node, Double>();
-		initInfinity(g, gScore);
-		gScore.put(start, 0d);
-
-		HashMap<Node, Double> fScore = new HashMap<Node, Double>();
->>>>>>> 46c6bdad06eb12a01841ce17c622d4cc8a7cd6f1
 		initInfinity(g, fScore);
 		
 		fScore.put(start, g.getFromIndex(start).getPosition().dist(g.getFromIndex(end).getPosition()));
