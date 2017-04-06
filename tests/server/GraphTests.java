@@ -223,8 +223,7 @@ public class GraphTests {
 	}
 
 	@Test
-	public void a_starTest()
-	{
+	public void a_starTest() {
 		LatLng start = new LatLng(40.249021, -111.650779);
 		LatLng end = new LatLng(40.249127, -111.648735);
 
@@ -243,22 +242,53 @@ public class GraphTests {
 		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
 
 		Node[][] nodes = GraphTools.genUniformNodes(1, southwest, northeast, img);
-		Graph g=  new Graph();
+		Graph g = new Graph();
 		g.nodes2 = nodes;
-		
-		
-		NodeIndex startNode = new NodeIndex(2,6);
-		NodeIndex endNode = new NodeIndex(80,46);
-		
+
+		NodeIndex startNode = new NodeIndex(2, 6);
+		NodeIndex endNode = new NodeIndex(80, 46);
+
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.BLACK_PATHS);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
-		
+
 		Tools.WriteImage(img, "testImages/a_star.png");
-		
+
 	}
-	
-	
-	//@Test
+
+	// @Test
+	public void second_a_starTest() {
+		LatLng start = new LatLng(40.248953, -111.650940);
+		LatLng end = new LatLng(40.249240, -111.648740);
+
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
+		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
+		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
+
+		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
+		img = Tools.ClipLogo(img);
+
+		List<Building> buildings = BuildingDAO.getAll();
+		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
+
+		Node[][] nodes = GraphTools.genUniformNodes(1, southwest, northeast, img);
+		Graph g = new Graph();
+		g.nodes2 = nodes;
+
+		NodeIndex startNode = new NodeIndex(2, 6);
+		NodeIndex endNode = new NodeIndex(80, 46);
+
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.BLACK_PATHS);
+		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+
+		Tools.WriteImage(img, "testImages/a_star_2.png");
+
+	}
+
+	// @Test
 	public void testingNormalPaths() {
 		LatLng start = new LatLng(40.249021, -111.650779);
 		LatLng end = new LatLng(40.249127, -111.648735);
