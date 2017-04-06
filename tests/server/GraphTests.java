@@ -258,7 +258,7 @@ public class GraphTests {
 	@Test
 	public void a_starTest_2() {
 		LatLng start = new LatLng(40.249533, -111.650287);
-		LatLng end = new LatLng(40.249411, -111.648187);
+		LatLng end = new LatLng(40.249104, -111.648759);
 
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
@@ -277,6 +277,9 @@ public class GraphTests {
 		Node[][] nodes = GraphTools.genUniformNodes(1, southwest, northeast, img);
 		Graph g = new Graph();
 		g.nodes2 = nodes;
+		// GraphTools.WriteGraphToImage(img, g, Color.BLUE, 1, southwest,
+		// northeast);
+		// Tools.WriteImage(img, "testImages/a_star_2_nodesonly.png");
 
 		// NodeIndex startNode = new NodeIndex(2, 6);
 		// NodeIndex endNode = new NodeIndex(80, 46);

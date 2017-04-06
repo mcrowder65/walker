@@ -433,7 +433,7 @@ public class Graph extends WalkerObject {
 				Node n = nodes2[i][j];
 				double longDiff = Math.abs(latLong.longitude - n.getPosition().longitude);
 				double latDiff = Math.abs(latLong.latitude - n.getPosition().latitude);
-				double total = latDiff + longDiff;
+				double total = Math.sqrt((latDiff * latDiff) + (longDiff * longDiff));
 				if (total < distance) {
 					distance = total;
 					closest_i = i;
@@ -726,7 +726,13 @@ public class Graph extends WalkerObject {
 	}
 
 	public List<Node> getNodes() {
-		return this.nodes;
+		List<Node> allNodes = new ArrayList();
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2.length; j++) {
+				allNodes.add(nodes2[i][j]);
+			}
+		}
+		return allNodes;
 	}
 
 	public List<Node> getNodesFromPath(List<Integer> path) {
