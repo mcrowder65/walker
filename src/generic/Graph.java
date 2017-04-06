@@ -447,6 +447,31 @@ public class Graph extends WalkerObject {
 		return null;
 	}
 
+	public NodeIndex getClosestBlackNodeLoc(LatLng latLong) {
+		double distance = Double.MAX_VALUE;
+		int closest_i = -1;
+		int closest_j = -1;
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				if (n.code == NodeCode.Normal) {
+					double longDiff = Math.abs(latLong.longitude - n.getPosition().longitude);
+					double latDiff = Math.abs(latLong.latitude - n.getPosition().latitude);
+					double total = Math.sqrt((latDiff * latDiff) + (longDiff * longDiff));
+					if (total < distance) {
+						distance = total;
+						closest_i = i;
+						closest_j = j;
+					}
+				}
+			}
+		}
+		if (closest_i != -1 && closest_j != -1) {
+			return new NodeIndex(closest_i, closest_j);
+		}
+		return null;
+	}
+
 	public void generateWildernessMatrix() {
 
 	}
