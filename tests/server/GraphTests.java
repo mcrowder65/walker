@@ -223,8 +223,7 @@ public class GraphTests {
 	}
 
 	@Test
-	public void a_starTest()
-	{
+	public void a_starTest() {
 		LatLng start = new LatLng(40.249021, -111.650779);
 		LatLng end = new LatLng(40.249127, -111.648735);
 
@@ -243,18 +242,17 @@ public class GraphTests {
 		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
 
 		Node[][] nodes = GraphTools.genUniformNodes(1, southwest, northeast, img);
-		Graph g=  new Graph();
+		Graph g = new Graph();
 		g.nodes2 = nodes;
-		
-		
-		NodeIndex startNode = new NodeIndex(2,6);
-		NodeIndex endNode = new NodeIndex(80,46);
-		
+
+		NodeIndex startNode = new NodeIndex(2, 6);
+		NodeIndex endNode = new NodeIndex(80, 46);
+
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.BLACK_PATHS);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
-		
+
 		Tools.WriteImage(img, "testImages/a_star.png");
-		
+
 	}
 	
 	@Test
