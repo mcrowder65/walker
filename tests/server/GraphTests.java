@@ -257,6 +257,35 @@ public class GraphTests {
 		
 	}
 	
+	@Test
+	public void a_starBIGTest()
+	{
+		/*LatLng start = new LatLng(40.249021, -111.650779);
+		LatLng end = new LatLng(40.249127, -111.648735);
+
+		LatLng center = Tools.getCenter(start, end);
+		int sizeX = 640;
+		int sizeY = 640;
+		int zoom = APITools.getAppropriateZoom(start, end, sizeX, sizeY);
+		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);*/
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		
+		BufferedImage img = Tools.ReadImage("mock/campus.png");
+		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+		Graph g=  new Graph();
+		g.nodes2 = nodes;
+		
+		
+		NodeIndex startNode = new NodeIndex(200,53);
+		NodeIndex endNode = new NodeIndex(405,365);
+		
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+		
+		Tools.WriteImage(img, "testImages/a_starBIG.png");
+	}
+	
 	
 	//@Test
 	public void testingNormalPaths() {
