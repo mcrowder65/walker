@@ -93,7 +93,7 @@ public class ProcessingTests {
 		// Tools.WriteImage(img, "testImages/roadmapTest1.png");
 	}
 
-	@Test
+	//@Test
 	public void fillImageTest() {
 		Color c = new Color(255, 0, 0);
 		System.out.println(c.getRGB());
@@ -131,5 +131,21 @@ public class ProcessingTests {
 		BufferedImage filled = ColorOperations.filledImage(roadmap, new Color(Config.MAPS_BUILDING_RGB), southwest, northeast, buildingPoint);
 
 		Tools.WriteImage(filled, "testImages/roadmapTest4.png");
+	}
+	
+	
+	@Test
+	public void elevationNewInterpolationTest()
+	{
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		int zoom = 18;
+		BufferedImage img;
+		img = Tools.ReadImage("mock/campus.png");
+		
+		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+		
+		double[][] elevs = APITools.GetAllElevations(nodes);
+		
 	}
 }
