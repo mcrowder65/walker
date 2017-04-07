@@ -321,8 +321,8 @@ public class GraphTests {
 		System.out.println(endNodeBlack);
 
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNodeBlack, endNodeBlack, UserPrefs.BLACK_PATHS);
-		// starPath.add(endNode);
-		// starPath.add(0, startNode);
+		starPath.add(startNode);
+		starPath.add(0, endNode);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 
 		Tools.WriteImage(img, "testImages/a_star_2_black.png");
