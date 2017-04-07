@@ -28,9 +28,14 @@ public class Config {
 	public static final int MAX_BLOCK_SIZE_BLACK = 8;
 	public static double MAX_BLOCK_DIST_SQUARED;
 	public static double MAX_BLOCK_DIST_SQUARED_BLACK;
+
 	
 	public static final int ELEVATION_GRADIENT_SKIP = 4;
-	
+	public static double LAT_STEPPING_DIST;
+	public static double LONG_STEPPING_DIST;
+	public static int SEARCH_RADIUS = 50; // in meters
+
+
 	public static final int LOCAL_TIMEZONE = -7;
 	public static final int DAYLIGHT_SAVINGS = 1;
 }
