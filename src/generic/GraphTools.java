@@ -142,14 +142,12 @@ public class GraphTools {
 		if (!up.isGrass() && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
 			return Double.MAX_VALUE;
 		}
-		
 
 		return calcDist(start, end);
 
 	}
 
-	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast,
-			BufferedImage img) {
+	public static Node[][] genUniformNodes(double meterSpacing, LatLng southwest, LatLng northeast, BufferedImage img) {
 		double latLen = APITools.getLatitudeDifference(southwest, northeast);
 		double lonLen = APITools.getLongitudeDifference(southwest, northeast);
 
@@ -184,6 +182,13 @@ public class GraphTools {
 				allNodes[x][y] = n;
 			}
 		}
+
+		// SET LAT AND LONG STEPPING
+		Config.LONG_STEPPING_DIST = Math
+				.abs(allNodes[0][0].getPosition().longitude - allNodes[1][0].getPosition().longitude);
+		Config.LAT_STEPPING_DIST = Math
+				.abs(allNodes[0][0].getPosition().latitude - allNodes[0][1].getPosition().latitude);
+
 		return allNodes;
 	}
 
@@ -341,14 +346,13 @@ public class GraphTools {
 		}
 	}
 
-	public static void WriteAStarPathToImage(BufferedImage img, Graph g, List<NodeIndex> backpath,LatLng southwest, LatLng northeast, Color lineColor)
-	{
+	public static void WriteAStarPathToImage(BufferedImage img, Graph g, List<NodeIndex> backpath, LatLng southwest,
+			LatLng northeast, Color lineColor) {
 		Point2D.Double prevPoint = null;
-		
-		for (int nIndex = 0; nIndex < backpath.size(); nIndex++)
-		{
-			Point2D.Double p = APITools.getImagePointFromLatLng(g.getFromIndex(backpath.get(nIndex)).getPosition(), southwest, northeast, img.getWidth(),
-					img.getHeight());
+
+		for (int nIndex = 0; nIndex < backpath.size(); nIndex++) {
+			Point2D.Double p = APITools.getImagePointFromLatLng(g.getFromIndex(backpath.get(nIndex)).getPosition(),
+					southwest, northeast, img.getWidth(), img.getHeight());
 			if (prevPoint != null) {
 				Point2D.Double minX = p.x < prevPoint.x ? p : prevPoint;
 				Point2D.Double maxX = minX == prevPoint ? p : prevPoint;
@@ -356,10 +360,9 @@ public class GraphTools {
 			}
 			prevPoint = p;
 		}
-	
+
 	}
-	
-	
+
 	public static void DrawRouteOnly(BufferedImage img, List<Node> nodes, Color nodeColor, int nodePixelRadius,
 			LatLng southwest, LatLng northeast, Color lineColor) {
 
@@ -515,175 +518,153 @@ public class GraphTools {
 		return currPath;
 	}
 
-
-	
-	private static void initInfinity(Graph g, double[][] arr)
-	{
-		for (int x = 0; x < g.nodes2.length; x++)
-		{
-			for (int y = 0; y < g.nodes2[0].length; y++)
-			{
+	private static void initInfinity(Graph g, double[][] arr) {
+		for (int x = 0; x < g.nodes2.length; x++) {
+			for (int y = 0; y < g.nodes2[0].length; y++) {
 				arr[x][y] = Double.MAX_VALUE;
 			}
 		}
 	}
-	private static NodeIndex getLowestInMap(HashSet<NodeIndex> available, HashMap<NodeIndex,Double> map)
-	{
+
+	private static NodeIndex getLowestInMap(HashSet<NodeIndex> available, HashMap<NodeIndex, Double> map) {
 		double min = Double.MAX_VALUE;
 		NodeIndex minNode = null;
-		for (NodeIndex n : available)
-		{
-			if (map.get(n) < min)
-			{
+		for (NodeIndex n : available) {
+			if (map.get(n) < min) {
 				min = map.get(n);
 				minNode = n;
 			}
 		}
 		return minNode;
 	}
-	
-	
-	public static List<NodeIndex> reconstructPath(HashMap<NodeIndex, NodeIndex> cameFrom, NodeIndex current)
-	{
+
+	public static List<NodeIndex> reconstructPath(HashMap<NodeIndex, NodeIndex> cameFrom, NodeIndex current) {
 		List<NodeIndex> total = new ArrayList<NodeIndex>();
 		total.add(current);
-		while (cameFrom.keySet().contains(current))
-		{
+		while (cameFrom.keySet().contains(current)) {
 			current = cameFrom.get(current);
 			total.add(current);
 		}
 		return total;
 	}
-	
-	
-	private static void expandSimilarEntrances(Graph g, NodeIndex current,NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, PriorityQueue<NodeIndexWithValue> openSet, boolean[][] closedSet, double[][] fScore,double[][] gScore, UserPrefs up)
-	{
+
+	private static void expandSimilarEntrances(Graph g, NodeIndex current, NodeIndex end,
+			HashMap<NodeIndex, NodeIndex> cameFrom, PriorityQueue<NodeIndexWithValue> openSet, boolean[][] closedSet,
+			double[][] fScore, double[][] gScore, UserPrefs up) {
 		Building currBuilding = g.getFromIndex(current).getBuilding();
 		if (currBuilding == null)
 			return;
-		
-		for (int x = 0; x < g.nodes2.length; x++)
-		{
-			for (int y = 0; y < g.nodes2[0].length; y++)
-			{
+
+		for (int x = 0; x < g.nodes2.length; x++) {
+			for (int y = 0; y < g.nodes2[0].length; y++) {
 				NodeIndex neighbor = createNodeIndexOrFromCache(g, x, y);
-				if (g.nodes2[x][y].getBuilding() == currBuilding && !closedSet[neighbor.x][neighbor.y])
-				{
+				if (g.nodes2[x][y].getBuilding() == currBuilding && !closedSet[neighbor.x][neighbor.y]) {
 					expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, up);
 				}
 			}
 		}
 	}
-	
-	private static void expand(Graph g, NodeIndex current, NodeIndex neighbor, NodeIndex end, HashMap<NodeIndex, NodeIndex> cameFrom, PriorityQueue<NodeIndexWithValue> openSet, double[][] fScore,double[][] gScore, UserPrefs up)
-	{
-		double tentative_gScore = gScore[current.x][current.y] + getCosts(g.getFromIndex(current), g.getFromIndex(neighbor), up); 
+
+	private static void expand(Graph g, NodeIndex current, NodeIndex neighbor, NodeIndex end,
+			HashMap<NodeIndex, NodeIndex> cameFrom, PriorityQueue<NodeIndexWithValue> openSet, double[][] fScore,
+			double[][] gScore, UserPrefs up) {
+		double tentative_gScore = gScore[current.x][current.y]
+				+ getCosts(g.getFromIndex(current), g.getFromIndex(neighbor), up);
 		boolean willAdd = false;
 		if (!openSet.contains(neighbor))
-			 willAdd = true;//openSet.add(new NodeIndexWithValue(neighbor);
+			willAdd = true;// openSet.add(new NodeIndexWithValue(neighbor);
 		if (tentative_gScore >= gScore[neighbor.x][neighbor.y])
 			return;
-		
+
 		cameFrom.put(neighbor, current);
 		gScore[neighbor.x][neighbor.y] = tentative_gScore;
-		fScore[neighbor.x][neighbor.y] = gScore[neighbor.x][neighbor.y] + calcDist(g.getFromIndex(neighbor), g.getFromIndex(end));
-		
-	
+		fScore[neighbor.x][neighbor.y] = gScore[neighbor.x][neighbor.y]
+				+ calcDist(g.getFromIndex(neighbor), g.getFromIndex(end));
+
 		if (willAdd)
 			openSet.add(new NodeIndexWithValue(neighbor, fScore[neighbor.x][neighbor.y]));
 	}
-	
+
 	private static HashSet<NodeIndex> nodeCache = new HashSet<NodeIndex>();
-	private static NodeIndex createNodeIndexOrFromCache(Graph g, int x, int y)
-	{
+
+	private static NodeIndex createNodeIndexOrFromCache(Graph g, int x, int y) {
 		if (!g.isValidIndex(x, y))
 			return null;
-		
+
 		/*
-		for (NodeIndex n : nodeCache)
-		{
-			if (n.x == x && n.y == y)
-				return n;
-		}*/
-		NodeIndex newNode = new NodeIndex(x,y);
-		//nodeCache.add(newNode);
+		 * for (NodeIndex n : nodeCache) { if (n.x == x && n.y == y) return n; }
+		 */
+		NodeIndex newNode = new NodeIndex(x, y);
+		// nodeCache.add(newNode);
 		return newNode;
 	}
-	
-	
-	
-	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs)
-	{
-	
-		
+
+	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs) {
+
 		boolean[][] closedSet = new boolean[g.nodes2.length][g.nodes2[0].length];
 		FScoreComparator cmprtor = new FScoreComparator();
 		PriorityQueue<NodeIndexWithValue> openSet = new PriorityQueue<NodeIndexWithValue>(cmprtor);
 
 		HashMap<NodeIndex, NodeIndex> cameFrom = new HashMap<NodeIndex, NodeIndex>();
-		
+
 		double[][] gScore = new double[g.nodes2.length][g.nodes2[0].length];
 		initInfinity(g, gScore);
 
-		
 		gScore[start.x][start.y] = 0d;
-		
+
 		double[][] fScore = new double[g.nodes2.length][g.nodes2[0].length];
 
 		initInfinity(g, fScore);
-		
+
 		fScore[start.x][start.y] = calcDist(g.getFromIndex(start), g.getFromIndex(end));
-		
+
 		openSet.add(new NodeIndexWithValue(start, fScore[start.x][start.y]));
 
-		while (!openSet.isEmpty())
-		{
-			NodeIndex current = openSet.remove().nodeIndex;// getLowestInMap(openSet, fScore);
+		while (!openSet.isEmpty()) {
+			NodeIndex current = openSet.remove().nodeIndex;// getLowestInMap(openSet,
+															// fScore);
 
 			if (current.x == end.x && current.y == end.y)
 				return reconstructPath(cameFrom, current);
-		
-			
-			
-			//openSet.remove(current);
-			//closedSet.add(current);
+
+			// openSet.remove(current);
+			// closedSet.add(current);
 			closedSet[current.x][current.y] = true;
-			
-			//Neighbors
+
+			// Neighbors
 			NodeIndex neighbor;
-			
+
 			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y - 1);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x - 1, current.y + 1);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
-			
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
+
 			neighbor = createNodeIndexOrFromCache(g, current.x, current.y - 1);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x, current.y + 1);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
-			
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
+
 			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y - 1);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
 			neighbor = createNodeIndexOrFromCache(g, current.x + 1, current.y + 1);
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
-				expand(g, current, neighbor, end,cameFrom,  openSet,fScore, gScore, prefs);
-			
-			
+				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
+
 			expandSimilarEntrances(g, current, end, cameFrom, openSet, closedSet, fScore, gScore, prefs);
-			
+
 		}
-		
+
 		return null;
 	}
 

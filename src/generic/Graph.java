@@ -339,6 +339,12 @@ public class Graph extends WalkerObject {
 		}
 	}
 
+	public NodeIndex getClosestNodeFast(LatLng position, LatLng southwest, LatLng northeast, BufferedImage img) {
+		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
+		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
+		return new NodeIndex(numLongSteps, numLatSteps);
+	}
+
 	public void addBlackNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
 		int imgHeight = img.getHeight();
 		int imgWidth = img.getWidth();
