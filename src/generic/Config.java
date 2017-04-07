@@ -29,6 +29,7 @@ public class Config {
 	public static double MAX_BLOCK_DIST_SQUARED;
 	public static double MAX_BLOCK_DIST_SQUARED_BLACK;
 	
+	public static final int ELEVATION_GRADIENT_SKIP = 4;
 	
 	public static final int LOCAL_TIMEZONE = -7;
 	public static final int DAYLIGHT_SAVINGS = 1;

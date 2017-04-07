@@ -51,6 +51,40 @@ public class APITools {
 		}
 		return elevs;
 	}
+	
+
+	public static double[][] GetAllElevations(Node[][] points) {
+		int currPos = 0;
+
+		double[][] elevs = new double[points.length][points[0].length];
+		int prevPos = -1;
+		while (currPos < points.length) {
+			
+			
+			
+
+			String resp = GetElevationResponse(points, currPos);
+			
+			APITools.SetElevationsDirectly(resp, elevs, currPos);
+			
+			
+			if (prevPos != -1)
+			{
+				Tools.InterpolateFullColumns(elevs, prevPos, currPos);
+			}
+			
+			prevPos = currPos;
+			
+			
+			if (currPos == points.length - 1)
+				break;
+	
+			currPos = Math.min(currPos + 1 + Config.ELEVATION_GRADIENT_SKIP, points.length - 1);
+			
+
+		}
+		return elevs;
+	}
 
 	public static String GetElevationResponse(LatLng... points) {
 		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="
@@ -61,14 +95,35 @@ public class APITools {
 		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="
 				+ Tools.nodesToString('|', points) + "&key=" + Config.ELEVATION_KEY);
 	}
-
+	public static String GetElevationResponse(Node[][] points, int col) {
+		return Tools.getHTTPString("https://maps.googleapis.com/maps/api/elevation/json?locations="
+				+ Tools.nodesToString('|', points, col) + "&key=" + Config.ELEVATION_KEY);
+	}
 	public static double[] GetElevations(String apiJSONResponse, List<Node> nodes) {
 		LatLng[] lls = new LatLng[nodes.size()];
 		for (int n = 0; n < nodes.size(); n++)
 			lls[n] = nodes.get(n).getPosition();
 		return GetElevations(apiJSONResponse, lls);
 	}
-
+	public static void SetElevationsDirectly(String apiJSONResponse, double[][] elevs, int col) {
+		JSONObject rootObj = new JSONObject(apiJSONResponse);
+		JSONArray results = rootObj.getJSONArray("results");
+		for (int n = 0; n < results.length(); n++) {
+			int mappedVal = Math.min(n * (Config.ELEVATION_GRADIENT_SKIP + 1), elevs[col].length - 1);
+			
+			JSONObject result = results.getJSONObject(n);
+			double elev = result.getDouble("elevation");
+			elevs[col][mappedVal] = elev;
+			
+			if (n != 0)
+			{
+				int prevMappedVal = (n - 1) * (Config.ELEVATION_GRADIENT_SKIP + 1);
+				Tools.Interpolate(elevs, col, prevMappedVal, mappedVal);
+			}
+			
+		}
+		
+	}
 	public static double[] GetElevations(String apiJSONResponse, LatLng... points) {
 		JSONObject rootObj = new JSONObject(apiJSONResponse);
 		JSONArray results = rootObj.getJSONArray("results");
@@ -105,7 +160,7 @@ public class APITools {
 		}
 		return elevations;
 	}
-
+	
 	public static String GetOverviewPolyline(String apiJSONResponse) {
 		JSONObject rootObj = new JSONObject(apiJSONResponse);
 		JSONArray routes = rootObj.getJSONArray("routes");
