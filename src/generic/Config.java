@@ -31,6 +31,7 @@ public class Config {
 
 	public static double LAT_STEPPING_DIST;
 	public static double LONG_STEPPING_DIST;
+	public static int SEARCH_RADIUS = 50; // in meters
 
 	public static final int LOCAL_TIMEZONE = -7;
 	public static final int DAYLIGHT_SAVINGS = 1;
