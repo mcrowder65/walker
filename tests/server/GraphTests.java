@@ -277,14 +277,8 @@ public class GraphTests {
 		Node[][] nodes = GraphTools.genUniformNodes(1, southwest, northeast, img);
 		Graph g = new Graph();
 		g.nodes2 = nodes;
-		NodeIndex startNode = g.getClosestNodeFast(start, southwest, northeast, img);
-		NodeIndex endNode = g.getClosestNodeFast(end, southwest, northeast, img);
-		NodeIndex startNode2 = g.getClosestNodeLoc(start);
-		NodeIndex endNode2 = g.getClosestNodeLoc(end);
-		System.out.println(startNode);
-		System.out.println(endNode);
-		System.out.println(startNode2);
-		System.out.println(endNode2);
+		NodeIndex startNode = g.getClosestNodeFast(start, southwest);
+		NodeIndex endNode = g.getClosestNodeFast(end, southwest);
 
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
@@ -293,7 +287,7 @@ public class GraphTests {
 
 	}
 
-	// @Test
+	@Test
 	public void a_starTest_blackPath2() {
 		LatLng start = new LatLng(40.249773, -111.650226);
 		LatLng end = new LatLng(40.249104, -111.648759);
@@ -315,10 +309,10 @@ public class GraphTests {
 		Node[][] nodes = GraphTools.genUniformNodes(1, southwest, northeast, img);
 		Graph g = new Graph();
 		g.nodes2 = nodes;
-		NodeIndex startNode = g.getClosestNodeLoc(start);
-		NodeIndex endNode = g.getClosestNodeLoc(end);
-		NodeIndex startNodeBlack = g.getClosestBlackNodeLoc(start);
-		NodeIndex endNodeBlack = g.getClosestBlackNodeLoc(end);
+		NodeIndex startNode = g.getClosestNodeFast(start, southwest);
+		NodeIndex endNode = g.getClosestNodeFast(end, southwest);
+		NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
+		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
 		System.out.println(startNode);
 		System.out.println(endNode);
 		System.out.println(startNodeBlack);

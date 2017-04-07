@@ -339,10 +339,39 @@ public class Graph extends WalkerObject {
 		}
 	}
 
-	public NodeIndex getClosestNodeFast(LatLng position, LatLng southwest, LatLng northeast, BufferedImage img) {
+	public NodeIndex getClosestNodeFast(LatLng position, LatLng southwest) {
 		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
 		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
 		return new NodeIndex(numLongSteps, numLatSteps);
+	}
+
+	public NodeIndex getClosestBlackNodeFast(LatLng position, LatLng southwest) {
+		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
+		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
+		int startX = Math.max((numLongSteps - 50), 0);
+		int startY = Math.max((numLatSteps - 50), 0);
+		int endX = Math.min((numLongSteps + 50), nodes2.length);
+		int endY = Math.min((numLatSteps + 50), nodes2.length);
+		double dist = Double.MAX_VALUE;
+		int cur_i = -1;
+		int cur_j = -1;
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				Node n = nodes2[i][j];
+				if (n.code == NodeCode.Normal) {
+					double longDiff = Math.abs(position.longitude - n.getPosition().longitude);
+					double latDiff = Math.abs(position.latitude - n.getPosition().latitude);
+					double total = (latDiff * latDiff) + (longDiff * longDiff);
+					if (total < dist) {
+						dist = total;
+						cur_i = i;
+						cur_j = j;
+					}
+				}
+			}
+		}
+		return new NodeIndex(cur_i, cur_j);
+
 	}
 
 	public void addBlackNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
