@@ -124,14 +124,12 @@ public class GraphTools {
 		if (end.code == NodeCode.Building || start.code == NodeCode.Building) {
 			return Double.MAX_VALUE;
 		}
-		// TODO calculate this
-		if (up.getBuilding() > 0) {
+		if (up.isBuilding()) {
 			if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 				return calcBuildingDist(start, end);
 			}
 		}
-		// TODO calculate this
-		if (up.getPreferDesignatedPaths() > 0) {
+		if (up.isPreferDesignatedPaths()) {
 			if (start.code == NodeCode.Normal && end.code == NodeCode.Normal) {
 				return calcDist(start, end);
 			}
@@ -141,8 +139,7 @@ public class GraphTools {
 			}
 			return Double.MAX_VALUE;
 		}
-		// TODO calculate this
-		if (up.getGrass() == 0 && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
+		if (!up.isGrass() && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
 			return Double.MAX_VALUE;
 		}
 
@@ -456,7 +453,7 @@ public class GraphTools {
 	}
 
 	public static List<Integer> dijkstra(int startNodeIndex, Graph g, int endNodeIndex) {
-		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, 0, 0, 0, 0, 0));
+		return dijkstra(startNodeIndex, g, endNodeIndex, new UserPrefs(.5, .5, false, false, false, false, false));
 
 	}
 
