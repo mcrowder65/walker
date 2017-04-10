@@ -224,7 +224,6 @@ export class WalkerMap {
       parkingLots: this.parkingLots || 0,
       preferDesignatedPaths: this.preferDesignatedPaths || 0
     };
-    console.log('userOptions ', userOptions);
     Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
   }
 
