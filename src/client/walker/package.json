@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "The tool walk really really fast",
   "scripts": {
-    "start": "zwitterion --serve-dir app/client --http",
-    "production-build": "zwitterion --build --output-dir dist"
+    "start": "cd app/client && node_modules/.bin/zwitterion-production --port 8000"
   },
   "repository": {
     "type": "git",
@@ -12,9 +11,7 @@
   },
   "homepage": "https://github.com/mcrowder65/walker",
   "devDependencies": {
-    "@types/polymer": "^1.1.30",
-    "systemjs": "^0.19.41",
-    "zwitterion": "^0.7.0"
+    "@types/polymer": "^1.1.30"
   },
   "dependencies": {
     "@types/googlemaps": "^3.26.2",
