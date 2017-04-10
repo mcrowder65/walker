@@ -72,6 +72,10 @@ public class LatLng implements UrlValue {
 		return Math.abs(a.latitude - b.latitude) < EPSILON && Math.abs(a.longitude - b.longitude) < EPSILON;
 
 	}
+	public double dist(LatLng other)
+	{
+		return Math.sqrt(distSquared(other));
+	}
 	public double distSquared(LatLng other)
 	{
 		return Math.pow(this.latitude - other.latitude, 2) + Math.pow(this.longitude - other.longitude, 2);

@@ -28,7 +28,9 @@ public class UserPrefs extends WalkerObject {
 		setParkingLots(parkingLot);
 		setPreferDesignatedPaths(preferDesignatedPaths);
 	}
-
+	
+	public static UserPrefs DEFAULT = new UserPrefs(0,0,false,true,true,false,false);
+	public static UserPrefs BLACK_PATHS = new UserPrefs(0,0,false,false,false,false, true);
 	public double getStairs() {
 		if (stairs > 1) {
 			System.err

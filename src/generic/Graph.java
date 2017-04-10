@@ -28,6 +28,32 @@ public class Graph extends WalkerObject {
 	private String name;
 	private List<Node> nodes;
 
+	public Node[][] nodes2;
+
+	public boolean isValidIndex(NodeIndex indx) {
+		return !(indx.x < 0 || indx.y < 0 || indx.x > nodes2.length - 1 || indx.y > nodes2[0].length - 1);
+
+	}
+
+	public boolean isValidIndex(int x, int y) {
+		return !(x < 0 || y < 0 || x > nodes2.length - 1 || y > nodes2[0].length - 1);
+
+	}
+
+	public Node getFromIndex(NodeIndex indx) {
+		if (indx.x < 0 || indx.y < 0 || indx.x > nodes2.length - 1 || indx.y > nodes2[0].length - 1)
+			return null;
+		else
+			return nodes2[indx.x][indx.y];
+	}
+
+	public Node getFromIndex(int x, int y) {
+		if (x < 0 || y < 0 || x > nodes2.length - 1 || y > nodes2[0].length - 1)
+			return null;
+		else
+			return nodes2[x][y];
+	}
+
 	public Graph(GraphFirebaseWrapper graphFirebaseWrapper) {
 		super();
 		this.setId(graphFirebaseWrapper.getId());
@@ -185,6 +211,30 @@ public class Graph extends WalkerObject {
 		return -1;
 	}
 
+	public Node getStartNode() {
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				if (n.isStart()) {
+					return n;
+				}
+			}
+		}
+		return null;
+	}
+
+	public Node getEndNode() {
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				if (n.isEnd()) {
+					return n;
+				}
+			}
+		}
+		return null;
+	}
+
 	public void printNodes() {
 		for (int i = 0; i < nodes.size(); i++) {
 			Node n = nodes.get(i);
@@ -251,7 +301,11 @@ public class Graph extends WalkerObject {
 
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
-				totalCost[i][j] = distance[i][j];
+				if (up.isPreferDesignatedPaths()) {
+					totalCost[i][j] = this.normalPath[i][j];
+				} else {
+					totalCost[i][j] = distance[i][j];
+				}
 				if (up.isGrass()) {
 					boolean g = grass[i][j];
 					if (g) {
@@ -280,10 +334,44 @@ public class Graph extends WalkerObject {
 				Node n = new Node(position, b);
 				int index = findClosestNodeIndex(n);
 				this.nodes.get(index).setBuilding(b);
-				;
 			}
 
 		}
+	}
+
+	public NodeIndex getClosestNodeFast(LatLng position, LatLng southwest) {
+		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
+		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
+		return new NodeIndex(numLongSteps, numLatSteps);
+	}
+
+	public NodeIndex getClosestBlackNodeFast(LatLng position, LatLng southwest) {
+		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
+		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
+		int startX = Math.max((numLongSteps - 50), 0);
+		int startY = Math.max((numLatSteps - 50), 0);
+		int endX = Math.min((numLongSteps + 50), nodes2.length);
+		int endY = Math.min((numLatSteps + 50), nodes2.length);
+		double dist = Double.MAX_VALUE;
+		int cur_i = -1;
+		int cur_j = -1;
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				Node n = nodes2[i][j];
+				if (n.code == NodeCode.Normal) {
+					double longDiff = Math.abs(position.longitude - n.getPosition().longitude);
+					double latDiff = Math.abs(position.latitude - n.getPosition().latitude);
+					double total = (latDiff * latDiff) + (longDiff * longDiff);
+					if (total < dist) {
+						dist = total;
+						cur_i = i;
+						cur_j = j;
+					}
+				}
+			}
+		}
+		return new NodeIndex(cur_i, cur_j);
+
 	}
 
 	public void addBlackNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
@@ -345,6 +433,80 @@ public class Graph extends WalkerObject {
 		return closestNodeIndex;
 	}
 
+	public Node getClosestBlackNode(Node n) {
+		LatLng latLong = n.getPosition();
+		double distance = Double.MAX_VALUE;
+		int closest_i = -1;
+		int closest_j = -1;
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n2 = nodes2[i][j];
+				if (n2.code == NodeCode.Normal) {
+					double longDiff = Math.abs(latLong.longitude - nodes.get(i).getPosition().longitude);
+					double latDiff = Math.abs(latLong.latitude - nodes.get(i).getPosition().latitude);
+					double total = latDiff + longDiff;
+					if (total < distance) {
+						distance = total;
+						closest_i = i;
+						closest_j = j;
+					}
+				}
+			}
+		}
+		if (closest_i != -1 && closest_j != -1) {
+			return nodes2[closest_i][closest_j];
+		}
+		return null;
+	}
+
+	public NodeIndex getClosestNodeLoc(LatLng latLong) {
+		double distance = Double.MAX_VALUE;
+		int closest_i = -1;
+		int closest_j = -1;
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				double longDiff = Math.abs(latLong.longitude - n.getPosition().longitude);
+				double latDiff = Math.abs(latLong.latitude - n.getPosition().latitude);
+				double total = Math.sqrt((latDiff * latDiff) + (longDiff * longDiff));
+				if (total < distance) {
+					distance = total;
+					closest_i = i;
+					closest_j = j;
+				}
+			}
+		}
+		if (closest_i != -1 && closest_j != -1) {
+			return new NodeIndex(closest_i, closest_j);
+		}
+		return null;
+	}
+
+	public NodeIndex getClosestBlackNodeLoc(LatLng latLong) {
+		double distance = Double.MAX_VALUE;
+		int closest_i = -1;
+		int closest_j = -1;
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2[i].length; j++) {
+				Node n = nodes2[i][j];
+				if (n.code == NodeCode.Normal) {
+					double longDiff = Math.abs(latLong.longitude - n.getPosition().longitude);
+					double latDiff = Math.abs(latLong.latitude - n.getPosition().latitude);
+					double total = Math.sqrt((latDiff * latDiff) + (longDiff * longDiff));
+					if (total < distance) {
+						distance = total;
+						closest_i = i;
+						closest_j = j;
+					}
+				}
+			}
+		}
+		if (closest_i != -1 && closest_j != -1) {
+			return new NodeIndex(closest_i, closest_j);
+		}
+		return null;
+	}
+
 	public void generateWildernessMatrix() {
 
 	}
@@ -404,21 +566,13 @@ public class Graph extends WalkerObject {
 		return nodes.size() - 1;
 	}
 
-	public double calcBulidingDist(Node start, Node end) {
-		LatLng locStartNode = start.getPosition();
-		LatLng locEndNode = end.getPosition();
-		double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
-		double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
-
-		double total = latDiff + longDiff;
-
-		return total;
-	}
-
-	public double checkEntrences(Node start, Node end) {
+	public double checkEntrences(Node start, Node end, int hour) {
 
 		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 			LatLng locStartNode = start.getPosition();
+			if (!start.getBuilding().isCurrentlyOpenFast(hour))
+				return Double.MAX_VALUE;
+
 			LatLng locEndNode = end.getPosition();
 			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
 			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
@@ -426,7 +580,6 @@ public class Graph extends WalkerObject {
 			return dist;
 		}
 		return -1;
-
 	}
 
 	/*
@@ -539,26 +692,49 @@ public class Graph extends WalkerObject {
 	// }
 
 	public void createNormalPathMatrix(Node startNode, Node endNode, int i, int z) {
+		// double dist = checkEntrences(startNode, endNode);
+		// if (dist != -1) {
+		// normalPath[i][z] = dist;
+		// return;
+		// }
 		if (!startNode.getBlack() && !endNode.getBlack()) {
 			normalPath[i][z] = Double.MAX_VALUE;
+			return;
+		}
+		if (startNode.getBlack() && endNode.getBlack()) {
+			LatLng locStartNode = startNode.getPosition();
+			LatLng locEndNode = endNode.getPosition();
+			double longDiff = Math.abs(locEndNode.longitude - locStartNode.longitude);
+			double latDiff = Math.abs(locEndNode.latitude - locStartNode.latitude);
+			double longSqr = longDiff * longDiff;
+			double latSqr = latDiff * latDiff;
+			double squaredDist = Math.sqrt(longSqr + latSqr);
+			if (squaredDist > Config.MAX_BLOCK_DIST_SQUARED_BLACK) {
+				normalPath[i][z] = Double.MAX_VALUE;
+			} else {
+				normalPath[i][z] = squaredDist;
+			}
 			return;
 		}
 
 	}
 
 	public void setLimitedDistancesFromNodes(BufferedImage img, LatLng southwest, LatLng northeast) {
+		int hour = ZoningTools.GetHour(southwest);
+
 		distance = new double[nodes.size()][nodes.size()];
 		grass = new boolean[nodes.size()][nodes.size()];
 		normalPath = new double[nodes.size()][nodes.size()];
 		for (int i = 0; i < nodes.size(); i++) {
 			// System.out.println("i = " + i);
 			for (int z = i; z < nodes.size(); z++) {
+				createNormalPathMatrix(nodes.get(i), nodes.get(z), i, z);
 				if (i == z) {
 					distance[i][z] = 0;
 				} else {
 					Node startNode = nodes.get(i);
 					Node endNode = nodes.get(z);
-					double checkRes = checkEntrences(startNode, endNode);
+					double checkRes = checkEntrences(startNode, endNode, hour);
 					if (checkRes != -1) {
 						distance[i][z] = checkRes;
 					} else {
@@ -610,7 +786,13 @@ public class Graph extends WalkerObject {
 	}
 
 	public List<Node> getNodes() {
-		return this.nodes;
+		List<Node> allNodes = new ArrayList();
+		for (int i = 0; i < nodes2.length; i++) {
+			for (int j = 0; j < nodes2.length; j++) {
+				allNodes.add(nodes2[i][j]);
+			}
+		}
+		return allNodes;
 	}
 
 	public List<Node> getNodesFromPath(List<Integer> path) {
