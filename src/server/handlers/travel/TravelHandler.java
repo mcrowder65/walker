@@ -70,7 +70,7 @@ public class TravelHandler extends WalkerHandler {
 		List<Marker> markers = new ArrayList();
 		starPath.add(startNode);
 		starPath.add(0, endNode);
-		for (int i = 0; i < starPath.size(); i--) {
+		for (int i = 0; i < starPath.size(); i++) {
 			Node n = g.getFromIndex(starPath.get(i));
 			Marker m = new Marker(n.getPosition().latitude, n.getPosition().longitude);
 			markers.add(m);
