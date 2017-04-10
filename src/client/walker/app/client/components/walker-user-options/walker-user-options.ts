@@ -7,11 +7,11 @@ export class WalkerUserOptions {
   public is: string;
   public stairs: number;
   public elevation: number;
-  public wilderness: boolean = false;
-  public building: boolean = false;
-  public grass: boolean = false;
-  public parkingLots: boolean = false;
-  public preferDesignatedPaths: boolean = false;
+  public wilderness: number;
+  public building: number;
+  public grass: number;
+  public parkingLots: number;
+  public preferDesignatedPaths: number;
   public properties: any;
   public action: Action;
   public querySelector: any;
@@ -28,19 +28,19 @@ export class WalkerUserOptions {
       Actions.setElevation(this, this.querySelector('#elevation').value);
     }
     if(this.querySelector('#wilderness')) {
-      Actions.setWilderness(this, this.querySelector('#wilderness').checked);
+      Actions.setWilderness(this, this.querySelector('#wilderness').value);
     }
     if(this.querySelector('#grass')) {
-      Actions.setGrass(this, this.querySelector('#grass').checked);
+      Actions.setGrass(this, this.querySelector('#grass').value);
     }
     if(this.querySelector('#building')) {
-      Actions.setBuilding(this, this.querySelector('#building').checked);
+      Actions.setBuilding(this, this.querySelector('#building').value);
     }
     if(this.querySelector('#parkingLots')) {
-      Actions.setParkingLots(this, this.querySelector('#parkingLots').checked);
+      Actions.setParkingLots(this, this.querySelector('#parkingLots').value);
     }
     if(this.querySelector('#preferDesignatedPaths')) {
-      Actions.setPreferDesignatedPaths(this, this.querySelector('#preferDesignatedPaths').checked);
+      Actions.setPreferDesignatedPaths(this, this.querySelector('#preferDesignatedPaths').value);
     }
   }
 

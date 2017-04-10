@@ -9,17 +9,17 @@ public class UserPrefs extends WalkerObject {
 
 	private double stairs;
 	private double elevation;
-	private boolean wilderness;
-	private boolean grass;
-	private boolean building;
-	private boolean parkingLots;
-	private boolean preferDesignatedPaths;
+	private double wilderness;
+	private double grass;
+	private double building;
+	private double parkingLots;
+	private double preferDesignatedPaths;
 
 	public UserPrefs() {
 	}
 
-	public UserPrefs(double stairs, double elevation, boolean wilderness, boolean grass, boolean building,
-			boolean parkingLot, boolean preferDesignatedPaths) {
+	public UserPrefs(double stairs, double elevation, double wilderness, double grass, double building,
+			double parkingLot, double preferDesignatedPaths) {
 		setStairs(stairs);
 		setElevation(elevation);
 		setWilderness(wilderness);
@@ -28,9 +28,10 @@ public class UserPrefs extends WalkerObject {
 		setParkingLots(parkingLot);
 		setPreferDesignatedPaths(preferDesignatedPaths);
 	}
-	
-	public static UserPrefs DEFAULT = new UserPrefs(0,0,false,true,true,false,false);
-	public static UserPrefs BLACK_PATHS = new UserPrefs(0,0,false,false,false,false, true);
+
+	public static UserPrefs DEFAULT = new UserPrefs(0, 0, 0, 1, 1, 0, 0);
+	public static UserPrefs BLACK_PATHS = new UserPrefs(0, 0, 0, 0, 0, 0, 1);
+
 	public double getStairs() {
 		if (stairs > 1) {
 			System.err
@@ -67,43 +68,43 @@ public class UserPrefs extends WalkerObject {
 		this.elevation = elevation;
 	}
 
-	public boolean isWilderness() {
+	public double getWilderness() {
 		return wilderness;
 	}
 
-	public void setWilderness(boolean wilderness) {
+	public void setWilderness(double wilderness) {
 		this.wilderness = wilderness;
 	}
 
-	public boolean isGrass() {
+	public double getGrass() {
 		return grass;
 	}
 
-	public void setGrass(boolean grass) {
+	public void setGrass(double grass) {
 		this.grass = grass;
 	}
 
-	public boolean isBuilding() {
+	public double getBuilding() {
 		return building;
 	}
 
-	public void setBuilding(boolean building) {
+	public void setBuilding(double building) {
 		this.building = building;
 	}
 
-	public boolean isParkingLots() {
+	public double getParkingLots() {
 		return parkingLots;
 	}
 
-	public void setParkingLots(boolean parkingLots) {
+	public void setParkingLots(double parkingLots) {
 		this.parkingLots = parkingLots;
 	}
 
-	public boolean isPreferDesignatedPaths() {
+	public double getPreferDesignatedPaths() {
 		return preferDesignatedPaths;
 	}
 
-	public void setPreferDesignatedPaths(boolean preferDesignatedPaths) {
+	public void setPreferDesignatedPaths(double preferDesignatedPaths) {
 		this.preferDesignatedPaths = preferDesignatedPaths;
 	}
 

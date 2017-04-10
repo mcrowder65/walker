@@ -143,7 +143,7 @@ public class GraphTests {
 		g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
 		// g.generateMatrix(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, false, false, false, false, false);
+		UserPrefs up = new UserPrefs(1, 0, 0, 0, 0, 0, 0);
 		g.sumMatricies(up);
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
@@ -214,7 +214,7 @@ public class GraphTests {
 
 		g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, false);
+		UserPrefs up = new UserPrefs(1, 0, 0, 1, 0, 0, 0);
 		g.sumMatricies(up);
 		List<Integer> path = GraphTools.dijkstra(g.getStartIndex(), g, g.getEndIndex());
 		List<Node> nodesToDraw = g.getNodesFromPath(path);
@@ -445,9 +445,9 @@ public class GraphTests {
 		g.addBlackNodes(img, southwest, northeast);
 		// g.addEnterExit();
 		g.setLimitedDistancesFromNodes(img, southwest, northeast);
-		UserPrefs up = new UserPrefs(1, 0, false, true, false, false, true);
+		UserPrefs up = new UserPrefs(1, 0, 0, 1, 0, 0, 1);
 		g.sumMatricies(up);
-		if (up.isPreferDesignatedPaths()) {
+		if (up.getPreferDesignatedPaths() > 0) {
 			int startIndex = g.findClosestBlackNodeIndex(g.getNodes().get(g.getStartIndex()));
 			int endIndex = g.findClosestBlackNodeIndex(g.getNodes().get(g.getEndIndex()));
 			List<Integer> path = GraphTools.dijkstra(startIndex, g, endIndex);
