@@ -301,20 +301,20 @@ public class Graph extends WalkerObject {
 
 		for (int i = 0; i < nodes.size(); i++) {
 			for (int j = 0; j < nodes.size(); j++) {
-				// TODO calculate this
+				// TODO calculate
 				if (up.getPreferDesignatedPaths() > 0) {
 					totalCost[i][j] = this.normalPath[i][j];
 				} else {
 					totalCost[i][j] = distance[i][j];
 				}
-				// TODO calculate this
+				// TODO calculate
 				if (up.getGrass() > 0) {
 					boolean g = grass[i][j];
 					if (g) {
 						totalCost[i][j] = Double.MAX_VALUE;
 					}
 				}
-				// TODO calculate this
+				// TODO calculate
 				if (up.getBuilding() > 0) {
 					boolean b = building[i][j];
 					if (b) {
