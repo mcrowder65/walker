@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 
 
 import googlemaps.LatLng;
+import javafx.animation.Interpolator;
 import server.firebase.Firebase;
 
 public class Tools {
@@ -114,8 +115,64 @@ public class Tools {
 		}
 		return strBld.toString();
 	}
+	public static String nodesToString(char delimiter, Node[][] nodes, int col)
+	{
+		StringBuilder strBld = new StringBuilder();
+		int n = 0;
+		while (true)
+		{
+			
+			if (n == 0)
+				strBld.append(nodes[col][n].getPosition().toUrlValue());
+			else
+			{
+				int boundVal = Math.min(n, nodes[col].length - 1);
+				strBld.append(delimiter + nodes[col][boundVal].getPosition().toUrlValue());
+				
+			}
+			
+			
+			
+			if (n == nodes[col].length - 1)
+				break;
+			else
+				n = Math.min(n + 1 + Config.ELEVATION_GRADIENT_SKIP , nodes[col].length - 1);
+		}
+		return strBld.toString();
+	}
+	public static void Interpolate(double[][] vals, int col, int startRow, int endRow)
+	{
+		double startVal = vals[col][startRow];
+		double endVal = vals[col][endRow];
+		double step = (endVal - startVal) / (endRow - startRow);
+		
+		for (int n = startRow + 1; n < endRow; n++)
+		{
+			double interp = startVal + step * (n - startRow);
+			vals[col][n] = interp;
+		}
+	}
+	public static void InterpolateFullColumns(double[][] vals, int startCol, int endCol)
+	{
+		//Hopefully there's no need for any fancy interpolation, this just does the columns after doing the rows already
+		assert vals[startCol].length == vals[endCol].length;
+		for (int row = 0; row < vals[startCol].length; row++)
+		{
+			double startVal = vals[startCol][row];
+			double endVal = vals[endCol][row];
+			double step = (endVal - startVal) / (endCol - startCol);
+			
+			for (int n = startCol + 1; n < endCol; n++)
+			{
+				double interp = startVal + step * (n - startCol);
+				vals[n][row] = interp;
+			}
+			
+		}
+		
+	}
 	
-
+	
 	public static void WriteImage(BufferedImage img, String path) {
 		File file = new File(path);
 
