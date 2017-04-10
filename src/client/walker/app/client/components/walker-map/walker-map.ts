@@ -33,11 +33,11 @@ export class WalkerMap {
   public startLatitude: number;
   public stairs: number;
   public elevation: number;
-  public wilderness: boolean = false;
-  public building: boolean = false;
-  public grass: boolean = false;
-  public parkingLots: boolean = false;
-  public preferDesignatedPaths: boolean = false;
+  public wilderness: number;
+  public building: number;
+  public grass: number;
+  public parkingLots: number;
+  public preferDesignatedPaths: number;
   public stairsMarkers: Marker[];
 
   beforeRegister(): void {
@@ -218,12 +218,13 @@ export class WalkerMap {
     const userOptions: UserOptions = {
       stairs: this.stairs || 0,
       elevation: this.elevation || 0,
-      wilderness: this.wilderness || false,
-      building: this.building || false,
-      grass: this.grass || false,
-      parkingLots: this.parkingLots || false,
-      preferDesignatedPaths: this.preferDesignatedPaths || false
+      wilderness: this.wilderness || 0,
+      building: this.building || 0,
+      grass: this.grass || 0,
+      parkingLots: this.parkingLots || 0,
+      preferDesignatedPaths: this.preferDesignatedPaths || 0
     };
+    console.log('userOptions ', userOptions);
     Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
   }
 

@@ -7,9 +7,9 @@ export interface State {
   endMarker?: Marker;
   stairs?: number;
   elevation?: number;
-  wilderness?: boolean;
-  grass?: boolean;
-  building?: boolean;
-  parkingLots?: boolean;
-  preferDesignatedPaths?: boolean;
+  wilderness?: number;
+  grass?: number;
+  building?: number;
+  parkingLots?: number;
+  preferDesignatedPaths?: number;
 }

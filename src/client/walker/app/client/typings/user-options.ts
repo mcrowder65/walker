@@ -1,9 +1,9 @@
 export interface UserOptions {
   stairs: number;
   elevation: number;
-  wilderness: boolean;
-  building: boolean;
-  grass: boolean;
-  parkingLots: boolean;
-  preferDesignatedPaths: boolean;
+  wilderness: number;
+  building: number;
+  grass: number;
+  parkingLots: number;
+  preferDesignatedPaths: number;
 };

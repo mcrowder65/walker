@@ -132,28 +132,28 @@ const setElevation = (context: WalkerUserOptions, elevation: number): void => {
   };
 }
 
-const setWilderness = (context: WalkerUserOptions, wilderness: boolean): void => {
+const setWilderness = (context: WalkerUserOptions, wilderness: number): void => {
   context.action = {
     type: 'SET_WILDERNESS',
     wilderness
   };
 }
 
-const setGrass = (context: WalkerUserOptions, grass: boolean): void => {
+const setGrass = (context: WalkerUserOptions, grass: number): void => {
   context.action = {
     type: 'SET_GRASS',
     grass
   };
 }
 
-const setBuilding = (context: WalkerUserOptions, building: boolean): void => {
+const setBuilding = (context: WalkerUserOptions, building: number): void => {
   context.action = {
     type: 'SET_BUILDING',
     building
   };
 }
 
-const setParkingLots = (context: WalkerUserOptions, parkingLots: boolean): void => {
+const setParkingLots = (context: WalkerUserOptions, parkingLots: number): void => {
   context.action = {
     type: 'SET_PARKING_LOTS',
     parkingLots
@@ -161,7 +161,7 @@ const setParkingLots = (context: WalkerUserOptions, parkingLots: boolean): void 
 
 }
 
-const setPreferDesignatedPaths = (context: WalkerUserOptions, preferDesignatedPaths: boolean): void => {
+const setPreferDesignatedPaths = (context: WalkerUserOptions, preferDesignatedPaths: number): void => {
   context.action = {
     type: 'SET_PREFER_DESIGNATED_PATHS',
     preferDesignatedPaths
