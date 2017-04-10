@@ -256,10 +256,34 @@ public class GraphTests {
 	}
 
 	@Test
+	public void bigTest() {
+		LatLng start = new LatLng(40.247013, -111.649657);
+		LatLng end = new LatLng(40.249104, -111.648759);
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		BufferedImage img = Tools.ReadImage("mock/campus.png");
+		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+		Graph g = new Graph();
+		g.nodes2 = nodes;
+
+		NodeIndex startNode = g.getClosestNodeFast(start, southwest);
+		NodeIndex endNode = g.getClosestNodeFast(end, southwest);
+		NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
+		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
+
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		starPath.add(startNode);
+		starPath.add(0, endNode);
+		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+
+		Tools.WriteImage(img, "testImages/bigTest.png");
+
+	}
+
+	// @Test
 	public void a_starTest_2() {
 		LatLng start = new LatLng(40.249533, -111.650287);
 		LatLng end = new LatLng(40.249104, -111.648759);
-
 		LatLng center = Tools.getCenter(start, end);
 		int sizeX = 640;
 		int sizeY = 640;
@@ -282,12 +306,11 @@ public class GraphTests {
 
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
-
 		Tools.WriteImage(img, "testImages/a_star_2.png");
 
 	}
 
-	@Test
+	// @Test
 	public void a_starTest_blackPath2() {
 		LatLng start = new LatLng(40.249773, -111.650226);
 		LatLng end = new LatLng(40.249104, -111.648759);
