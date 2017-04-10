@@ -124,7 +124,7 @@ public class GraphTools {
 		if (end.code == NodeCode.Building || start.code == NodeCode.Building) {
 			return Double.MAX_VALUE;
 		}
-		// TODO calculate this
+		// TODO calculate thisasdf
 		if (up.getBuilding() > 0) {
 			if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 				return calcBuildingDist(start, end);
