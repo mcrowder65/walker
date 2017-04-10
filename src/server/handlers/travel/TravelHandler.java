@@ -3,8 +3,7 @@ package server.handlers.travel;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -23,6 +22,7 @@ import server.APITools;
 import server.JSONTools;
 import server.dao.GraphDAO;
 import server.handlers.WalkerHandler;
+import sun.net.www.protocol.http.HttpURLConnection;
 
 public class TravelHandler extends WalkerHandler {
 	Object lock;
@@ -39,11 +39,18 @@ public class TravelHandler extends WalkerHandler {
 		Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
 		Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
 		// TODO handle!!!!!!!!
+		System.out.println("startMarker: " + startMarker);
+		System.out.println("endMarker: " + endMarker);
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
-		Calendar cal = new GregorianCalendar();
 
-		int currentHourInMilitaryTime = cal.get(Calendar.HOUR_OF_DAY);
 		System.out.println(userPrefs);
+
+		List<Marker> markers = new ArrayList<>();
+		// TODO init markers here
+		String json = JSONTools.g.toJson(markers);
+		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+		exchange.getResponseBody().write(json.getBytes());
+		exchange.getResponseBody().close();
 	}
 
 	public void getPath(Marker startMarker, Marker endMarker) {
