@@ -39,6 +39,7 @@ export class WalkerMap {
   public parkingLots: number;
   public preferDesignatedPaths: number;
   public stairsMarkers: Marker[];
+  public directionMarkers: Marker[];
 
   beforeRegister(): void {
     this.is = 'walker-map';
@@ -275,6 +276,7 @@ export class WalkerMap {
     this.building = state.building;
     this.parkingLots = state.parkingLots;
     this.preferDesignatedPaths = state.preferDesignatedPaths;
+    this.directionMarkers = state.directionMarkers;
   }
 
 }
