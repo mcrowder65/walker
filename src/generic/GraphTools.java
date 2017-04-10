@@ -124,13 +124,13 @@ public class GraphTools {
 		if (end.code == NodeCode.Building || start.code == NodeCode.Building) {
 			return Double.MAX_VALUE;
 		}
-		// TODO calculate thisasdf
+		// TODO calculate
 		if (up.getBuilding() > 0) {
 			if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 				return calcBuildingDist(start, end);
 			}
 		}
-		// TODO calculate this
+		// TODO calculate
 		if (up.getPreferDesignatedPaths() > 0) {
 			if (start.code == NodeCode.Normal && end.code == NodeCode.Normal) {
 				return calcDist(start, end);
@@ -141,7 +141,7 @@ public class GraphTools {
 			}
 			return Double.MAX_VALUE;
 		}
-		// TODO calculate this
+		// TODO calculate
 		if (up.getGrass() == 0 && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
 			return Double.MAX_VALUE;
 		}
