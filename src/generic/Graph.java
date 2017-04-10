@@ -585,6 +585,10 @@ public class Graph extends WalkerObject {
 		return -1;
 	}
 
+	public Node getNodeFromIndex(NodeIndex ni) {
+		return nodes2[ni.x][ni.y];
+	}
+
 	/*
 	 * public void setDistancesFromNodes(BufferedImage img, LatLng southwest,
 	 * LatLng northeast) { distance = new double[nodes.size()][nodes.size()];
