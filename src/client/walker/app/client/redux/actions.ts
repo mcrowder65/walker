@@ -111,8 +111,8 @@ const travel = async (context: WalkerMap, url: string, startMarker: Marker, endM
         endMarker,
         userOptions
       };
-      console.log('body ', body);
       const response = await POST(url, JSON.stringify(body));
+      console.log('response ', response);
     } catch(error) {
       throw error;
     }
