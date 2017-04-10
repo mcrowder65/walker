@@ -61,6 +61,7 @@ public class TravelHandler extends WalkerHandler {
 		NodeIndex endNode = null;
 		List<NodeIndex> starPath = null;
 		Graph g = null;
+		List<Marker> markers = null;
 		try {
 			LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 			LatLng end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
@@ -73,27 +74,24 @@ public class TravelHandler extends WalkerHandler {
 
 			startNode = g.getClosestNodeFast(start, southwest);
 			endNode = g.getClosestNodeFast(end, southwest);
-			// NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start,
-			// southwest);
-			// NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end,
-			// southwest);
+			NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
+			NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
 
 			starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
-
+			markers = new ArrayList<>();
+			starPath.add(startNode);
+			starPath.add(0, endNode);
+			for (int i = 0; i < starPath.size(); i++) {
+				Node n = g.getFromIndex(starPath.get(i));
+				Marker m = new Marker(n.getPosition().latitude, n.getPosition().longitude);
+				markers.add(m);
+			}
 			// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
 			// northeast, Color.BLUE);
 
 			// Tools.WriteImage(img, "testImages/bigTest.png");
 		} catch (Exception e) {
 			throw e;
-		}
-		List<Marker> markers = new ArrayList<>();
-		starPath.add(startNode);
-		starPath.add(0, endNode);
-		for (int i = 0; i < starPath.size(); i++) {
-			Node n = g.getFromIndex(starPath.get(i));
-			Marker m = new Marker(n.getPosition().latitude, n.getPosition().longitude);
-			markers.add(m);
 		}
 
 		return markers;

@@ -68,6 +68,8 @@ export class WalkerMap {
 
   ready(): void {
     this.initMarkers();
+    this.startLongitude = -111.649141
+    this.startLatitude  = 40.250438;
     this.startPointButtonText = 'Set start marker';
     this.endPointButtonText = 'Set end marker';
   }
@@ -277,6 +279,9 @@ export class WalkerMap {
     this.parkingLots = state.parkingLots;
     this.preferDesignatedPaths = state.preferDesignatedPaths;
     this.directionMarkers = state.directionMarkers;
+    if(this.directionMarkers) {
+      console.log('this.directionMarkers ', this.directionMarkers);
+    }
   }
 
 }

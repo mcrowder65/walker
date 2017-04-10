@@ -93,8 +93,16 @@ export function rootReducer(state: State = InitialState, action: Action): State 
         return {
           ...state,
           preferDesignatedPaths: action.preferDesignatedPaths
-        }
+        };
       }
+
+      case 'SET_DIRECTION_MARKERS': {
+        return {
+          ...state,
+          directionMarkers: action.directionMarkers
+        };
+      }
+      
       default: {
           return state;
       }
