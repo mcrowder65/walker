@@ -15,6 +15,7 @@ public class Building extends WalkerObject {
 	private String openingTime;
 	private String closingTime;
 	private HashMap<String, String> entrances;
+
 	transient private List<Entrance> resolvedEntrances;
 
 	public Building(double latitude, double longitude, String title, String openingTime, String closingTime,
@@ -55,6 +56,7 @@ public class Building extends WalkerObject {
 		this.openingTime = marker.getOpeningTime();
 		this.closingTime = marker.getClosingTime();
 		this.id = marker.getId();
+		this.entrances = marker.getEntrances();
 	}
 
 	public double getLatitude() {
@@ -81,9 +83,8 @@ public class Building extends WalkerObject {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
-	
-	public LatLng toLatLng()
-	{
+
+	public LatLng toLatLng() {
 		return new LatLng(latitude, longitude);
 	}
 
@@ -110,37 +111,43 @@ public class Building extends WalkerObject {
 	public void setClosingTime(String closingTime) {
 		this.closingTime = closingTime;
 	}
-	
-	private int getHourOfTime(String time)
-	{
-		int h;
-		if (time.length() == 4) //e.g. 7:00
+
+	public void setCurrentlyOpen(boolean bool) {
+		// this is just here for firebase
+	}
+
+	private int getHourOfTime(String time) {
+		int h = -1;
+		if (time == null) {
+			return h;
+		}
+		if (time.length() == 4) // e.g. 7:00
 			h = Integer.parseInt(time.substring(0, 1));
 		else
 			h = Integer.parseInt(time.substring(0, 2));
-		
+
 		return h;
 	}
-	
-	public boolean isCurrentlyOpen()
-	{
+
+	public boolean isCurrentlyOpen() {
 		LatLng coord = toLatLng();
-	    int hour = ZoningTools.GetHour(coord);
-	    
-	    int openingHour = getHourOfTime(openingTime);
-	    int closingHour = getHourOfTime(closingTime); //~~~I know who I want to take me home~~~
-	    
-	    return hour >= openingHour && hour < closingHour;
-	    
+		int hour = ZoningTools.GetHour(coord);
+
+		int openingHour = getHourOfTime(openingTime);
+		int closingHour = getHourOfTime(closingTime); // ~~~I know who I want to
+														// take me home~~~
+
+		return hour >= openingHour && hour < closingHour;
+
 	}
-	public boolean isCurrentlyOpenFast(int hour)
-	{
-	    int openingHour = getHourOfTime(openingTime);
-	    int closingHour = getHourOfTime(closingTime); //~~~I know who I want to take me home~~~
-	    
-	    return hour >= openingHour && hour < closingHour;
+
+	public boolean isCurrentlyOpenFast(int hour) {
+		int openingHour = getHourOfTime(openingTime);
+		int closingHour = getHourOfTime(closingTime); // ~~~I know who I want to
+														// take me home~~~
+
+		return hour >= openingHour && hour < closingHour;
 	}
-	
 
 	public Building() {
 

@@ -170,14 +170,19 @@ public class Firebase {
 	 *            WalkerObject
 	 */
 	public void create(String path, WalkerObject obj) {
-		final FirebaseDatabase database = FirebaseDatabase.getInstance();
-		DatabaseReference ref = database.getReference(path);
-		DatabaseReference pushedRef = ref.push();
-		pushedRef.setValue(obj);
-		String id = pushedRef.getKey();
-		obj.setId(id);
-		String setIdPath = path + "/" + id + "/id";
-		this.set(setIdPath, id);
+		try {
+			final FirebaseDatabase database = FirebaseDatabase.getInstance();
+			DatabaseReference ref = database.getReference(path);
+			DatabaseReference pushedRef = ref.push();
+			pushedRef.setValue(obj);
+			String id = pushedRef.getKey();
+			obj.setId(id);
+			String setIdPath = path + "/" + id + "/id";
+			this.set(setIdPath, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void createGraph(String path, GraphFirebaseWrapper graph) {

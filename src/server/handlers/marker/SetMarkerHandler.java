@@ -32,7 +32,9 @@ public class SetMarkerHandler extends WalkerHandler {
 						String path = "buildings/" + marker.getId();
 						Building building = new Building(marker);
 						Tools.firebase.update(path, building);
-
+						String str = null;
+						Tools.firebase.update(path + "/resolvedEntrances", str);
+						Tools.firebase.update(path + "/currentlyOpen", str);
 					} else if (marker.isStairs()) {
 						String path = "stairs/" + marker.getId();
 						Stairs stairs = new Stairs(marker);
@@ -50,7 +52,8 @@ public class SetMarkerHandler extends WalkerHandler {
 						String path = "buildings" + marker.getId();
 						Building building = new Building(marker);
 						Tools.firebase.create(path, building);
-
+						String str = null;
+						Tools.firebase.update(path + "/" + building.getId() + "/currentlyOpen", str);
 					} else if (marker.isStairs()) {
 						String path = "stairs" + marker.getId();
 						Stairs stairs = new Stairs(marker);
