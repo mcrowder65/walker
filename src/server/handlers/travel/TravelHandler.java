@@ -1,5 +1,6 @@
 package server.handlers.travel;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Calendar;
@@ -11,7 +12,9 @@ import com.sun.net.httpserver.HttpExchange;
 
 import generic.Config;
 import generic.Graph;
+import generic.GraphTools;
 import generic.Node;
+import generic.NodeIndex;
 import generic.Tools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
@@ -41,6 +44,29 @@ public class TravelHandler extends WalkerHandler {
 
 		int currentHourInMilitaryTime = cal.get(Calendar.HOUR_OF_DAY);
 		System.out.println(userPrefs);
+	}
+
+	public void getPath(Marker startMarker, Marker endMarker) {
+		LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
+		LatLng end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		BufferedImage img = Tools.ReadImage("mock/campus.png");
+		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+		Graph g = new Graph();
+		g.nodes2 = nodes;
+
+		NodeIndex startNode = g.getClosestNodeFast(start, southwest);
+		NodeIndex endNode = g.getClosestNodeFast(end, southwest);
+		NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
+		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
+
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		starPath.add(startNode);
+		starPath.add(0, endNode);
+		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+
+		Tools.WriteImage(img, "testImages/bigTest.png");
 	}
 
 	private void asdf() {
