@@ -1,6 +1,5 @@
 package server.handlers.travel;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +43,7 @@ public class TravelHandler extends WalkerHandler {
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
 
 		System.out.println(userPrefs);
-
-		List<Marker> markers = new ArrayList<>();
+		List<Marker> markers = getPath(startMarker, endMarker);
 		// TODO init markers here
 		String json = JSONTools.g.toJson(markers);
 		exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -53,7 +51,7 @@ public class TravelHandler extends WalkerHandler {
 		exchange.getResponseBody().close();
 	}
 
-	public void getPath(Marker startMarker, Marker endMarker) {
+	public List<Marker> getPath(Marker startMarker, Marker endMarker) {
 		LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 		LatLng end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
 		LatLng southwest = new LatLng(40.244803, -111.657854);
@@ -69,11 +67,20 @@ public class TravelHandler extends WalkerHandler {
 		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
 
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		List<Marker> markers = new ArrayList();
 		starPath.add(startNode);
 		starPath.add(0, endNode);
-		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+		for (int i = 0; i < starPath.size(); i--) {
+			Node n = g.getFromIndex(starPath.get(i));
+			Marker m = new Marker(n.getPosition().latitude, n.getPosition().longitude);
+			markers.add(m);
+		}
 
-		Tools.WriteImage(img, "testImages/bigTest.png");
+		return markers;
+		// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
+		// northeast, Color.BLUE);
+
+		// Tools.WriteImage(img, "testImages/bigTest.png");
 	}
 
 	private void asdf() {
