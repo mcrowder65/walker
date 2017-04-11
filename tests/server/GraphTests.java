@@ -255,7 +255,7 @@ public class GraphTests {
 
 	}
 
-	//@Test
+	@Test
 	public void bigTest() {
 		// 40.24850141,-111.65050149
 		// 40.24923226,-111.64849520
@@ -424,7 +424,7 @@ public class GraphTests {
 		Tools.WriteImage(img, "testImages/a_starBIG.png");
 	}
 	
-	@Test
+	//@Test
 	public void a_starBigTestWithCostWeighting() {
 		/*
 		 * LatLng start = new LatLng(40.249021, -111.650779); LatLng end = new
