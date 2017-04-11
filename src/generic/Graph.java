@@ -390,7 +390,7 @@ public class Graph extends WalkerObject {
 				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
 						img.getWidth(), img.getHeight());
 				int rgb = img.getRGB((int) point.x, (int) point.y);
-				boolean isBlack = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
+				boolean isBlack = Tools.colorIsAntialiasedPath(rgb);
 				if (isBlack == true) {
 					n.setBlack();
 					nodes.add(n);
