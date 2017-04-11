@@ -17,6 +17,7 @@ import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
 import server.APITools;
+import server.processing.ColorOperations;
 
 public class GraphTools {
 
@@ -121,32 +122,48 @@ public class GraphTools {
 	}
 
 	public static double getCosts(Node start, Node end, UserPrefs up) {
-		if (end.code == NodeCode.Building || start.code == NodeCode.Building) {
+		
+		
+		double totalCost = 0;
+		
+		if (end.code == NodeCode.Building) {
 			return Double.MAX_VALUE;
 		}
-		// TODO calculate
-		if (up.getBuilding() > 0) {
-			if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
-				return calcBuildingDist(start, end);
-			}
+		
+		if (end.code == NodeCode.Grass)
+		{
+			if (up.getGrass() == UserPrefs.MAX_VAL)
+				return Double.MAX_VALUE;
+			else
+				totalCost += (Config.BINARY_COEFF * up.getGrass());
 		}
-		// TODO calculate
-		if (up.getPreferDesignatedPaths() > 0) {
-			if (start.code == NodeCode.Normal && end.code == NodeCode.Normal) {
-				return calcDist(start, end);
-			}
-			if ((start.code == NodeCode.Normal && end.getBuilding() != null)
-					|| (end.code == NodeCode.Normal && start.getBuilding() != null)) {
-				return calcDist(start, end);
-			}
+		
+		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null)
+		{
+			if (up.getBuilding() == UserPrefs.MAX_VAL)
+				return Double.MAX_VALUE;
+			else
+				totalCost += (Config.BINARY_COEFF * up.getBuilding());
+		}
+		
+		if (end.code == NodeCode.Other)
+		{
+			if (up.getPreferDesignatedPaths() == UserPrefs.MAX_VAL)
+				return Double.MAX_VALUE;
+			else
+				totalCost += (Config.BINARY_COEFF * up.getPreferDesignatedPaths());
+		}
+		
+		double elevDelta = Math.abs(start.getElevation() - end.getElevation());
+		if (elevDelta > Config.ELEVATION_THRESHOLD)
 			return Double.MAX_VALUE;
-		}
-		// TODO calculate
-		if (up.getGrass() == 0 && (start.code == NodeCode.Grass || end.code == NodeCode.Grass)) {
-			return Double.MAX_VALUE;
-		}
-
-		return calcDist(start, end);
+		else
+			totalCost += (elevDelta * Config.ELEVATION_COEFF * up.getElevation());
+		
+		
+		totalCost += calcDist(start, end);
+		
+		return totalCost;
 
 	}
 
@@ -169,7 +186,8 @@ public class GraphTools {
 				Node n = new Node(currentLat, currentLon, null, false, false);
 				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
 						img.getWidth(), img.getHeight());
-				int rgb = img.getRGB((int) point.x, (int) point.y);
+				//int rgb = img.getRGB((int) point.x, (int) point.y);
+				int rgb = ColorOperations.getMode(img, (int)point.x, (int)point.y);
 				boolean isNormalPath = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
 				boolean isGrass = Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, 3);
 				boolean isBuilding = Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, 3);
@@ -192,6 +210,15 @@ public class GraphTools {
 		Config.LAT_STEPPING_DIST = Math
 				.abs(allNodes[0][0].getPosition().latitude - allNodes[0][1].getPosition().latitude);
 
+		double[][] elevs = APITools.GetAllElevations(allNodes);
+		for (int x = 0; x < elevs.length; x++)
+		{
+			for (int y = 0; y < elevs[x].length; y++)
+			{
+				allNodes[x][y].setElevation(elevs[x][y]);
+			}
+		}
+		
 		return allNodes;
 	}
 
