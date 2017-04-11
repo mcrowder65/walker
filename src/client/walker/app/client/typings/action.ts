@@ -13,7 +13,8 @@ export interface Action {
         'SET_GRASS' |
         'SET_BUILDING' |
         'SET_PARKING_LOTS' |
-        'SET_PREFER_DESIGNATED_PATHS';
+        'SET_PREFER_DESIGNATED_PATHS' |
+        'SET_DIRECTION_MARKERS';
   markers?: Marker[];
   currentMarker?: Marker;
   startMarker?: Marker;
@@ -25,4 +26,5 @@ export interface Action {
   building?: number;
   parkingLots?: number;
   preferDesignatedPaths?: number;
+  directionMarkers?: Marker[];
 }

@@ -12,4 +12,5 @@ export interface State {
   building?: number;
   parkingLots?: number;
   preferDesignatedPaths?: number;
+  directionMarkers?: Marker[];
 }
