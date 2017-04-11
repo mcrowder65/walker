@@ -263,8 +263,8 @@ public class GraphTests {
 		// 40.24920155 -111.64851665
 		// LatLng start = new LatLng(40.24838677, -111.65048003);
 		// LatLng end = new LatLng(40.24920155, -111.64851665);
-		LatLng start = new LatLng(40.24850141, -111.65050149);
-		LatLng end = new LatLng(40.24923226, -111.64849520);
+		LatLng start = new LatLng(40.24955776, -111.65031374);
+		LatLng end = new LatLng(40.24939398, -111.64820552);
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
 		BufferedImage img = Tools.ReadImage("mock/campus.png");
@@ -394,7 +394,7 @@ public class GraphTests {
 
 	}
 
-	//@Test
+	// @Test
 	public void a_starBIGTest() {
 		/*
 		 * LatLng start = new LatLng(40.249021, -111.650779); LatLng end = new
@@ -413,8 +413,6 @@ public class GraphTests {
 		Graph g = new Graph();
 		g.nodes2 = nodes;
 
-		
-		
 		NodeIndex startNode = new NodeIndex(200, 53);
 		NodeIndex endNode = new NodeIndex(405, 365);
 
@@ -423,8 +421,8 @@ public class GraphTests {
 
 		Tools.WriteImage(img, "testImages/a_starBIG.png");
 	}
-	
-	//@Test
+
+	// @Test
 	public void a_starBigTestWithCostWeighting() {
 		/*
 		 * LatLng start = new LatLng(40.249021, -111.650779); LatLng end = new
@@ -443,14 +441,11 @@ public class GraphTests {
 		Graph g = new Graph();
 		g.nodes2 = nodes;
 
-		
-		
 		NodeIndex startNode = g.getClosestNodeFast(new LatLng(40.249408, -111.649259), southwest);
-		
+
 		NodeIndex endNode = g.getClosestNodeFast(new LatLng(40.250456, -111.649289), southwest);
-		
-		UserPrefs up = new UserPrefs(0, 90, 0, 0, 0,
-				0, 0);
+
+		UserPrefs up = new UserPrefs(0, 90, 0, 0, 0, 0, 0);
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 
