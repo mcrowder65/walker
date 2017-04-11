@@ -174,4 +174,46 @@ public class ImageTools {
 		
 		return newImg;
 	}
+	
+	
+	public static BufferedImage MakeElevationGradientImage(Node[][] elevs)
+	{
+		int imageWidth = elevs.length;
+		int imageHeight = elevs[0].length;
+		BufferedImage img = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_BYTE_INDEXED);
+		img = Tools.convertICCToRGB(img);
+		
+		double min = Double.MAX_VALUE;
+		double max = 0;
+		for (int x = 0; x < imageWidth; x++)
+		{
+			for (int y = 0; y < imageHeight; y++)
+			{
+				if (elevs[x][y].getElevation() == 0) continue;
+				min = Math.min(elevs[x][y].getElevation(), min);
+				max = Math.max(elevs[x][y].getElevation(), max);
+			}
+		}
+		
+		double range = max - min;
+		
+		for (int x = 0; x < imageWidth; x++)
+		{
+			for (int y = 0; y < imageHeight; y++)
+			{
+				int mapped;
+				if (elevs[x][y].getElevation() == 0)
+					mapped = 0;
+				else
+				{
+					mapped = (int)(((elevs[x][y].getElevation() - min) / range) * 255);
+			
+				}
+				img.setRGB(x, y, new Color(mapped,mapped,mapped).getRGB());
+				//img.setRGB(x, y, Tools.toRGB(mapped, mapped, mapped));
+			}
+		}
+		return img;
+		
+	}
 }

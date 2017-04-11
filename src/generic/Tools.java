@@ -265,11 +265,27 @@ public class Tools {
 		
 		
 	}
+	
+	public static boolean colorIsAntialiasedPath(int rgb)
+	{
+		int r = (rgb & 0x00ff0000) >> 16;
+		int g = (rgb & 0x0000ff00) >> 8;
+		int b = (rgb & 0x000000ff);
+		return (r < 200 && g < 200 && b < 200 && Math.abs(r - g) < 5 && Math.abs(g - b) < 5 && Math.abs(r - b) < 5);
+	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int tolerance)
 	{
+		
 		return colorIsCloseEnough(rgb1, rgb2, tolerance, tolerance, tolerance);
 	}
 	
+	public static int toRGB(int r, int g, int b)
+	{
+		int rgb = r;
+		rgb = (rgb << 8) + g;
+		rgb = (rgb << 8) + b;
+		return rgb;
+	}
 	public static boolean colorIsCloseEnough(int rgb1, int rgb2, int rTolerance, int gTolerance, int bTolerance)
 	{
 		int r1 = (rgb1 & 0x00ff0000) >> 16;

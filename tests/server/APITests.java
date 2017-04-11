@@ -9,6 +9,7 @@ import org.junit.Test;
 import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
+import generic.ImageTools;
 import generic.Node;
 import generic.Tools;
 import googlemaps.LatLng;
@@ -142,7 +143,7 @@ public class APITests {
 	}
 	
 	@SuppressWarnings("unused")
-	@Test
+	//@Test
 	public void tilingTest()
 	{
 		LatLng southwest = new LatLng(40.244803, -111.657854);
@@ -151,5 +152,19 @@ public class APITests {
 		BufferedImage img = APITools.GetTiledImage(southwest, northeast, zoom, false);
 		Tools.WriteImage(img, "testImages/tilingTest.png");
 		
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void elevationMappingTest()
+	{
+		 
+			LatLng southwest = new LatLng(40.244803, -111.657854);
+			LatLng northeast = new LatLng(40.2519803, -111.643854);
+
+			BufferedImage img = Tools.ReadImage("mock/campus.png");
+			Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+			BufferedImage elvImg= ImageTools.MakeElevationGradientImage(nodes);
+			Tools.WriteImage(elvImg, "testImages/elvImg.png");
 	}
 }

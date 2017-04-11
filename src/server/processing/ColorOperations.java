@@ -75,7 +75,7 @@ public class ColorOperations {
 		return copy;
 	}
 
-	private static int getMode(BufferedImage image, int seedX, int seedY) {
+	public static int getMode(BufferedImage image, int seedX, int seedY) {
 		HashMap<Integer, Integer> rgbToCount = new HashMap<Integer, Integer>();
 		for (int x = seedX - Config.FILLCOLOR_MODE_RADIUS; x <= seedX + Config.FILLCOLOR_MODE_RADIUS; x++) {
 			for (int y = seedY - Config.FILLCOLOR_MODE_RADIUS; y <= seedY + Config.FILLCOLOR_MODE_RADIUS; y++) {

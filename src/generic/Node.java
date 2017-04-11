@@ -10,6 +10,15 @@ public class Node {
 	private LatLng position;
 	private Building building;
 	private boolean isBlack = false;
+	private double elevation;
+	public double getElevation() {
+		return elevation;
+	}
+
+	public void setElevation(double elevation) {
+		this.elevation = elevation;
+	}
+
 	public NodeCode code;
 
 	public LatLng getPosition() {
