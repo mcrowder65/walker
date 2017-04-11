@@ -257,8 +257,14 @@ public class GraphTests {
 
 	//@Test
 	public void bigTest() {
-		LatLng start = new LatLng(40.247013, -111.649657);
-		LatLng end = new LatLng(40.249104, -111.648759);
+		// 40.24850141,-111.65050149
+		// 40.24923226,-111.64849520
+		// 40.24838677 -111.65048003
+		// 40.24920155 -111.64851665
+		// LatLng start = new LatLng(40.24838677, -111.65048003);
+		// LatLng end = new LatLng(40.24920155, -111.64851665);
+		LatLng start = new LatLng(40.24850141, -111.65050149);
+		LatLng end = new LatLng(40.24923226, -111.64849520);
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
 		BufferedImage img = Tools.ReadImage("mock/campus.png");

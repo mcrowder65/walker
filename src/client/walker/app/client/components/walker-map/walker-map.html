@@ -78,6 +78,20 @@
           on-google-map-marker-dragend="startMarkerDragDone">
         </google-map-marker>
       </template>
+      <template is="dom-repeat" items="[[directionMarkers]]">
+        <google-map-marker
+          id="directionMarkers"
+          animation="DROP"
+          latitude="[[item.latitude]]"
+          longitude="[[item.longitude]]"
+          title="directiondaddy"
+          draggable="false"
+          click-events="false"
+          drag-events="false"
+          class="marker"
+          icon="http://localhost:8000/markers/blue_marker.png">
+        </google-map-marker>
+      </template>
      <template is="dom-repeat" items="[[endMarkers]]">
         <google-map-marker
           id="endMarker"
