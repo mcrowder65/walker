@@ -1,6 +1,5 @@
 package server.handlers.travel;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +7,11 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 
+import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.NodeIndex;
-import generic.Tools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
@@ -60,7 +59,7 @@ public class TravelHandler extends WalkerHandler {
 		NodeIndex startNode = null;
 		NodeIndex endNode = null;
 		List<NodeIndex> starPath = null;
-		Graph g = null;
+		Graph g = Config.GRAPH;
 		List<Marker> markers = null;
 		try {
 			LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
@@ -69,17 +68,20 @@ public class TravelHandler extends WalkerHandler {
 			System.out.println(end);
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
-			BufferedImage img = Tools.ReadImage("mock/campus.png");
-			Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
-			g = new Graph();
-			g.nodes2 = nodes;
+			// BufferedImage img = Tools.ReadImage("mock/campus.png");
+			// Node[][] nodes = GraphTools.genUniformNodes(2, southwest,
+			// northeast, img);
+			// g = new Graph();
+			// g.nodes2 = nodes;
 
 			startNode = g.getClosestNodeFast(start, southwest);
 			endNode = g.getClosestNodeFast(end, southwest);
-			NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
-			NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
-
-			starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+			// NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start,
+			// southwest);
+			// NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end,
+			// southwest);
+			UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
+			starPath = GraphTools.A_Star(g, startNode, endNode, up);
 			markers = new ArrayList<>();
 			starPath.add(startNode);
 			starPath.add(0, endNode);

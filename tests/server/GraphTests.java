@@ -276,8 +276,9 @@ public class GraphTests {
 		NodeIndex endNode = g.getClosestNodeFast(end, southwest);
 		NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
 		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
+		UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
 
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up);
 		starPath.add(startNode);
 		starPath.add(0, endNode);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
