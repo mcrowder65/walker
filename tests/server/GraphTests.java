@@ -443,7 +443,7 @@ public class GraphTests {
 		
 		NodeIndex endNode = g.getClosestNodeFast(new LatLng(40.250456, -111.649289), southwest);
 		
-		UserPrefs up = new UserPrefs(0, 0, 0, 0, 0,
+		UserPrefs up = new UserPrefs(0, 90, 0, 0, 0,
 				0, 0);
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);

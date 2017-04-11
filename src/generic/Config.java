@@ -40,7 +40,7 @@ public class Config {
 	public static final int DAYLIGHT_SAVINGS = 1;
 	
 	
-	public static final double BINARY_COEFF = 0.00001;
+	public static final double BINARY_COEFF = 0.000001;
 	public static final double ELEVATION_COEFF = 0.00001;
-	public static final double ELEVATION_THRESHOLD = .1;
+	public static final double ELEVATION_THRESHOLD = 10;
 }
