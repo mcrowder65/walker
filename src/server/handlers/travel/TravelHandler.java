@@ -65,6 +65,8 @@ public class TravelHandler extends WalkerHandler {
 		try {
 			LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 			LatLng end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
+			System.out.println(start);
+			System.out.println(end);
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
 			BufferedImage img = Tools.ReadImage("mock/campus.png");
