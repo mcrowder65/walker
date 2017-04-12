@@ -66,7 +66,7 @@ export class WalkerMap {
   }
 
   ready(): void {
-    this.initMarkers();
+    // this.initMarkers();
     this.startLongitude = -111.649141
     this.startLatitude  = 40.250438;
     this.startPointButtonText = 'Set start marker';
