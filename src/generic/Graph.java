@@ -334,9 +334,16 @@ public class Graph extends WalkerObject {
 			for (int j = 0; j < entrances.size(); j++) {
 				Entrance entrance = entrances.get(j);
 				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+<<<<<<< HEAD
+
+				position.latitude += Config.LAT_BIAS;
+				position.longitude += Config.LON_BIAS;
+
+=======
 				
 				
 				
+>>>>>>> master
 				// NodeIndex ni = getClosestNodeFast(position, )
 				Node n = new Node(position, b);
 				// int index = findClosestNodeIndex(n, southwest);
@@ -355,9 +362,10 @@ public class Graph extends WalkerObject {
 			for (int j = 0; j < entrances.size(); j++) {
 				Entrance entrance = entrances.get(j);
 				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+
 				position.latitude += Config.LAT_BIAS;
 				position.longitude += Config.LON_BIAS;
-				NodeIndex ni = getClosestNodeFast(position, southwest);
+                NodeIndex ni = getClosestBuildingNodeFast(position, southwest);
 
 				if (ni.x >= 0 && ni.x < nodes2.length && ni.y < nodes2[0].length && ni.y >= 0) {
 					nodes2[ni.x][ni.y].setBuilding(b);
@@ -381,6 +389,34 @@ public class Graph extends WalkerObject {
 		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
 		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
 		return new NodeIndex(numLongSteps, numLatSteps);
+	}
+
+	public NodeIndex getClosestBuildingNodeFast(LatLng position, LatLng southwest) {
+		int numLongSteps = (int) (Math.abs(position.longitude - southwest.longitude) / Config.LONG_STEPPING_DIST);
+		int numLatSteps = (int) (Math.abs(position.latitude - southwest.latitude) / Config.LAT_STEPPING_DIST);
+		int startX = Math.max((numLongSteps - 3), 0);
+		int startY = Math.max((numLatSteps - 3), 0);
+		int endX = Math.min((numLongSteps + 3), nodes2.length - 1);
+		int endY = Math.min((numLatSteps + 3), nodes2[0].length - 1);
+		double dist = Double.MAX_VALUE;
+		int cur_i = -1;
+		int cur_j = -1;
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				Node n = nodes2[i][j];
+				if (n.code != NodeCode.Building) {
+					double longDiff = Math.abs(position.longitude - n.getPosition().longitude);
+					double latDiff = Math.abs(position.latitude - n.getPosition().latitude);
+					double total = (latDiff * latDiff) + (longDiff * longDiff);
+					if (total < dist) {
+						dist = total;
+						cur_i = i;
+						cur_j = j;
+					}
+				}
+			}
+		}
+		return new NodeIndex(cur_i, cur_j);
 	}
 
 	public NodeIndex getClosestBlackNodeFast(LatLng position, LatLng southwest) {
