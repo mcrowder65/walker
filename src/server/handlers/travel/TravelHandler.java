@@ -96,7 +96,8 @@ public class TravelHandler extends WalkerHandler {
 			for (int i = 0; i < starPath.size(); i++) {
 				Node n = g.getFromIndex(starPath.get(i));
 
-				Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS, n.getPosition().longitude - Config.LON_BIAS);
+				Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS,
+						n.getPosition().longitude - Config.LON_BIAS);
 
 				markers.add(m);
 			}
@@ -115,6 +116,9 @@ public class TravelHandler extends WalkerHandler {
 			System.err.println("endNode: " + endNode);
 			System.err.println("start: " + start);
 			System.err.println("end: " + end);
+			System.err.println("startMarker: " + startMarker);
+			System.err.println("endMarker: " + endMarker);
+			System.err.println("userpreferences: " + up);
 			throw e;
 		}
 
