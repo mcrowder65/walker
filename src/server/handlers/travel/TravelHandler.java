@@ -38,10 +38,10 @@ public class TravelHandler extends WalkerHandler {
 		System.out.println("endMarker: " + endMarker);
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
 
-		System.out.println(userPrefs);
+		// System.out.println(userPrefs);
 
 		try {
-			List<Marker> markers = getPath(startMarker, endMarker);
+			List<Marker> markers = getPath(startMarker, endMarker, userPrefs);
 			String json = JSONTools.g.toJson(markers);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 			exchange.getResponseBody().write(json.getBytes());
@@ -55,7 +55,7 @@ public class TravelHandler extends WalkerHandler {
 
 	}
 
-	public List<Marker> getPath(Marker startMarker, Marker endMarker) throws Exception {
+	public List<Marker> getPath(Marker startMarker, Marker endMarker, UserPrefs up) throws Exception {
 		NodeIndex startNode = null;
 		NodeIndex endNode = null;
 		List<NodeIndex> starPath = null;
@@ -80,7 +80,7 @@ public class TravelHandler extends WalkerHandler {
 			// southwest);
 			// NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end,
 			// southwest);
-			UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
+			// UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
 			starPath = GraphTools.A_Star(g, startNode, endNode, up);
 			markers = new ArrayList<>();
 			starPath.add(startNode);
