@@ -150,6 +150,15 @@ public class GraphTools {
 				totalCost += (Config.BINARY_COEFF * up.getPreferDesignatedPaths());
 		}
 
+		
+		if (end.code == NodeCode.Stairs)
+		{
+			if (up.getStairs() == UserPrefs.MAX_VAL)
+				return Double.MAX_VALUE;
+			else
+				totalCost += (Config.BINARY_COEFF * up.getStairs());
+		}
+
 		double elevDelta = Math.abs(start.getElevation() - end.getElevation());
 		if (elevDelta > Config.ELEVATION_THRESHOLD)
 			return Double.MAX_VALUE;
@@ -186,12 +195,15 @@ public class GraphTools {
 				boolean isNormalPath = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
 				boolean isGrass = Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, 3);
 				boolean isBuilding = Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, 3);
+				boolean isStairs = Tools.colorIsCloseEnough(rgb, Config.MAPS_STAIRS_RGB, 3);
 				if (isNormalPath) {
 					n.code = NodeCode.Normal;
 				} else if (isGrass) {
 					n.code = NodeCode.Grass;
 				} else if (isBuilding) {
 					n.code = NodeCode.Building;
+				} else if (isStairs) {
+					n.code = NodeCode.Stairs;
 				} else {
 					n.code = NodeCode.Other;
 				}

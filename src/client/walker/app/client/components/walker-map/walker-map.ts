@@ -214,19 +214,25 @@ export class WalkerMap {
   /**
    * Called from dom
    */
-  go(): void {
-    const userOptions: UserOptions = {
-      stairs: this.stairs || 0,
-      elevation: this.elevation || 0,
-      wilderness: this.wilderness || 0,
-      building: this.building || 0,
-      grass: this.grass || 0,
-      parkingLots: this.parkingLots || 0,
-      preferDesignatedPaths: this.preferDesignatedPaths || 0
-    };
-    Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
-  }
+  async go(): Promise<void> {
+    try {
+      const userOptions: UserOptions = {
+        stairs: this.stairs || 0,
+        elevation: this.elevation || 0,
+        wilderness: this.wilderness || 0,
+        building: this.building || 0,
+        grass: this.grass || 0,
+        parkingLots: this.parkingLots || 0,
+        preferDesignatedPaths: this.preferDesignatedPaths || 0
+      };
+      await Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
+    } catch(error) {
+      console.error(error);
+      this.errorMessage = '';
+      this.errorMessage = error.message
+    }
 
+  }
   private getStartMarker(): Marker {
     return this.startMarkers.length === 1 ? this.startMarkers[0] : null;
   }

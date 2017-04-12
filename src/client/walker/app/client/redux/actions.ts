@@ -91,12 +91,11 @@ const POST = async (url: string, data?: string): Promise<any> => {
           if (request.status == 200) {
               resolve(request.response);
           } else {
-              reject(Error(request.statusText));
+              reject(Error(request.response));
           }
       };
 
       request.onerror = function () {
-
           reject(Error('Network Error'));
       };
 
@@ -105,22 +104,18 @@ const POST = async (url: string, data?: string): Promise<any> => {
 };
 
 const travel = async (context: WalkerMap, url: string, startMarker: Marker, endMarker: Marker, userOptions: UserOptions): Promise<any> => {
-    try {
-      const body = {
-        startMarker,
-        endMarker,
-        userOptions
-      };
-      const response = await POST(url, JSON.stringify(body));
+    const body = {
+      startMarker,
+      endMarker,
+      userOptions
+    };
+    const response = await POST(url, JSON.stringify(body));
 
-      const directionMarkers: Marker[] = JSON.parse(response);
-      localStorage.setItem('directionMarkers', JSON.stringify(directionMarkers));
-      context.action = {
-        type: 'SET_DIRECTION_MARKERS',
-        directionMarkers
-      }
-    } catch(error) {
-      throw error;
+    const directionMarkers: Marker[] = JSON.parse(response);
+    localStorage.setItem('directionMarkers', JSON.stringify(directionMarkers));
+    context.action = {
+      type: 'SET_DIRECTION_MARKERS',
+      directionMarkers
     }
 };
 
