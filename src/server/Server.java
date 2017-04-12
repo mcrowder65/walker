@@ -85,6 +85,7 @@ public class Server {
 		Graph g = new Graph();
 		g.nodes2 = nodes;
 		Config.GRAPH = g;
+		// g.addEnterExitFast(southwest);
 
 	}
 }

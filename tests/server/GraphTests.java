@@ -255,7 +255,7 @@ public class GraphTests {
 
 	}
 
-	@Test
+	// @Test
 	public void bigTest() {
 		// 40.24850141,-111.65050149
 		// 40.24923226,-111.64849520
@@ -315,6 +315,17 @@ public class GraphTests {
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 		Tools.WriteImage(img, "testImages/a_star_2.png");
 
+	}
+
+	@Test
+	public void genImage() {
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+
+		BufferedImage img = Tools.ReadImage("mock/campus.png");
+		List<Building> buildings = BuildingDAO.getAll();
+		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
+		Tools.WriteImage(img, "mock/allbuildings.png");
 	}
 
 	// @Test
