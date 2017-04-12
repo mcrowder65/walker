@@ -122,47 +122,42 @@ public class GraphTools {
 	}
 
 	public static double getCosts(Node start, Node end, UserPrefs up) {
-		
-		
+
 		double totalCost = 0;
-		
-		if (end.code == NodeCode.Building) {
+
+		if (end.code == NodeCode.Building && end.getBuilding() == null) {
 			return Double.MAX_VALUE;
 		}
-		
-		if (end.code == NodeCode.Grass)
-		{
+
+		if (end.code == NodeCode.Grass) {
 			if (up.getGrass() == UserPrefs.MAX_VAL)
 				return Double.MAX_VALUE;
 			else
 				totalCost += (Config.BINARY_COEFF * up.getGrass());
 		}
-		
-		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null)
-		{
+
+		if (start.getBuilding() == end.getBuilding() && start.getBuilding() != null) {
 			if (up.getBuilding() == UserPrefs.MAX_VAL)
 				return Double.MAX_VALUE;
 			else
 				totalCost += (Config.BINARY_COEFF * up.getBuilding());
 		}
-		
-		if (end.code == NodeCode.Other)
-		{
+
+		if (end.code == NodeCode.Other) {
 			if (up.getPreferDesignatedPaths() == UserPrefs.MAX_VAL)
 				return Double.MAX_VALUE;
 			else
 				totalCost += (Config.BINARY_COEFF * up.getPreferDesignatedPaths());
 		}
-		
+
 		double elevDelta = Math.abs(start.getElevation() - end.getElevation());
 		if (elevDelta > Config.ELEVATION_THRESHOLD)
 			return Double.MAX_VALUE;
 		else
 			totalCost += (elevDelta * Config.ELEVATION_COEFF * up.getElevation());
-		
-		
+
 		totalCost += calcDist(start, end);
-		
+
 		return totalCost;
 
 	}
@@ -186,8 +181,8 @@ public class GraphTools {
 				Node n = new Node(currentLat, currentLon, null, false, false);
 				Point2D.Double point = APITools.getImagePointFromLatLng(n.getPosition(), southwest, northeast,
 						img.getWidth(), img.getHeight());
-				//int rgb = img.getRGB((int) point.x, (int) point.y);
-				int rgb = ColorOperations.getMode(img, (int)point.x, (int)point.y);
+				// int rgb = img.getRGB((int) point.x, (int) point.y);
+				int rgb = ColorOperations.getMode(img, (int) point.x, (int) point.y);
 				boolean isNormalPath = Tools.colorIsCloseEnough(rgb, Config.MAPS_NORMALPATH_RGB, 3);
 				boolean isGrass = Tools.colorIsCloseEnough(rgb, Config.MAPS_GRASS_RGB, 3);
 				boolean isBuilding = Tools.colorIsCloseEnough(rgb, Config.MAPS_BUILDING_RGB, 3);
@@ -211,14 +206,12 @@ public class GraphTools {
 				.abs(allNodes[0][0].getPosition().latitude - allNodes[0][1].getPosition().latitude);
 
 		double[][] elevs = APITools.GetAllElevations(allNodes);
-		for (int x = 0; x < elevs.length; x++)
-		{
-			for (int y = 0; y < elevs[x].length; y++)
-			{
+		for (int x = 0; x < elevs.length; x++) {
+			for (int y = 0; y < elevs[x].length; y++) {
 				allNodes[x][y].setElevation(elevs[x][y]);
 			}
 		}
-		
+
 		return allNodes;
 	}
 
