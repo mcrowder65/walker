@@ -5,7 +5,6 @@ import {Marker} from '../../typings/marker';
 import {StatechangeEvent} from '../../typings/statechange-event';
 import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
 import {Options} from '../../typings/options';
-import {UtilitiesService} from '../../services/utilities-service';
 import {UserOptions} from '../../typings/user-options';
 
 export class WalkerMap {
@@ -51,7 +50,7 @@ export class WalkerMap {
   }
 
   resultsChange(): void {
-    if(UtilitiesService.isDefined(this.results) && UtilitiesService.isDefined(this.results[0])) {
+    if(this.results && this.results[0]) {
       this.startLongitude = this.results[0].longitude;
       this.startLatitude = this.results[0].latitude;
     }
@@ -190,9 +189,7 @@ export class WalkerMap {
       const latitude: number = e.detail.latLng.lat();
       const longitude: number = e.detail.latLng.lng();
       if(!this.settingStartMarker) {
-        const building: boolean = UtilitiesService.isDefined(oldMarker.closingTime)
-                               || UtilitiesService.isDefined(oldMarker.openingTime)
-                               || UtilitiesService.isDefined(oldMarker.title);
+        const building: boolean = !!(oldMarker.closingTime || oldMarker.openingTime || oldMarker.title);
         const isStairs: boolean = !building && !oldMarker.buildingId;
         const newMarker: Marker = {
           ...oldMarker,
@@ -243,7 +240,7 @@ export class WalkerMap {
    */
   computeIcon(marker: Marker): string {
     const base: string = 'http://localhost:8000/markers/';
-    if(UtilitiesService.isDefined(marker.buildingId)) {
+    if(marker.buildingId) {
       return base + 'yellow_marker.png';
     } else if(marker.isStairs) {
       return base + 'blue_marker.png';
@@ -256,7 +253,7 @@ export class WalkerMap {
    * Called from dom
    */
   computeTitle(title: string): string {
-    return UtilitiesService.isDefined(title) ? title : 'entrance';
+    return title ? title : 'entrance';
   }
 
 
@@ -264,13 +261,10 @@ export class WalkerMap {
   mapStateToThis(e: any): void {
     const state: State = e.detail.state
     this.markers = state.markers;
-    this.startMarkers = UtilitiesService.isDefined(state.startMarker) ? [state.startMarker] : [];
-    this.endMarkers = UtilitiesService.isDefined(state.endMarker) ? [state.endMarker] : [];
-    this.displayGoButton = UtilitiesService.isDefined(this.getStartMarker())
-                          && UtilitiesService.isDefined(this.getEndMarker())
-                          && !this.settingEndMarker;
-    this.displayCancelButton = UtilitiesService.isDefined(this.getStartMarker())
-                            || UtilitiesService.isDefined(this.getEndMarker());
+    this.startMarkers = state.startMarker ? [state.startMarker] : [];
+    this.endMarkers = state.endMarker ? [state.endMarker] : [];
+    this.displayGoButton = this.getStartMarker() && this.getEndMarker() && !this.settingEndMarker;
+    this.displayCancelButton = !!(this.getStartMarker() && this.getEndMarker());
     this.stairs = state.stairs;
     this.elevation = state.elevation;
     this.wilderness = state.wilderness;
