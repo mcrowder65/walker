@@ -33,9 +33,6 @@ public class TravelHandler extends WalkerHandler {
 		JsonObject jsonObject = JSONTools.g.fromJson(result, JsonObject.class);
 		Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
 		Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
-		// TODO handle!!!!!!!!
-		System.out.println("startMarker: " + startMarker);
-		System.out.println("endMarker: " + endMarker);
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
 
 		// System.out.println(userPrefs);
@@ -61,9 +58,11 @@ public class TravelHandler extends WalkerHandler {
 		List<NodeIndex> starPath = null;
 		Graph g = Config.GRAPH;
 		List<Marker> markers = null;
+		LatLng start = null;
+		LatLng end = null;
 		try {
-			LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
-			LatLng end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
+			start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
+			end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
 			System.out.println(start);
 			System.out.println(end);
 			LatLng southwest = new LatLng(40.244803, -111.657854);
@@ -95,6 +94,10 @@ public class TravelHandler extends WalkerHandler {
 
 			// Tools.WriteImage(img, "testImages/bigTest.png");
 		} catch (Exception e) {
+			System.err.println("startNode: " + startNode);
+			System.err.println("endNode: " + endNode);
+			System.err.println("start: " + start);
+			System.err.println("end: " + end);
 			throw e;
 		}
 
