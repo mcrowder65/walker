@@ -33,6 +33,12 @@ public class TravelHandler extends WalkerHandler {
 		JsonObject jsonObject = JSONTools.g.fromJson(result, JsonObject.class);
 		Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
 		Marker endMarker = JSONTools.g.fromJson(jsonObject.get("endMarker"), Marker.class);
+
+		startMarker.setLatitude(startMarker.getLatitude() + Config.LAT_BIAS);
+		startMarker.setLongitude(startMarker.getLongitude() + Config.LON_BIAS);
+		endMarker.setLatitude(endMarker.getLatitude() + Config.LAT_BIAS);
+		endMarker.setLongitude(endMarker.getLongitude() + Config.LON_BIAS);
+
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
 
 		// System.out.println(userPrefs);
