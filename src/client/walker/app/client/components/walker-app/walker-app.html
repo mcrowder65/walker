@@ -6,22 +6,24 @@
 <dom-module id="walker-app">
   <template>
     <style>
-    .rightWrapper {
-      margin: 0px;
-      display: inline-block;
-      width: 200px;
+    #leftWrapper {
+      float: left;
+    }
+    #rightWrapper {
+      float: right;
     }
 
-    .leftWrapper {
-      margin: 0px;
-      display: inline-block;
-    }
+
     </style>
       <redux-store root-reducer="[[rootReducer]]"></redux-store>
-      <span class="leftWrapper">
+      <span id="leftWrapper">
         <walker-map id="walker-map"></walker-map>
       </span>
-      <span class="rightWrapper">
+      <br>
+      <br>
+      <br>
+      <br>
+      <span id="rightWrapper">
         <walker-user-options id="walker-user-options"></walker-user-options>
       </span>
 
