@@ -92,9 +92,12 @@ public class TravelHandler extends WalkerHandler {
 			starPath.add(0, endNode);
 			for (int i = 0; i < starPath.size(); i++) {
 				Node n = g.getFromIndex(starPath.get(i));
+				System.out.println(n.getPosition());
 				Marker m = new Marker(n.getPosition().latitude, n.getPosition().longitude);
 				markers.add(m);
 			}
+
+			System.out.println(markers);
 			// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
 			// northeast, Color.BLUE);
 
