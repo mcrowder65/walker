@@ -41,7 +41,7 @@ public class Config {
 	public static final double ELEVATION_COEFF = 0.00001;
 	public static final double ELEVATION_THRESHOLD = 10;
 
-	public static final double LAT_BIAS = -0.00005;
+	public static final double LAT_BIAS = -0.000055;
 	public static final double LON_BIAS = 0.000075;
 
 	public static Graph GRAPH;
