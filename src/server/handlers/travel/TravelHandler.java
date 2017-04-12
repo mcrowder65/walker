@@ -1,5 +1,7 @@
 package server.handlers.travel;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.NodeIndex;
+import generic.Tools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
@@ -92,9 +95,18 @@ public class TravelHandler extends WalkerHandler {
 			starPath.add(0, endNode);
 			for (int i = 0; i < starPath.size(); i++) {
 				Node n = g.getFromIndex(starPath.get(i));
-				Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS, n.getPosition().longitude - Config.LON_BIAS);
+
+				Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS,
+						n.getPosition().longitude - Config.LON_BIAS);
+
 				markers.add(m);
 			}
+
+			BufferedImage img = Tools.ReadImage("mock/campus.png");
+			GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+			Tools.WriteImage(img, "testImages/a_star_2.png");
+
+			System.out.println(markers);
 			// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
 			// northeast, Color.BLUE);
 
@@ -104,6 +116,9 @@ public class TravelHandler extends WalkerHandler {
 			System.err.println("endNode: " + endNode);
 			System.err.println("start: " + start);
 			System.err.println("end: " + end);
+			System.err.println("startMarker: " + startMarker);
+			System.err.println("endMarker: " + endMarker);
+			System.err.println("userpreferences: " + up);
 			throw e;
 		}
 
