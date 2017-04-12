@@ -335,8 +335,7 @@ public class Graph extends WalkerObject {
 				Entrance entrance = entrances.get(j);
 				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
 				
-				position.latitude += Config.LAT_BIAS;
-				position.longitude += Config.LON_BIAS;
+				
 				
 				// NodeIndex ni = getClosestNodeFast(position, )
 				Node n = new Node(position, b);
@@ -356,6 +355,8 @@ public class Graph extends WalkerObject {
 			for (int j = 0; j < entrances.size(); j++) {
 				Entrance entrance = entrances.get(j);
 				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+				position.latitude += Config.LAT_BIAS;
+				position.longitude += Config.LON_BIAS;
 				NodeIndex ni = getClosestNodeFast(position, southwest);
 
 				if (ni.x >= 0 && ni.x < nodes2.length && ni.y < nodes2[0].length && ni.y >= 0) {
