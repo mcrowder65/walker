@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -12,6 +13,12 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.sun.net.httpserver.HttpServer;
 
+import generic.Config;
+import generic.Graph;
+import generic.GraphTools;
+import generic.Node;
+import generic.Tools;
+import googlemaps.LatLng;
 import server.handlers.building.GetBuildingHandler;
 import server.handlers.building.GetBuildingsHandler;
 import server.handlers.marker.DeleteMarkerHandler;
@@ -70,6 +77,14 @@ public class Server {
 		httpServer.createContext("/travel", travelHandler);
 
 		httpServer.start();
+
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		BufferedImage img = Tools.ReadImage("mock/campus.png");
+		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+		Graph g = new Graph();
+		g.nodes2 = nodes;
+		Config.GRAPH = g;
 
 	}
 }

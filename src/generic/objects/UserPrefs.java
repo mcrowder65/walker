@@ -31,6 +31,7 @@ public class UserPrefs extends WalkerObject {
 		setPreferDesignatedPaths(preferDesignatedPaths);
 	}
 
+
 	public static UserPrefs DEFAULT = new UserPrefs(100, 0, 100, 0, 0, 99, 99);
 	public static UserPrefs BLACK_PATHS = new UserPrefs(100, 100, 100, 100, 100, 100, 0);
 	public static UserPrefs DISTANCE_ONLY = new UserPrefs(0,0,0,0,0,0,0);
