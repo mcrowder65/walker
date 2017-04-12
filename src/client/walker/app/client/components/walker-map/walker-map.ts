@@ -280,7 +280,16 @@ export class WalkerMap {
     this.preferDesignatedPaths = state.preferDesignatedPaths;
     this.directionMarkers = state.directionMarkers;
     if(this.directionMarkers) {
-      console.log('this.directionMarkers ', this.directionMarkers);
+      const markers: Marker[] = JSON.parse(localStorage.getItem('directionMarkers'));
+      if(this.directionMarkers.length !== markers.length) {
+        return;
+      }
+      for(var i = 0; i < markers.length; i++) {
+        if(this.directionMarkers[i].latitude !== markers[i].latitude ||
+          this.directionMarkers[i].longitude !== markers[i].longitude) {
+          console.error('this marker got truncated ', this.directionMarkers[i]);
+        }
+      }
     }
   }
 
