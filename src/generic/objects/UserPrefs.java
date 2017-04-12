@@ -7,7 +7,7 @@ package generic.objects;
  */
 public class UserPrefs extends WalkerObject {
 
-	public static final double MAX_VAL = 100;
+	public static final double MAX_VAL = 101;
 	
 	private double stairs;
 	private double elevation;
