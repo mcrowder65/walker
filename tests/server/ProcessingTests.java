@@ -2,16 +2,25 @@ package server;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 
 import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
+import generic.ImageTools;
 import generic.Node;
 import generic.Tools;
+import generic.objects.Building;
 import googlemaps.LatLng;
+import server.dao.BuildingDAO;
 import server.processing.ColorOperations;
 
 public class ProcessingTests {
@@ -134,7 +143,7 @@ public class ProcessingTests {
 	}
 	
 	
-	@Test
+	//@Test
 	public void elevationNewInterpolationTest()
 	{
 		LatLng southwest = new LatLng(40.244803, -111.657854);
@@ -148,4 +157,30 @@ public class ProcessingTests {
 		double[][] elevs = APITools.GetAllElevations(nodes);
 		
 	}
+	
+	@Test
+	public void temp()
+	{
+		LatLng southwest = new LatLng(40.244803, -111.657854);
+		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		int zoom = 18;
+		BufferedImage img;
+		img = Tools.ReadImage("mock/campus.png");
+		
+		List<Building> buildings = BuildingDAO.getAll();
+		img = ImageTools.fillBuildings(img, buildings, southwest, northeast);
+		
+		Tools.WriteImage(img, "mock/campus2.png");
+		
+	}
+	
+	
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		FirebaseOptions options = new FirebaseOptions.Builder().setServiceAccount(new FileInputStream("key.json"))
+				.setDatabaseUrl("https://walker-73119.firebaseio.com/").build();
+		FirebaseApp.initializeApp(options);
+	}
+	
 }
