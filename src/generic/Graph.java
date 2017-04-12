@@ -334,9 +334,36 @@ public class Graph extends WalkerObject {
 			for (int j = 0; j < entrances.size(); j++) {
 				Entrance entrance = entrances.get(j);
 				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+				// NodeIndex ni = getClosestNodeFast(position, )
 				Node n = new Node(position, b);
-				int index = findClosestNodeIndex(n);
-				this.nodes.get(index).setBuilding(b);
+				// int index = findClosestNodeIndex(n, southwest);
+				// this.nodes.get(index).setBuilding(b);
+			}
+
+		}
+	}
+
+	public void addEnterExitFast(LatLng southwest) {
+		BuildingDAO bd = new BuildingDAO();
+		List<Building> buildings = bd.getAll();
+		for (int i = 0; i < buildings.size(); i++) {
+			Building b = buildings.get(i);
+			List<Entrance> entrances = b.getResolvedEntrances();
+			for (int j = 0; j < entrances.size(); j++) {
+				Entrance entrance = entrances.get(j);
+				LatLng position = new LatLng(entrance.getLatitude(), entrance.getLongitude());
+				NodeIndex ni = getClosestNodeFast(position, southwest);
+				if (ni.x > 0 && ni.x < nodes2.length && ni.y < nodes2[0].length && ni.y < 0) {
+					try {
+						nodes2[ni.x][ni.y].setBuilding(b);
+					} catch (Exception e) {
+						System.out.println("here");
+					}
+				}
+
+				// Node n = new Node(position, b);
+				// int index = findClosestNodeIndex(n);
+				// this.nodes.get(index).setBuilding(b);
 			}
 
 		}
