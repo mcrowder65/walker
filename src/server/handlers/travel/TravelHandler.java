@@ -20,7 +20,6 @@ import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
-import sun.net.www.protocol.http.HttpURLConnection;
 
 public class TravelHandler extends WalkerHandler {
 	Object lock;
@@ -49,13 +48,16 @@ public class TravelHandler extends WalkerHandler {
 		try {
 			List<Marker> markers = getPath(startMarker, endMarker, userPrefs);
 			String json = JSONTools.g.toJson(markers);
-			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+			exchange.sendResponseHeaders(200, 0);
 			exchange.getResponseBody().write(json.getBytes());
 			exchange.getResponseBody().close();
 		} catch (Exception e) {
 			// getting ArrayIndexOutOfBoundsException
 			e.printStackTrace();
-			exchange.sendResponseHeaders(500, 0);
+			String json = "null pointer exception";
+			exchange.sendResponseHeaders(400, 0);
+			exchange.getResponseBody().write(json.getBytes());
+
 			exchange.getResponseBody().close();
 		}
 
