@@ -112,7 +112,9 @@ const travel = async (context: WalkerMap, url: string, startMarker: Marker, endM
         userOptions
       };
       const response = await POST(url, JSON.stringify(body));
+
       const directionMarkers: Marker[] = JSON.parse(response);
+      localStorage.setItem('directionMarkers', JSON.stringify(directionMarkers));
       context.action = {
         type: 'SET_DIRECTION_MARKERS',
         directionMarkers
