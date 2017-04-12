@@ -22,6 +22,7 @@ import generic.ImageTools;
 import generic.Node;
 import generic.NodeIndex;
 import generic.Tools;
+import generic.ZoningTools;
 import generic.objects.Building;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
@@ -234,7 +235,7 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
+		int hour = ZoningTools.GetHour(southwest);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		img = Tools.ClipLogo(img);
 
@@ -248,7 +249,7 @@ public class GraphTests {
 		NodeIndex startNode = new NodeIndex(2, 6);
 		NodeIndex endNode = new NodeIndex(80, 46);
 
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.BLACK_PATHS);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.BLACK_PATHS, hour);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 
 		Tools.WriteImage(img, "testImages/a_star.png");
@@ -267,6 +268,7 @@ public class GraphTests {
 		LatLng end = new LatLng(40.24939398, -111.64820552);
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
+		int hour = ZoningTools.GetHour(southwest);
 		BufferedImage img = Tools.ReadImage("mock/campus.png");
 		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
 		Graph g = new Graph();
@@ -278,7 +280,7 @@ public class GraphTests {
 		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
 		UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
 
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
 		starPath.add(startNode);
 		starPath.add(0, endNode);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
@@ -298,7 +300,7 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
+		int hour = ZoningTools.GetHour(southwest);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		img = Tools.ClipLogo(img);
 
@@ -311,7 +313,7 @@ public class GraphTests {
 		NodeIndex startNode = g.getClosestNodeFast(start, southwest);
 		NodeIndex endNode = g.getClosestNodeFast(end, southwest);
 
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT, hour);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 		Tools.WriteImage(img, "testImages/a_star_2.png");
 
@@ -340,7 +342,7 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
+		int hour = ZoningTools.GetHour(southwest);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		img = Tools.ClipLogo(img);
 
@@ -358,7 +360,7 @@ public class GraphTests {
 		System.out.println(endNode);
 		System.out.println(startNodeBlack);
 		System.out.println(endNodeBlack);
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNodeBlack, endNodeBlack, UserPrefs.BLACK_PATHS);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNodeBlack, endNodeBlack, UserPrefs.BLACK_PATHS, hour);
 		starPath.add(startNode);
 		starPath.add(0, endNode);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
@@ -379,7 +381,7 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
+		int hour = ZoningTools.GetHour(southwest);
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		img = Tools.ClipLogo(img);
 
@@ -397,7 +399,7 @@ public class GraphTests {
 		System.out.println(endNode);
 		System.out.println(startNodeBlack);
 		System.out.println(endNodeBlack);
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNodeBlack, endNodeBlack, UserPrefs.BLACK_PATHS);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNodeBlack, endNodeBlack, UserPrefs.BLACK_PATHS, hour);
 		starPath.add(startNode);
 		starPath.add(0, endNode);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
@@ -419,7 +421,8 @@ public class GraphTests {
 		 */
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
-
+		int hour = ZoningTools.GetHour(southwest);
+		
 		BufferedImage img = Tools.ReadImage("mock/campus.png");
 		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
 		Graph g = new Graph();
@@ -428,7 +431,7 @@ public class GraphTests {
 		NodeIndex startNode = new NodeIndex(200, 53);
 		NodeIndex endNode = new NodeIndex(405, 365);
 
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT, hour);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 
 		Tools.WriteImage(img, "testImages/a_starBIG.png");
@@ -447,7 +450,7 @@ public class GraphTests {
 		 */
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
-
+		int hour = ZoningTools.GetHour(southwest);
 		BufferedImage img = Tools.ReadImage("mock/campus.png");
 		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
 		Graph g = new Graph();
@@ -458,7 +461,7 @@ public class GraphTests {
 		NodeIndex endNode = g.getClosestNodeFast(new LatLng(40.250456, -111.649289), southwest);
 
 		UserPrefs up = new UserPrefs(0, 90, 0, 0, 0, 0, 0);
-		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up);
+		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
 		GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 
 		Tools.WriteImage(img, "testImages/a_starBIG.png");
@@ -476,7 +479,9 @@ public class GraphTests {
 		double metersPerPixel = APITools.getMetersPerPixel(center.latitude, zoom);
 		LatLng southwest = APITools.getSouthwest(center, metersPerPixel, sizeX, sizeY);
 		LatLng northeast = APITools.getNortheast(center, metersPerPixel, sizeX, sizeY);
-
+		int hour = ZoningTools.GetHour(southwest);
+		
+		
 		BufferedImage img = server.APITools.DownloadStaticMapImage(start, end, sizeX, sizeY, zoom, false);
 		img = Tools.ClipLogo(img);
 
