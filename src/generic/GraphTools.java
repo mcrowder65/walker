@@ -585,9 +585,11 @@ public class GraphTools {
 
 	private static void expandSimilarEntrances(Graph g, NodeIndex current, NodeIndex end,
 			HashMap<NodeIndex, NodeIndex> cameFrom, PriorityQueue<NodeIndexWithValue> openSet, boolean[][] closedSet,
-			double[][] fScore, double[][] gScore, UserPrefs up) {
+			double[][] fScore, double[][] gScore, UserPrefs up, int hour) {
 		Building currBuilding = g.getFromIndex(current).getBuilding();
 		if (currBuilding == null)
+			return;
+		if (!currBuilding.isCurrentlyOpenFast(hour))
 			return;
 
 		for (int x = 0; x < g.nodes2.length; x++) {
@@ -634,8 +636,10 @@ public class GraphTools {
 		return newNode;
 	}
 
-	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs) {
+	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs, int hour) {
 
+		
+		
 		boolean[][] closedSet = new boolean[g.nodes2.length][g.nodes2[0].length];
 		FScoreComparator cmprtor = new FScoreComparator();
 		PriorityQueue<NodeIndexWithValue> openSet = new PriorityQueue<NodeIndexWithValue>(cmprtor);
@@ -696,7 +700,7 @@ public class GraphTools {
 			if (neighbor != null && !closedSet[neighbor.x][neighbor.y])
 				expand(g, current, neighbor, end, cameFrom, openSet, fScore, gScore, prefs);
 
-			expandSimilarEntrances(g, current, end, cameFrom, openSet, closedSet, fScore, gScore, prefs);
+			expandSimilarEntrances(g, current, end, cameFrom, openSet, closedSet, fScore, gScore, prefs, hour);
 
 		}
 

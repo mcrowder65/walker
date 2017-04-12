@@ -15,6 +15,7 @@ import generic.GraphTools;
 import generic.Node;
 import generic.NodeIndex;
 import generic.Tools;
+import generic.ZoningTools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
@@ -78,6 +79,7 @@ public class TravelHandler extends WalkerHandler {
 			System.out.println(end);
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
+			int hour = ZoningTools.GetHour(southwest);
 			// BufferedImage img = Tools.ReadImage("mock/campus.png");
 			// Node[][] nodes = GraphTools.genUniformNodes(2, southwest,
 			// northeast, img);
@@ -91,7 +93,7 @@ public class TravelHandler extends WalkerHandler {
 			// NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end,
 			// southwest);
 			// UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
-			starPath = GraphTools.A_Star(g, startNode, endNode, up);
+			starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
 			markers = new ArrayList<>();
 			starPath.add(startNode);
 			starPath.add(0, endNode);
