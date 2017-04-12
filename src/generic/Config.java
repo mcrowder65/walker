@@ -1,5 +1,9 @@
 package generic;
 
+import java.awt.image.BufferedImage;
+
+import googlemaps.LatLng;
+
 public class Config {
 
 	public static final boolean USE_MOCK = true;
@@ -21,7 +25,7 @@ public class Config {
 	public static final int MAPS_WEIRD_OLIVE_PATH = 0xffB7B393; // A WEIRD OLIVE
 																// COLOR
 	public static final int FILLCOLOR_PIXELDIM_TOLERANCE = 0;
-	public static final int FILLCOLOR_MODE_RADIUS = 2;
+	public static final int FILLCOLOR_MODE_RADIUS = 1;
 	public static final int FILLCOLOR_RGB_TOLERANCE = 2;
 
 	public static final int MAX_BLOCK_SIZE = 10;
@@ -29,13 +33,20 @@ public class Config {
 	public static double MAX_BLOCK_DIST_SQUARED;
 	public static double MAX_BLOCK_DIST_SQUARED_BLACK;
 
-	
 	public static final int ELEVATION_GRADIENT_SKIP = 4;
 	public static double LAT_STEPPING_DIST;
 	public static double LONG_STEPPING_DIST;
 	public static int SEARCH_RADIUS = 50; // in meters
 
-
 	public static final int LOCAL_TIMEZONE = -7;
 	public static final int DAYLIGHT_SAVINGS = 1;
+
+	public static final double BINARY_COEFF = 0.000001;
+	public static final double ELEVATION_COEFF = 0.00001;
+	public static final double ELEVATION_THRESHOLD = 10;
+
+	public static BufferedImage IMG;
+	public static LatLng SOUTHWEST;
+	public static LatLng NORTHEAST;
+	public static Graph GRAPH;
 }

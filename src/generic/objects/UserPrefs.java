@@ -7,6 +7,8 @@ package generic.objects;
  */
 public class UserPrefs extends WalkerObject {
 
+	public static final double MAX_VAL = 100;
+	
 	private double stairs;
 	private double elevation;
 	private double wilderness;
@@ -29,14 +31,10 @@ public class UserPrefs extends WalkerObject {
 		setPreferDesignatedPaths(preferDesignatedPaths);
 	}
 
-	public static UserPrefs DEFAULT = new UserPrefs(0, 0, 0, 1, 1, 0, 0);
-	public static UserPrefs BLACK_PATHS = new UserPrefs(0, 0, 0, 0, 0, 0, 1);
-
+	public static UserPrefs DEFAULT = new UserPrefs(100, 100, 100, 0, 0, 100, 0);
+	public static UserPrefs BLACK_PATHS = new UserPrefs(100, 100, 100, 100, 100, 100, 100);
+	public static UserPrefs DISTANCE_ONLY = new UserPrefs(0,0,0,0,0,0,0);
 	public double getStairs() {
-		if (stairs > 1) {
-			System.err
-					.println("why is stairs greater than 1??? something is going wrong, did you do setStairs before?");
-		}
 		return stairs;
 	}
 
@@ -44,17 +42,12 @@ public class UserPrefs extends WalkerObject {
 		if (stairs < 0) {
 			System.err.println("for some reason stairs is less than 0!!!");
 		}
-		if (stairs > 1) {
-			stairs /= 100;
-		}
+
 		this.stairs = stairs;
 	}
 
 	public double getElevation() {
-		if (elevation > 1) {
-			System.err.println(
-					"why is elevation greater than 1??? something is going wrong, did you do setElevation before?");
-		}
+
 		return elevation;
 	}
 
@@ -62,9 +55,7 @@ public class UserPrefs extends WalkerObject {
 		if (elevation < 0) {
 			System.err.println("for some reason elevation is less than 0!!!");
 		}
-		if (elevation > 1) {
-			elevation /= 100;
-		}
+
 		this.elevation = elevation;
 	}
 

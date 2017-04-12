@@ -1,6 +1,5 @@
 package server.handlers.travel;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +7,11 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 
+import generic.Config;
 import generic.Graph;
 import generic.GraphTools;
 import generic.Node;
 import generic.NodeIndex;
-import generic.Tools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
@@ -39,10 +38,10 @@ public class TravelHandler extends WalkerHandler {
 		System.out.println("endMarker: " + endMarker);
 		UserPrefs userPrefs = JSONTools.g.fromJson(jsonObject.get("userOptions"), UserPrefs.class);
 
-		System.out.println(userPrefs);
+		// System.out.println(userPrefs);
 
 		try {
-			List<Marker> markers = getPath(startMarker, endMarker);
+			List<Marker> markers = getPath(startMarker, endMarker, userPrefs);
 			String json = JSONTools.g.toJson(markers);
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 			exchange.getResponseBody().write(json.getBytes());
@@ -56,28 +55,33 @@ public class TravelHandler extends WalkerHandler {
 
 	}
 
-	public List<Marker> getPath(Marker startMarker, Marker endMarker) throws Exception {
+	public List<Marker> getPath(Marker startMarker, Marker endMarker, UserPrefs up) throws Exception {
 		NodeIndex startNode = null;
 		NodeIndex endNode = null;
 		List<NodeIndex> starPath = null;
-		Graph g = null;
+		Graph g = Config.GRAPH;
 		List<Marker> markers = null;
 		try {
 			LatLng start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 			LatLng end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
+			System.out.println(start);
+			System.out.println(end);
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
-			BufferedImage img = Tools.ReadImage("mock/campus.png");
-			Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
-			g = new Graph();
-			g.nodes2 = nodes;
+			// BufferedImage img = Tools.ReadImage("mock/campus.png");
+			// Node[][] nodes = GraphTools.genUniformNodes(2, southwest,
+			// northeast, img);
+			// g = new Graph();
+			// g.nodes2 = nodes;
 
 			startNode = g.getClosestNodeFast(start, southwest);
 			endNode = g.getClosestNodeFast(end, southwest);
-			NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start, southwest);
-			NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
-
-			starPath = GraphTools.A_Star(g, startNode, endNode, UserPrefs.DEFAULT);
+			// NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start,
+			// southwest);
+			// NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end,
+			// southwest);
+			// UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
+			starPath = GraphTools.A_Star(g, startNode, endNode, up);
 			markers = new ArrayList<>();
 			starPath.add(startNode);
 			starPath.add(0, endNode);
