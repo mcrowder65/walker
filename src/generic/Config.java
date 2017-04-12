@@ -1,9 +1,5 @@
 package generic;
 
-import java.awt.image.BufferedImage;
-
-import googlemaps.LatLng;
-
 public class Config {
 
 	public static final boolean USE_MOCK = true;
@@ -45,9 +41,8 @@ public class Config {
 	public static final double ELEVATION_COEFF = 0.00001;
 	public static final double ELEVATION_THRESHOLD = 10;
 
-	
-	public static final double LAT_BIAS = -0.00004;
-	public static final double LON_BIAS = 0.000069;
-	
+	public static final double LAT_BIAS = -0.00005;
+	public static final double LON_BIAS = 0.000075;
+
 	public static Graph GRAPH;
 }
