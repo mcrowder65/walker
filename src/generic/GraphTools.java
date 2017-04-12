@@ -140,7 +140,8 @@ public class GraphTools {
 			if (up.getBuilding() == UserPrefs.MAX_VAL)
 				return Double.MAX_VALUE;
 			else
-				totalCost += (Config.BINARY_COEFF * up.getBuilding());
+				// totalCost += (Config.BINARY_COEFF * up.getBuilding());
+				return 0;
 		}
 
 		if (end.code == NodeCode.Other) {
@@ -150,9 +151,7 @@ public class GraphTools {
 				totalCost += (Config.BINARY_COEFF * up.getPreferDesignatedPaths());
 		}
 
-		
-		if (end.code == NodeCode.Stairs)
-		{
+		if (end.code == NodeCode.Stairs) {
 			if (up.getStairs() == UserPrefs.MAX_VAL)
 				return Double.MAX_VALUE;
 			else
@@ -638,8 +637,6 @@ public class GraphTools {
 
 	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs, int hour) {
 
-		
-		
 		boolean[][] closedSet = new boolean[g.nodes2.length][g.nodes2[0].length];
 		FScoreComparator cmprtor = new FScoreComparator();
 		PriorityQueue<NodeIndexWithValue> openSet = new PriorityQueue<NodeIndexWithValue>(cmprtor);
