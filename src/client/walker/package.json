@@ -4,7 +4,7 @@
   "description": "The tool walk really really fast",
   "scripts": {
     "start": "cd app/client && node_modules/.bin/zwitterion-production --port 3000",
-    "start forever": "cd app/client && forever start node_modules/.bin/zwitterion-production --port 8000" 
+    "forever": "cd app/client && forever start node_modules/.bin/zwitterion-production --port 3000" 
   },
   "repository": {
     "type": "git",
