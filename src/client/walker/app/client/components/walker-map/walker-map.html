@@ -61,8 +61,8 @@
       longitude="[[startLongitude]]"
       latitude="[[startLatitude]]"
       no-auto-tilt="true"
-      zoom="17">
-      <template is="dom-repeat" items="[[startMarkers]]">
+      zoom="16">
+      <!-- <template is="dom-repeat" items="[[startMarkers]]">
         <google-map-marker
           id="startMarker"
           animation="DROP"
@@ -106,7 +106,7 @@
           icon="http://127.0.0.1:3000/markers/purple_MarkerB.png"
           >
         </google-map-marker>
-      </template>
+      </template>-->
       <template is="dom-repeat" items="[[markers]]">
           <google-map-marker
             id="[[item.id]]"
@@ -123,6 +123,17 @@
             icon="[[computeIcon(item)]]"
             >
           </google-map-marker>
+      </template>
+      <template is="dom-repeat" items="[[borders]]">
+          <google-map-marker
+            id="[[item.id]]"
+            animation="DROP"
+            latitude="[[item.latitude]]"
+            longitude="[[item.longitude]]"
+            class="marker"
+            icon="http://127.0.0.1:3000/markers/purple_outline.png">
+            >
+        </google-map-marker>
       </template>
     </google-map>
 

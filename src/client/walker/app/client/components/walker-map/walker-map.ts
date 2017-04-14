@@ -39,6 +39,7 @@ export class WalkerMap {
   public preferDesignatedPaths: number;
   public stairsMarkers: Marker[];
   public directionMarkers: Marker[];
+  public borders: Marker[];
 
   beforeRegister(): void {
     this.is = 'walker-map';
@@ -67,12 +68,69 @@ export class WalkerMap {
 
   ready(): void {
     // this.initMarkers();
-    this.startLongitude = -111.649141
-    this.startLatitude  = 40.250438;
+    this.startLongitude = (-111.643854 + -111.657854) / 2;
+    this.startLatitude  = (40.2519803 + 40.244803) / 2;
     this.startPointButtonText = 'Set start marker';
     this.endPointButtonText = 'Set end marker';
+    this.initBorders();
   }
+  initBorders(): void {
+    const southwest: Marker = {
+      latitude: 40.244803,
+      longitude: -111.657854
+    };
+    const northeast: Marker = {
+      latitude: 40.2519803,
+      longitude: -111.643854
+    };
 
+    const northwest: Marker = {
+      latitude: northeast.latitude,
+      longitude: southwest.longitude
+    };
+
+    const southeast: Marker = {
+      latitude: southwest.latitude,
+      longitude: northeast.longitude
+    };
+    const verticalNum: number = (northeast.latitude - southeast.latitude) / 100;
+    const horizontalNum: number = (northwest.longitude - northeast.longitude) / 100;
+    for(let i: number = 0; i < 100; i++) {
+      // northeast to southeast
+      this.borders = [...this.borders || [], {
+        latitude: northeast.latitude - (verticalNum * i),
+        longitude: northeast.longitude
+      }];
+
+      //northwest to southwest
+      this.borders = [...this.borders || [], {
+        latitude: southwest.latitude + (verticalNum * i),
+        longitude: southwest.longitude
+      }];
+
+      //northwest to northeast
+      this.borders = [...this.borders || [], {
+        latitude: northwest.latitude,
+        longitude: northwest.longitude - (horizontalNum * i)
+      }];
+
+      // southwest to southeast
+      this.borders = [...this.borders || [], {
+        latitude: southwest.latitude,
+        longitude: southwest.longitude - (horizontalNum * i),
+      }];
+    }
+
+
+
+
+
+
+    this.borders = [
+      ...this.borders || [], southwest, northeast, northwest, southeast
+    ];
+    console.log(this.borders);
+  }
   /**
    * This is needed here because the html calls it as well.
    */
