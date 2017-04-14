@@ -53,18 +53,16 @@
     <template is="dom-if" if="[[displayEndMarker]]"> displayEndMarker: [[displayEndMarker]]<br></template>
     <google-map-search map="[[map]]" query="[[query]]" results="{{results}}">
     </google-map-search>
-    <template is="dom-repeat" items="[[outOfBoundsDirections]]">
 
-      <google-map-directions
-        id="directions"
-        map="[[map]]"
-        travel-mode="WALKING"
-        api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk"
-        start-address="[[item.start]]"
-        end-address="[[item.end]]"
-        >
-      </google-map-directions>
-    </template>
+    <google-map-directions
+      id="directions"
+      map="[[map]]"
+      travel-mode="WALKING"
+      api-key="AIzaSyB7zQeZeCZFWzwupwYjbioQYldZkdF3oPk"
+      start-address="[[start]]"
+      end-address="[[end]]"
+      >
+    </google-map-directions>
 
     <google-map
       id="map"
