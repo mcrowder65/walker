@@ -49,8 +49,7 @@ public class Server {
 
 		int port = 8081;
 
-		if (args.length > 0)
-		{
+		if (args.length > 0) {
 			System.out.println("Using other port..");
 			port = Integer.parseInt(args[0]);
 		}
@@ -89,7 +88,7 @@ public class Server {
 	public static void reset() {
 		long start = System.currentTimeMillis();
 		try {
-			System.out.println("resetting");
+			System.out.println("preprocessing");
 
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
@@ -101,16 +100,15 @@ public class Server {
 			g.addEnterExitFast(southwest);
 
 		} catch (Exception e) {
-			System.err.println("This error was handled gracefullyish");
 			e.printStackTrace();
 		}
 		long end = System.currentTimeMillis();
 
-		System.out.println("done resetting. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");
+		System.out.println("done preprocessing. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");
 
 	}
 
-	private static int getSeconds(long milli) {
-		return (int) ((long) milli / (long) 1000);
+	private static double getSeconds(long milli) {
+		return milli / 1000.0;
 	}
 }
