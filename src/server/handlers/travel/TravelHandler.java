@@ -32,6 +32,7 @@ public class TravelHandler extends WalkerHandler {
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
 		// synchronized (lock) {
+		long start = System.currentTimeMillis();
 		String result = getRequestBodyAndSetHeaders(exchange);
 		JsonObject jsonObject = JSONTools.g.fromJson(result, JsonObject.class);
 		Marker startMarker = JSONTools.g.fromJson(jsonObject.get("startMarker"), Marker.class);
@@ -61,6 +62,9 @@ public class TravelHandler extends WalkerHandler {
 
 			exchange.getResponseBody().close();
 		}
+		long end = System.currentTimeMillis();
+		System.out.println(
+				"done travelling, took " + (((long) end / (long) 1000) - ((long) start / (long) 1000)) + " seconds");
 
 	}
 
