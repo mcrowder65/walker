@@ -63,8 +63,8 @@ public class TravelHandler extends WalkerHandler {
 			exchange.getResponseBody().close();
 		}
 		long end = System.currentTimeMillis();
-		System.out.println(
-				"done travelling, took " + (((long) end / (long) 1000) - ((long) start / (long) 1000)) + " seconds");
+
+		System.out.println("done travelling, took " + ((end / 1000.0) - (start / 1000.0)) + " seconds");
 
 	}
 
@@ -79,8 +79,6 @@ public class TravelHandler extends WalkerHandler {
 		try {
 			start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 			end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
-			System.out.println(start);
-			System.out.println(end);
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
 			int hour = ZoningTools.GetHour(southwest);
@@ -118,7 +116,6 @@ public class TravelHandler extends WalkerHandler {
 			GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
 			Tools.WriteImage(img, "testImages/a_star_2.png");
 
-			System.out.println(markers);
 			// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
 			// northeast, Color.BLUE);
 
