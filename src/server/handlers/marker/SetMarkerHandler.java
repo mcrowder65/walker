@@ -10,6 +10,8 @@ import generic.objects.Entrance;
 import generic.objects.Marker;
 import generic.objects.Stairs;
 import server.JSONTools;
+import server.Server;
+import server.dao.BuildingDAO;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
 
@@ -30,7 +32,10 @@ public class SetMarkerHandler extends WalkerHandler {
 				if (!marker.getId().equals("")) {
 					if (marker.isBuilding()) {
 						String path = "buildings/" + marker.getId();
+						Building tempBuilding = BuildingDAO.get(marker.getId());
+
 						Building building = new Building(marker);
+						building.setEntrances(tempBuilding.getEntrances());
 						Tools.firebase.update(path, building);
 						String str = null;
 						Tools.firebase.update(path + "/resolvedEntrances", str);
@@ -69,6 +74,7 @@ public class SetMarkerHandler extends WalkerHandler {
 					}
 
 				}
+				Server.reset();
 				try {
 					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 					exchange.getResponseBody().close();
