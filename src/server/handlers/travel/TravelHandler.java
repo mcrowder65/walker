@@ -80,19 +80,23 @@ public class TravelHandler extends WalkerHandler {
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
 			int hour = ZoningTools.GetHour(southwest);
-			// BufferedImage img = Tools.ReadImage("mock/campus.png");
-			// Node[][] nodes = GraphTools.genUniformNodes(2, southwest,
-			// northeast, img);
-			// g = new Graph();
-			// g.nodes2 = nodes;
 
 			startNode = g.getClosestNodeFast(start, southwest);
 			endNode = g.getClosestNodeFast(end, southwest);
-			// NodeIndex startNodeBlack = g.getClosestBlackNodeFast(start,
+			// if (g.nodes2[startNode.x][startNode.y].code ==
+			// NodeCode.Building){
+			// NodeIndex temp1 =
+			// g.getClosestBuildingNodeFast(g.getNodeFromIndex(endNode).getPosition(),
 			// southwest);
-			// NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end,
+			// NodeIndex temp2 =
+			// g.getClosestBuildingNodeFast(g.getNodeFromIndex(startNode).getPosition(),
 			// southwest);
-			// UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
+			// if(g.getNodeFromIndex(temp1).getBuilding() ==
+			// g.getNodeFromIndex(temp2).getBuilding()){
+			// startNode = temp1;
+			// }
+			// }
+
 			starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
 			markers = new ArrayList<>();
 			starPath.add(startNode);
