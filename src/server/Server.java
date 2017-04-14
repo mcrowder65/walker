@@ -85,6 +85,8 @@ public class Server {
 	}
 
 	public static void reset() {
+		System.out.println("resetting");
+		long start = System.currentTimeMillis();
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
 		BufferedImage img = Tools.ReadImage("mock/campus.png");
@@ -93,5 +95,12 @@ public class Server {
 		g.nodes2 = nodes;
 		Config.GRAPH = g;
 		g.addEnterExitFast(southwest);
+		long end = System.currentTimeMillis();
+
+		System.out.println("done resetting. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");
+	}
+
+	private static int getSeconds(long milli) {
+		return (int) ((long) milli / (long) 1000);
 	}
 }
