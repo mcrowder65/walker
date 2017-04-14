@@ -1,4 +1,5 @@
 import {Marker} from './marker';
+import {OutOfBoundsMarker} from './out-of-bounds-marker';
 
 export interface Action {
   type: 'SET_MARKERS' |
@@ -14,7 +15,8 @@ export interface Action {
         'SET_BUILDING' |
         'SET_PARKING_LOTS' |
         'SET_PREFER_DESIGNATED_PATHS' |
-        'SET_DIRECTION_MARKERS';
+        'SET_DIRECTION_MARKERS' |
+        'SET_OUT_OF_BOUND_DIRECTIONS';
   markers?: Marker[];
   currentMarker?: Marker;
   startMarker?: Marker;
@@ -27,4 +29,5 @@ export interface Action {
   parkingLots?: number;
   preferDesignatedPaths?: number;
   directionMarkers?: Marker[];
+  outOfBoundsDirections?: OutOfBoundsMarker[];
 }

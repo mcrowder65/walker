@@ -102,7 +102,13 @@ export function rootReducer(state: State = InitialState, action: Action): State 
           directionMarkers: action.directionMarkers
         };
       }
-      
+
+      case 'SET_OUT_OF_BOUND_DIRECTIONS': {
+        return {
+          ...state,
+          outOfBoundsDirections: action.outOfBoundsDirections
+        };
+      }
       default: {
           return state;
       }

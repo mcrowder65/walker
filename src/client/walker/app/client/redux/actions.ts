@@ -5,6 +5,7 @@ import {WalkerMarkerModal} from '../components/walker-marker-modal/walker-marker
 import {Options} from '../typings/options';
 import {ConstantsService} from '../services/constants-service';
 import {UserOptions} from '../typings/user-options';
+import {OutOfBoundsMarker} from '../typings/out-of-bounds-marker';
 
 const defaultAction = (context: any) => {
     context.action = {
@@ -119,6 +120,12 @@ const travel = async (context: WalkerMap, url: string, startMarker: Marker, endM
     }
 };
 
+const setDirectionMarkers = (context: WalkerMap, directionMarkers: Marker[]): void => {
+  context.action = {
+    type: 'SET_DIRECTION_MARKERS',
+    directionMarkers
+  }
+};
 const setStairs = (context: any, stairs: number): void => {
   context.action = {
     type: 'SET_STAIRS',
@@ -168,6 +175,14 @@ const setPreferDesignatedPaths = (context: WalkerUserOptions, preferDesignatedPa
     preferDesignatedPaths
   };
 }
+
+const setOutOfBoundsDirections = (context: WalkerMap, outOfBoundsMarker: OutOfBoundsMarker): void => {
+  context.action = {
+    type: 'SET_OUT_OF_BOUND_DIRECTIONS',
+    outOfBoundsDirections: outOfBoundsMarker ? [outOfBoundsMarker] : null
+  };
+};
+
 export const Actions = {
     defaultAction,
     setMarkers,
@@ -179,11 +194,13 @@ export const Actions = {
     resetMarkerModal,
     POST,
     travel,
+    setDirectionMarkers,
     setStairs,
     setElevation,
     setWilderness,
     setGrass,
     setBuilding,
     setParkingLots,
-    setPreferDesignatedPaths
+    setPreferDesignatedPaths,
+    setOutOfBoundsDirections
 };
