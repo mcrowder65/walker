@@ -201,7 +201,7 @@ export class WalkerMap {
         Actions.POST('setMarker', JSON.stringify(newMarker));
         Actions.initMarkers(this, 'getMarkers');
         this.successMessage = '';
-        this.successMessage = 'Marker set at new location.';
+        this.successMessage = 'Marker set at new location. Please wait 30 seconds for it to take effect.';
       }
 
     } catch(error) {

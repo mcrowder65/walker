@@ -85,7 +85,9 @@ export class WalkerMarkerModal {
     this.querySelector('#modal').open();
 
   }
-
+  /**
+   * Called when user clicks done in modal
+   */
   async setMarker(): Promise<void> {
     try {
       const marker: Marker = {
