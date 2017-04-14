@@ -48,13 +48,10 @@ public class Server {
 		FirebaseApp.initializeApp(options);
 
 		int port = 8081;
-		
-		if (args.length > 0)
-		{
+
+		if (args.length > 0) {
 			port = Integer.parseInt(args[0]);
 		}
-		
-		
 
 		System.out.println("Port = " + port);
 		try {
@@ -84,7 +81,10 @@ public class Server {
 		httpServer.createContext("/travel", travelHandler);
 
 		httpServer.start();
+		reset();
+	}
 
+	public static void reset() {
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
 		BufferedImage img = Tools.ReadImage("mock/campus.png");
@@ -93,6 +93,5 @@ public class Server {
 		g.nodes2 = nodes;
 		Config.GRAPH = g;
 		g.addEnterExitFast(southwest);
-
 	}
 }
