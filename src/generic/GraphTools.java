@@ -659,7 +659,7 @@ public class GraphTools {
 			{
 				for (int y = 0; y < g.nodes2[x].length; y++)
 				{
-					if (g.nodes2[x][y].getBuilding() == closest)
+					if (g.nodes2[x][y].getBuilding() != null && g.nodes2[x][y].getBuilding().getTitle().equals(closest.getTitle()))
 					{
 						double remainDist = g.nodes2[x][y].getPosition().distSquared(g.nodes2[end.x][end.y].getPosition());
 						if (remainDist < minRemainDist)
@@ -669,6 +669,8 @@ public class GraphTools {
 						}
 						
 					}
+					else if (g.nodes2[x][y].getBuilding() != null)
+						System.out.println(g.nodes2[x][y].getBuilding().getTitle());
 				}
 			}
 			
