@@ -258,10 +258,8 @@ export class WalkerMap {
         Actions.setEndMarker(this, null);
         Actions.setDirectionMarkers(this, null);
       } else {
+        this.querySelector('#directions').map = null;
         Actions.setOutOfBoundsDirections(this, null);
-        this.querySelector('#directions').startAddress = null;
-        this.querySelector('#directions').endAddress = null;
-        this.querySelector('#directions').response = null;
         await Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
       }
 
