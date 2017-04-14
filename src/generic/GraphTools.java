@@ -17,6 +17,7 @@ import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
 import server.APITools;
+import server.dao.BuildingDAO;
 import server.processing.ColorOperations;
 
 public class GraphTools {
@@ -634,9 +635,54 @@ public class GraphTools {
 		// nodeCache.add(newNode);
 		return newNode;
 	}
+	
+	private static NodeIndex handleInsideBuilding(NodeIndex origStart, NodeIndex end, Graph g)
+	{
+		if (g.nodes2[origStart.x][origStart.y].code == NodeCode.Building && g.nodes2[origStart.x][origStart.y].getBuilding() == null)
+		{
+			List<Building> buildings = BuildingDAO.getAll();
+			Building closest = null;
+			double minDist = Double.MAX_VALUE;
+			for (Building b : buildings)
+			{
+				double dist = Math.pow(g.nodes2[origStart.x][origStart.y].getPosition().latitude - b.getLatitude(),2) + Math.pow(g.nodes2[origStart.x][origStart.y].getPosition().longitude - b.getLongitude(),2);
+				if (dist < minDist)
+				{
+					minDist = dist;
+					closest = b;
+				}
+			}
+			
+			double minRemainDist = Double.MAX_VALUE;
+			NodeIndex closestRemainIndex = null;
+			for (int x = 0; x < g.nodes2.length; x++)
+			{
+				for (int y = 0; y < g.nodes2[x].length; y++)
+				{
+					if (g.nodes2[x][y].getBuilding() == closest)
+					{
+						double remainDist = g.nodes2[x][y].getPosition().distSquared(g.nodes2[end.x][end.y].getPosition());
+						if (remainDist < minRemainDist)
+						{
+							minRemainDist = remainDist;
+							closestRemainIndex = new NodeIndex(x,y);
+						}
+						
+					}
+				}
+			}
+			
+			return closestRemainIndex;
+		}
+		else
+			return origStart;
+	}
 
 	public static List<NodeIndex> A_Star(Graph g, NodeIndex start, NodeIndex end, UserPrefs prefs, int hour) {
 
+		
+		start = handleInsideBuilding(start, end, g);
+		
 		boolean[][] closedSet = new boolean[g.nodes2.length][g.nodes2[0].length];
 		FScoreComparator cmprtor = new FScoreComparator();
 		PriorityQueue<NodeIndexWithValue> openSet = new PriorityQueue<NodeIndexWithValue>(cmprtor);
