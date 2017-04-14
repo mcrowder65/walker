@@ -329,7 +329,6 @@ export class WalkerMap {
     this.preferDesignatedPaths = state.preferDesignatedPaths;
     this.directionMarkers = state.directionMarkers;
     this.outOfBoundsDirections = state.outOfBoundsDirections;
-    console.log('this.outOfBoundsDirections ', this.outOfBoundsDirections);
     if(this.directionMarkers) {
       const markers: Marker[] = JSON.parse(localStorage.getItem('directionMarkers'));
       if(this.directionMarkers.length !== markers.length) {
