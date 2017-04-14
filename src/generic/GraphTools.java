@@ -683,6 +683,7 @@ public class GraphTools {
 
 		
 		start = handleInsideBuilding(start, end, g);
+		end = handleInsideBuilding(end, start, g);
 		
 		boolean[][] closedSet = new boolean[g.nodes2.length][g.nodes2[0].length];
 		FScoreComparator cmprtor = new FScoreComparator();

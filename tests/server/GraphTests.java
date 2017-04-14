@@ -265,8 +265,8 @@ public class GraphTests {
 		// 40.24920155 -111.64851665
 		// LatLng start = new LatLng(40.24838677, -111.65048003);
 		// LatLng end = new LatLng(40.24920155, -111.64851665);
-		LatLng start = new LatLng(40.248893, -111.649025);
-		LatLng end = new LatLng(40.24939398, -111.64820552);
+		LatLng end = new LatLng(40.248893, -111.649025);
+		LatLng start = new LatLng(40.24939398, -111.64820552);
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
 		int hour = ZoningTools.GetHour(southwest);
