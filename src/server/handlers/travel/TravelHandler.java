@@ -19,6 +19,7 @@ import generic.ZoningTools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
+import server.APITools;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
 
@@ -83,50 +84,35 @@ public class TravelHandler extends WalkerHandler {
 					|| start.latitude > -111.643854 || end.longitude < -111.657854 || end.longitude > 40.2519803
 					|| end.latitude < -111.657854 || end.latitude > -111.643854) {
 
-				// put eric's stuff here
-
+				String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+				String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+				markers = generic.GraphTools.CreateMarkersFromPolyline(polyPieces);
 			}
-			LatLng southwest = new LatLng(40.244803, -111.657854);
-			LatLng northeast = new LatLng(40.2519803, -111.643854);
-			int hour = ZoningTools.GetHour(southwest);
-
-			startNode = g.getClosestNodeFast(start, southwest);
-			endNode = g.getClosestNodeFast(end, southwest);
-			// if (g.nodes2[startNode.x][startNode.y].code ==
-			// NodeCode.Building){
-			// NodeIndex temp1 =
-			// g.getClosestBuildingNodeFast(g.getNodeFromIndex(endNode).getPosition(),
-			// southwest);
-			// NodeIndex temp2 =
-			// g.getClosestBuildingNodeFast(g.getNodeFromIndex(startNode).getPosition(),
-			// southwest);
-			// if(g.getNodeFromIndex(temp1).getBuilding() ==
-			// g.getNodeFromIndex(temp2).getBuilding()){
-			// startNode = temp1;
-			// }
-			// }
-
-			starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
-			markers = new ArrayList<>();
-			starPath.add(startNode);
-			starPath.add(0, endNode);
-			for (int i = 0; i < starPath.size(); i++) {
-				Node n = g.getFromIndex(starPath.get(i));
-
-				Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS,
-						n.getPosition().longitude - Config.LON_BIAS);
-
-				markers.add(m);
+			else
+			{
+				LatLng southwest = new LatLng(40.244803, -111.657854);
+				LatLng northeast = new LatLng(40.2519803, -111.643854);
+				int hour = ZoningTools.GetHour(southwest);
+	
+				startNode = g.getClosestNodeFast(start, southwest);
+				endNode = g.getClosestNodeFast(end, southwest);
+				
+				starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
+				markers = new ArrayList<>();
+				starPath.add(startNode);
+				starPath.add(0, endNode);
+				for (int i = 0; i < starPath.size(); i++) {
+					Node n = g.getFromIndex(starPath.get(i));
+	
+					Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS,
+							n.getPosition().longitude - Config.LON_BIAS);
+	
+					markers.add(m);
+				}
 			}
-
-			BufferedImage img = Tools.ReadImage("mock/campus.png");
-			GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
-			Tools.WriteImage(img, "testImages/a_star_2.png");
-
-			// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
-			// northeast, Color.BLUE);
-
-			// Tools.WriteImage(img, "testImages/bigTest.png");
+			//BufferedImage img = Tools.ReadImage("mock/campus.png");
+			//GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+			//Tools.WriteImage(img, "testImages/a_star_2.png");
 		} catch (Exception e) {
 			System.err.println("startNode: " + startNode);
 			System.err.println("endNode: " + endNode);
