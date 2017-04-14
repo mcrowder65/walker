@@ -6,6 +6,7 @@ import {StatechangeEvent} from '../../typings/statechange-event';
 import {WalkerMarkerModal} from '../walker-marker-modal/walker-marker-modal'
 import {Options} from '../../typings/options';
 import {UserOptions} from '../../typings/user-options';
+import {OutOfBoundsMarker} from '../../typings/out-of-bounds-marker';
 
 export class WalkerMap {
   public is: string;
@@ -44,6 +45,8 @@ export class WalkerMap {
   public southwest: Marker;
   public northwest: Marker;
   public southeast: Marker;
+  public outOfBoundsDirections: OutOfBoundsMarker[];
+
   beforeRegister(): void {
     this.is = 'walker-map';
     this.properties = {
@@ -92,64 +95,6 @@ export class WalkerMap {
       latitude: this.southwest.latitude,
       longitude: this.northeast.longitude
     };
-    // this.initBorders();
-  }
-  initBorders(): void {
-    const southwest: Marker = {
-      latitude: 40.244803,
-      longitude: -111.657854
-    };
-    const northeast: Marker = {
-      latitude: 40.2519803,
-      longitude: -111.643854
-    };
-
-    const northwest: Marker = {
-      latitude: northeast.latitude,
-      longitude: southwest.longitude
-    };
-
-    const southeast: Marker = {
-      latitude: southwest.latitude,
-      longitude: northeast.longitude
-    };
-    const verticalNum: number = (northeast.latitude - southeast.latitude) / 100;
-    const horizontalNum: number = (northwest.longitude - northeast.longitude) / 100;
-    for(let i: number = 0; i < 100; i++) {
-      // northeast to southeast
-      this.borders = [...this.borders || [], {
-        latitude: northeast.latitude - (verticalNum * i),
-        longitude: northeast.longitude
-      }];
-
-      //northwest to southwest
-      this.borders = [...this.borders || [], {
-        latitude: southwest.latitude + (verticalNum * i),
-        longitude: southwest.longitude
-      }];
-
-      //northwest to northeast
-      this.borders = [...this.borders || [], {
-        latitude: northwest.latitude,
-        longitude: northwest.longitude - (horizontalNum * i)
-      }];
-
-      // southwest to southeast
-      this.borders = [...this.borders || [], {
-        latitude: southwest.latitude,
-        longitude: southwest.longitude - (horizontalNum * i),
-      }];
-    }
-
-
-
-
-
-
-    this.borders = [
-      ...this.borders || [], southwest, northeast, northwest, southeast
-    ];
-    console.log(this.borders);
   }
   /**
    * This is needed here because the html calls it as well.
@@ -303,13 +248,39 @@ export class WalkerMap {
         parkingLots: this.parkingLots || 0,
         preferDesignatedPaths: this.preferDesignatedPaths || 0
       };
-      await Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
+      if(this.isOutOfBounds(this.getStartMarker()) || this.isOutOfBounds(this.getEndMarker())) {
+        const marker: OutOfBoundsMarker = {
+          start: `${this.getStartMarker().latitude},${this.getStartMarker().longitude}`,
+          end: `${this.getEndMarker().latitude}, ${this.getEndMarker().longitude}`
+        };
+        Actions.setOutOfBoundsDirections(this, marker);
+        Actions.setStartMarker(this, null);
+        Actions.setEndMarker(this, null);
+        Actions.setDirectionMarkers(this, null);
+      } else {
+        Actions.setOutOfBoundsDirections(this, null);
+        this.querySelector('#directions').startAddress = null;
+        this.querySelector('#directions').endAddress = null;
+        this.querySelector('#directions').response = null;
+        await Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
+      }
+
+
     } catch(error) {
       console.error(error);
       this.errorMessage = '';
       this.errorMessage = error.message
     }
 
+  }
+  private isOutOfBounds(marker: Marker): boolean {
+    if(marker.longitude < this.northwest.longitude
+    || marker.latitude < this.southwest.latitude
+    || marker.latitude > this.northeast.latitude
+    || marker.longitude > this.northeast.longitude) {
+      return true;
+    }
+    return false;
   }
   private getStartMarker(): Marker {
     return this.startMarkers.length === 1 ? this.startMarkers[0] : null;
@@ -357,6 +328,8 @@ export class WalkerMap {
     this.parkingLots = state.parkingLots;
     this.preferDesignatedPaths = state.preferDesignatedPaths;
     this.directionMarkers = state.directionMarkers;
+    this.outOfBoundsDirections = state.outOfBoundsDirections;
+    console.log('this.outOfBoundsDirections ', this.outOfBoundsDirections);
     if(this.directionMarkers) {
       const markers: Marker[] = JSON.parse(localStorage.getItem('directionMarkers'));
       if(this.directionMarkers.length !== markers.length) {

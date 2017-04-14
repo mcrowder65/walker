@@ -33,6 +33,9 @@ public class DeleteMarkerHandler extends WalkerHandler {
 						Tools.firebase.delete("entrances/" + key);
 					}
 
+				} else if (marker.isStairs()) {
+					String path = "stairs" + marker.getId();
+					Tools.firebase.delete(path);
 				} else if (!marker.isBuilding()) {
 					Entrance entrance = new Entrance(marker);
 					Tools.firebase.delete("entrances/" + marker.getId());
