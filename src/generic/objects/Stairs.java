@@ -44,4 +44,8 @@ public class Stairs extends WalkerObject {
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+
+	public void setStairs(boolean bool) {
+		this.isStairs = bool;
+	}
 }

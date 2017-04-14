@@ -48,13 +48,11 @@ public class Server {
 		FirebaseApp.initializeApp(options);
 
 		int port = 8081;
-		
-		if (args.length > 0)
-		{
+
+		if (args.length > 0) {
+			System.out.println("Using other port..");
 			port = Integer.parseInt(args[0]);
 		}
-		
-		
 
 		System.out.println("Port = " + port);
 		try {
@@ -84,15 +82,33 @@ public class Server {
 		httpServer.createContext("/travel", travelHandler);
 
 		httpServer.start();
+		reset();
+	}
 
-		LatLng southwest = new LatLng(40.244803, -111.657854);
-		LatLng northeast = new LatLng(40.2519803, -111.643854);
-		BufferedImage img = Tools.ReadImage("mock/campus.png");
-		Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
-		Graph g = new Graph();
-		g.nodes2 = nodes;
-		Config.GRAPH = g;
-		g.addEnterExitFast(southwest);
+	public static void reset() {
+		long start = System.currentTimeMillis();
+		try {
+			System.out.println("preprocessing");
 
+			LatLng southwest = new LatLng(40.244803, -111.657854);
+			LatLng northeast = new LatLng(40.2519803, -111.643854);
+			BufferedImage img = Tools.ReadImage("mock/campus.png");
+			Node[][] nodes = GraphTools.genUniformNodes(2, southwest, northeast, img);
+			Graph g = new Graph();
+			g.nodes2 = nodes;
+			Config.GRAPH = g;
+			g.addEnterExitFast(southwest);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		long end = System.currentTimeMillis();
+
+		System.out.println("done preprocessing. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");
+
+	}
+
+	private static double getSeconds(long milli) {
+		return milli / 1000.0;
 	}
 }
