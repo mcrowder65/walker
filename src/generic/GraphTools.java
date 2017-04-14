@@ -140,8 +140,8 @@ public class GraphTools {
 			if (up.getBuilding() == UserPrefs.MAX_VAL)
 				return Double.MAX_VALUE;
 			else
-				// totalCost += (Config.BINARY_COEFF * up.getBuilding());
-				return 0;
+				totalCost += (Config.BINARY_COEFF * up.getBuilding());
+			// return 0;
 		}
 
 		if (end.code == NodeCode.Other) {
