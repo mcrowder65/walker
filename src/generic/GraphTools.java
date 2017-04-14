@@ -669,8 +669,7 @@ public class GraphTools {
 						}
 						
 					}
-					else if (g.nodes2[x][y].getBuilding() != null)
-						System.out.println(g.nodes2[x][y].getBuilding().getTitle());
+
 				}
 			}
 			
