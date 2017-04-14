@@ -80,9 +80,12 @@ public class TravelHandler extends WalkerHandler {
 		try {
 			start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 			end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
-			if (start.longitude < -111.657854 || start.longitude > 40.2519803 || start.latitude < -111.657854
-					|| start.latitude > -111.643854 || end.longitude < -111.657854 || end.longitude > 40.2519803
-					|| end.latitude < -111.657854 || end.latitude > -111.643854) {
+			LatLng southwest = new LatLng(40.244803, -111.657854);
+			LatLng northeast = new LatLng(40.2519803, -111.643854);
+			if (start.longitude < southwest.longitude || start.longitude > northeast.longitude || 
+				start.latitude < southwest.latitude || start.latitude > northeast.latitude || 
+				end.longitude < southwest.longitude || end.longitude > northeast.longitude
+					|| end.latitude < southwest.latitude || end.latitude > northeast.latitude) {
 
 				String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
 				String[] polyPieces = server.APITools.GetPolylinePieces(resp);
@@ -90,8 +93,7 @@ public class TravelHandler extends WalkerHandler {
 			}
 			else
 			{
-				LatLng southwest = new LatLng(40.244803, -111.657854);
-				LatLng northeast = new LatLng(40.2519803, -111.643854);
+			
 				int hour = ZoningTools.GetHour(southwest);
 	
 				startNode = g.getClosestNodeFast(start, southwest);
