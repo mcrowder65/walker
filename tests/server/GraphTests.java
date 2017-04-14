@@ -256,7 +256,8 @@ public class GraphTests {
 
 	}
 
-	// @Test
+    @SuppressWarnings("unused")
+	@Test
 	public void bigTest() {
 		// 40.24850141,-111.65050149
 		// 40.24923226,-111.64849520
@@ -264,7 +265,7 @@ public class GraphTests {
 		// 40.24920155 -111.64851665
 		// LatLng start = new LatLng(40.24838677, -111.65048003);
 		// LatLng end = new LatLng(40.24920155, -111.64851665);
-		LatLng start = new LatLng(40.24955776, -111.65031374);
+		LatLng start = new LatLng(40.248893, -111.649025);
 		LatLng end = new LatLng(40.24939398, -111.64820552);
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
@@ -280,6 +281,7 @@ public class GraphTests {
 		NodeIndex endNodeBlack = g.getClosestBlackNodeFast(end, southwest);
 		UserPrefs up = new UserPrefs(0, 0, 0, 0, 0, 0, 0);
 
+		g.addEnterExitFast(southwest);
 		List<NodeIndex> starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
 		starPath.add(startNode);
 		starPath.add(0, endNode);
@@ -319,7 +321,7 @@ public class GraphTests {
 
 	}
 
-	@Test
+	//@Test
 	public void genImage() {
 		LatLng southwest = new LatLng(40.244803, -111.657854);
 		LatLng northeast = new LatLng(40.2519803, -111.643854);
