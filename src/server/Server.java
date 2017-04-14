@@ -49,7 +49,9 @@ public class Server {
 
 		int port = 8081;
 
-		if (args.length > 0) {
+		if (args.length > 0)
+		{
+			System.out.println("Using other port..");
 			port = Integer.parseInt(args[0]);
 		}
 
