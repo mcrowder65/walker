@@ -81,45 +81,38 @@ public class TravelHandler extends WalkerHandler {
 			end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
-			int hour = ZoningTools.GetHour(southwest);
-
-			startNode = g.getClosestNodeFast(start, southwest);
-			endNode = g.getClosestNodeFast(end, southwest);
-			// if (g.nodes2[startNode.x][startNode.y].code ==
-			// NodeCode.Building){
-			// NodeIndex temp1 =
-			// g.getClosestBuildingNodeFast(g.getNodeFromIndex(endNode).getPosition(),
-			// southwest);
-			// NodeIndex temp2 =
-			// g.getClosestBuildingNodeFast(g.getNodeFromIndex(startNode).getPosition(),
-			// southwest);
-			// if(g.getNodeFromIndex(temp1).getBuilding() ==
-			// g.getNodeFromIndex(temp2).getBuilding()){
-			// startNode = temp1;
-			// }
-			// }
-
-			starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
-			markers = new ArrayList<>();
-			starPath.add(startNode);
-			starPath.add(0, endNode);
-			for (int i = 0; i < starPath.size(); i++) {
-				Node n = g.getFromIndex(starPath.get(i));
-
-				Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS,
-						n.getPosition().longitude - Config.LON_BIAS);
-
-				markers.add(m);
+			if (start.latitude < southwest.latitude || start.longitude < southwest.longitude || 
+				start.latitude > northeast.latitude || start.longitude > northeast.longitude ||
+				start.latitude < southwest.latitude || start.longitude < southwest.longitude || 
+				start.latitude > northeast.latitude || start.longitude > northeast.longitude)
+			{
+				
+				
+				
 			}
-
-			BufferedImage img = Tools.ReadImage("mock/campus.png");
-			GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
-			Tools.WriteImage(img, "testImages/a_star_2.png");
-
-			// GraphTools.WriteAStarPathToImage(img, g, starPath, southwest,
-			// northeast, Color.BLUE);
-
-			// Tools.WriteImage(img, "testImages/bigTest.png");
+			else
+			{
+				int hour = ZoningTools.GetHour(southwest);
+	
+				startNode = g.getClosestNodeFast(start, southwest);
+				endNode = g.getClosestNodeFast(end, southwest);
+				
+				starPath = GraphTools.A_Star(g, startNode, endNode, up, hour);
+				markers = new ArrayList<>();
+				starPath.add(startNode);
+				starPath.add(0, endNode);
+				for (int i = 0; i < starPath.size(); i++) {
+					Node n = g.getFromIndex(starPath.get(i));
+	
+					Marker m = new Marker(n.getPosition().latitude - Config.LAT_BIAS,
+							n.getPosition().longitude - Config.LON_BIAS);
+	
+					markers.add(m);
+				}
+			}
+			//BufferedImage img = Tools.ReadImage("mock/campus.png");
+			//GraphTools.WriteAStarPathToImage(img, g, starPath, southwest, northeast, Color.BLUE);
+			//Tools.WriteImage(img, "testImages/a_star_2.png");
 		} catch (Exception e) {
 			System.err.println("startNode: " + startNode);
 			System.err.println("endNode: " + endNode);
