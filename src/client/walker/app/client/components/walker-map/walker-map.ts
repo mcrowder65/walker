@@ -45,7 +45,8 @@ export class WalkerMap {
   public southwest: Marker;
   public northwest: Marker;
   public southeast: Marker;
-  public outOfBoundsDirections: OutOfBoundsMarker[];
+  public start: string;
+  public end: string;
 
   beforeRegister(): void {
     this.is = 'walker-map';
@@ -249,17 +250,15 @@ export class WalkerMap {
         preferDesignatedPaths: this.preferDesignatedPaths || 0
       };
       if(this.isOutOfBounds(this.getStartMarker()) || this.isOutOfBounds(this.getEndMarker())) {
-        const marker: OutOfBoundsMarker = {
-          start: `${this.getStartMarker().latitude},${this.getStartMarker().longitude}`,
-          end: `${this.getEndMarker().latitude}, ${this.getEndMarker().longitude}`
-        };
-        Actions.setOutOfBoundsDirections(this, marker);
+        this.start=`${this.getStartMarker().latitude},${this.getStartMarker().longitude}`
+        this.end= `${this.getEndMarker().latitude}, ${this.getEndMarker().longitude}`
         Actions.setStartMarker(this, null);
         Actions.setEndMarker(this, null);
         Actions.setDirectionMarkers(this, null);
       } else {
-        this.querySelector('#directions').map = null;
-        Actions.setOutOfBoundsDirections(this, null);
+        if(this.querySelector('#directions')) {
+          this.querySelector('#directions').map = null;
+        }
         await Actions.travel(this, 'travel', this.getStartMarker(), this.getEndMarker(), userOptions);
       }
 
@@ -326,7 +325,6 @@ export class WalkerMap {
     this.parkingLots = state.parkingLots;
     this.preferDesignatedPaths = state.preferDesignatedPaths;
     this.directionMarkers = state.directionMarkers;
-    this.outOfBoundsDirections = state.outOfBoundsDirections;
     if(this.directionMarkers) {
       const markers: Marker[] = JSON.parse(localStorage.getItem('directionMarkers'));
       if(this.directionMarkers.length !== markers.length) {
