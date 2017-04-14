@@ -13,6 +13,7 @@ import java.util.Random;
 import com.google.common.collect.Lists;
 
 import generic.objects.Building;
+import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
 import googlemaps.PolyUtil;
@@ -35,6 +36,22 @@ public class GraphTools {
 
 	}
 
+	public static List<Marker> CreateMarkersFromPolyline(String[] polylinePieces)
+	{
+		ArrayList<LatLng> pivots = new ArrayList<LatLng>();
+		for (String poly : polylinePieces) {
+			pivots.addAll(PolyUtil.decode(poly));
+		}
+		List<Marker> markers = new ArrayList<Marker>();
+		for (int n = 0; n < pivots.size(); n++) {
+			Marker m = new Marker();
+			m.setLatitude(pivots.get(n).latitude);
+			m.setLongitude(pivots.get(n).longitude);
+			markers.add(m);
+		}
+		return markers;
+	}
+	
 	private static Random rand = new Random();
 
 	/**

@@ -19,6 +19,7 @@ import generic.ZoningTools;
 import generic.objects.Marker;
 import generic.objects.UserPrefs;
 import googlemaps.LatLng;
+import server.APITools;
 import server.JSONTools;
 import server.handlers.WalkerHandler;
 
@@ -83,22 +84,14 @@ public class TravelHandler extends WalkerHandler {
 					|| start.latitude > -111.643854 || end.longitude < -111.657854 || end.longitude > 40.2519803
 					|| end.latitude < -111.657854 || end.latitude > -111.643854) {
 
-				// put eric's stuff here
-
-			}
-			LatLng southwest = new LatLng(40.244803, -111.657854);
-			LatLng northeast = new LatLng(40.2519803, -111.643854);
-			if (start.latitude < southwest.latitude || start.longitude < southwest.longitude || 
-				start.latitude > northeast.latitude || start.longitude > northeast.longitude ||
-				start.latitude < southwest.latitude || start.longitude < southwest.longitude || 
-				start.latitude > northeast.latitude || start.longitude > northeast.longitude)
-			{
-				
-				
-				
+				String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
+				String[] polyPieces = server.APITools.GetPolylinePieces(resp);
+				markers = generic.GraphTools.CreateMarkersFromPolyline(polyPieces);
 			}
 			else
 			{
+				LatLng southwest = new LatLng(40.244803, -111.657854);
+				LatLng northeast = new LatLng(40.2519803, -111.643854);
 				int hour = ZoningTools.GetHour(southwest);
 	
 				startNode = g.getClosestNodeFast(start, southwest);
