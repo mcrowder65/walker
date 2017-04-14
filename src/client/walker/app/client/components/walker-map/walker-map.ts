@@ -40,7 +40,10 @@ export class WalkerMap {
   public stairsMarkers: Marker[];
   public directionMarkers: Marker[];
   public borders: Marker[];
-
+  public northeast: Marker;
+  public southwest: Marker;
+  public northwest: Marker;
+  public southeast: Marker;
   beforeRegister(): void {
     this.is = 'walker-map';
     this.properties = {
@@ -72,7 +75,24 @@ export class WalkerMap {
     this.startLatitude  = (40.2519803 + 40.244803) / 2;
     this.startPointButtonText = 'Set start marker';
     this.endPointButtonText = 'Set end marker';
-    this.initBorders();
+    this.southwest = {
+      latitude: 40.244803,
+      longitude: -111.657854
+    };
+    this.northeast = {
+      latitude: 40.2519803,
+      longitude: -111.643854
+    };
+    this.northwest = {
+      latitude: this.northeast.latitude,
+      longitude: this.southwest.longitude
+    };
+
+    this.southeast = {
+      latitude: this.southwest.latitude,
+      longitude: this.northeast.longitude
+    };
+    // this.initBorders();
   }
   initBorders(): void {
     const southwest: Marker = {

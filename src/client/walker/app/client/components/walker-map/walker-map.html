@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/google-map/google-map.html">
 <link rel="import" href="../../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="../../bower_components/google-map/google-map-search.html">
+<link rel="import" href="../../bower_components/google-map/google-map-poly.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../walker-marker-modal/walker-marker-modal.html">
@@ -62,7 +63,7 @@
       latitude="[[startLatitude]]"
       no-auto-tilt="true"
       zoom="16">
-      <!-- <template is="dom-repeat" items="[[startMarkers]]">
+      <template is="dom-repeat" items="[[startMarkers]]">
         <google-map-marker
           id="startMarker"
           animation="DROP"
@@ -106,7 +107,7 @@
           icon="http://127.0.0.1:3000/markers/purple_MarkerB.png"
           >
         </google-map-marker>
-      </template>-->
+      </template>
       <template is="dom-repeat" items="[[markers]]">
           <google-map-marker
             id="[[item.id]]"
@@ -135,8 +136,30 @@
             >
         </google-map-marker>
       </template>
-    </google-map>
+        <!--northwest to northeast -->
+        <google-map-poly>
+          <google-map-point latitude="[[northwest.latitude]]" longitude="[[northwest.longitude]]"></google-map-point>
+          <google-map-point latitude="[[northeast.latitude]]" longitude="[[northeast.longitude]]"></google-map-point>
+        </google-map-poly>
 
+        <!-- northeast to southeast -->
+        <google-map-poly>
+          <google-map-point latitude="[[northeast.latitude]]" longitude="[[northeast.longitude]]"></google-map-point>
+          <google-map-point latitude="[[southeast.latitude]]" longitude="[[southeast.longitude]]"></google-map-point>
+        </google-map-poly>
+
+        <!-- southwest to southeast -->
+        <google-map-poly>
+          <google-map-point latitude="[[southwest.latitude]]" longitude="[[southwest.longitude]]"></google-map-point>
+          <google-map-point latitude="[[southeast.latitude]]" longitude="[[southeast.longitude]]"></google-map-point>
+        </google-map-poly>
+
+        <!-- southwest to northwest -->
+        <google-map-poly>
+          <google-map-point latitude="[[southwest.latitude]]" longitude="[[southwest.longitude]]"></google-map-point>
+          <google-map-point latitude="[[northwest.latitude]]" longitude="[[northwest.longitude]]"></google-map-point>
+        </google-map-poly>
+    </google-map>
     <walker-marker-modal id="walker-marker-modal"></walker-marker-modal>
 
   </template>
