@@ -245,7 +245,7 @@ export class WalkerMap {
    * Called from dom
    */
   computeIcon(marker: Marker): string {
-    const base: string = 'http://127.0.0.1:8000/markers/';
+    const base: string = 'http://127.0.0.1:3000/markers/';
     if(marker.buildingId) {
       return base + 'yellow_marker.png';
     } else if(marker.isStairs) {

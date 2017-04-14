@@ -48,6 +48,13 @@ public class Server {
 		FirebaseApp.initializeApp(options);
 
 		int port = 8081;
+		
+		if (args.length > 0)
+		{
+			port = Integer.parseInt(args[0]);
+		}
+		
+		
 
 		System.out.println("Port = " + port);
 		try {
