@@ -63,7 +63,8 @@ public class TravelHandler extends WalkerHandler {
 			exchange.getResponseBody().close();
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("done travelling, took " + (((long) end / (long) 1000) - ((long) start / (long) 1000)));
+		System.out.println(
+				"done travelling, took " + (((long) end / (long) 1000) - ((long) start / (long) 1000)) + " seconds");
 
 	}
 
