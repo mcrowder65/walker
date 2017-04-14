@@ -17,4 +17,10 @@ public class BuildingDAO {
 		return buildings;
 
 	}
+
+	public static Building get(String id) {
+		Building building = (Building) Tools.firebase.get("buildings/" + id, new Building());
+
+		return building;
+	}
 }
