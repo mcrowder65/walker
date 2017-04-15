@@ -1,0 +1,11 @@
+search for process by doing 
+
+netstat -plten | grep 8081
+
+then 
+
+kill -9 <pid>
+
+then run server by doing
+
+nohup java -jar jardaddy.jar &
