@@ -9,6 +9,7 @@ import generic.objects.Building;
 import generic.objects.Entrance;
 import generic.objects.Marker;
 import server.JSONTools;
+import server.Server;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
 
