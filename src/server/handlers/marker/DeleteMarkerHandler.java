@@ -9,6 +9,7 @@ import generic.objects.Building;
 import generic.objects.Entrance;
 import generic.objects.Marker;
 import server.JSONTools;
+import server.Server;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
 
@@ -43,6 +44,7 @@ public class DeleteMarkerHandler extends WalkerHandler {
 				}
 
 			}
+			Server.reset();
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 			exchange.getResponseBody().close();
 

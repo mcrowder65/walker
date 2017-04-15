@@ -10,6 +10,7 @@ import generic.objects.Entrance;
 import generic.objects.Marker;
 import generic.objects.Stairs;
 import server.JSONTools;
+import server.Server;
 import server.dao.BuildingDAO;
 import server.handlers.WalkerHandler;
 import sun.net.www.protocol.http.HttpURLConnection;
@@ -73,7 +74,7 @@ public class SetMarkerHandler extends WalkerHandler {
 					}
 
 				}
-				// Server.reset();
+				Server.reset();
 				try {
 					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 					exchange.getResponseBody().close();
