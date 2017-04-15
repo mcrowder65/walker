@@ -73,7 +73,7 @@ public class SetMarkerHandler extends WalkerHandler {
 					}
 
 				}
-				// Server.reset();
+				Server.reset();
 				try {
 					exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 					exchange.getResponseBody().close();

@@ -43,6 +43,7 @@ public class DeleteMarkerHandler extends WalkerHandler {
 				}
 
 			}
+			Server.reset();
 			exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 			exchange.getResponseBody().close();
 
