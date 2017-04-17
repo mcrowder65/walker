@@ -243,9 +243,6 @@ export class WalkerMap {
    */
   async go(): Promise<void> {
     try {
-      if(!this.getStartMarker() || !this.getEndMarker()) {
-        return;
-      }
       const userOptions: UserOptions = {
         stairs: this.stairs || 0,
         elevation: this.elevation || 0,
@@ -256,6 +253,7 @@ export class WalkerMap {
         preferDesignatedPaths: this.preferDesignatedPaths || 0
       };
       if(this.isOutOfBounds(this.getStartMarker()) || this.isOutOfBounds(this.getEndMarker())) {
+        this.querySelector('#directions').map = this.querySelector('#map').map;
         this.start=`${this.getStartMarker().latitude},${this.getStartMarker().longitude}`
         this.end= `${this.getEndMarker().latitude}, ${this.getEndMarker().longitude}`
         Actions.setStartMarker(this, null);
@@ -277,7 +275,7 @@ export class WalkerMap {
 
   }
   private isOutOfBounds(marker: Marker): boolean {
-    if(marker.longitude < this.northwest.longitude
+    if(marker.longitude < this.southwest.longitude
     || marker.latitude < this.southwest.latitude
     || marker.latitude > this.northeast.latitude
     || marker.longitude > this.northeast.longitude) {
