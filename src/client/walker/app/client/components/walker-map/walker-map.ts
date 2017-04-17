@@ -162,7 +162,9 @@ export class WalkerMap {
       } else {
         this.endPointButtonText = 'Set end marker';
       }
+
       Actions.setEndMarker(this, this.getEndMarker());
+
     }
 
   }
@@ -180,7 +182,7 @@ export class WalkerMap {
       longitude
     };
     Actions.setEndMarker(this, newMarker);
-
+    this.go();
   }
 
   /**
@@ -196,6 +198,7 @@ export class WalkerMap {
       longitude
     };
     Actions.setStartMarker(this, newMarker);
+    this.go();
   }
 
   /**
@@ -240,6 +243,9 @@ export class WalkerMap {
    */
   async go(): Promise<void> {
     try {
+      if(!this.getStartMarker() || !this.getEndMarker()) {
+        return;
+      }
       const userOptions: UserOptions = {
         stairs: this.stairs || 0,
         elevation: this.elevation || 0,
