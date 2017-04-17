@@ -41,7 +41,7 @@ public class ZoningTools {
 		TimeZone tZone = TimeZone.getTimeZone(zId);
 		Calendar time = Calendar.getInstance(tZone);
 
-		int hour = time.get(Calendar.HOUR_OF_DAY) + 1; //Mountain time
+		int hour = (time.get(Calendar.HOUR_OF_DAY) + 1) % 24; //Mountain time
 		
 		int convHour = (hour + timezone) % 24;
 		
