@@ -11,3 +11,5 @@
 <b>Labeling:</b> Our idea relies heavily on allowing users to cut through buildings to reach their destination quicker. As a result we need information regarding exits, entrances, and hours of operations for the buildings which users want to use. In order to do this, we plan on having users annotate buildings that they use frequently. In order for our app to work with BYU, we are personally creating all the annotations for the campus. Users will be able to drop pins at building entrances and exits and lable hours of operations through our website. 
 
 <b>The Graph:</b> In order to break down the image we use a connected components algorithm to fill in buildings with the color red. Google's API allows us to fill in some builings automatically and our algorithm takes care of the rest. We also have colors in our config file which allow us to detect grass, stairs, and potentially unpassable areas. We use the AStar algorithm to find a path from point A to point B given the various costs of buildings, grass, ect. 
+
+https://drive.google.com/open?id=0BxYl7lEbWcxrc1NQSHFjZkxjaUk
