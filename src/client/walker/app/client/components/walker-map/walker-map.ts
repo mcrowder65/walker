@@ -259,7 +259,7 @@ export class WalkerMap {
         Actions.setStartMarker(this, null);
         Actions.setEndMarker(this, null);
         Actions.setDirectionMarkers(this, null);
-      } else {
+      } else if (!!this.getStartMarker() && !!this.getEndMarker()){
         if(this.querySelector('#directions')) {
           this.querySelector('#directions').map = null;
         }
