@@ -275,13 +275,19 @@ export class WalkerMap {
 
   }
   private isOutOfBounds(marker: Marker): boolean {
-    if(marker.longitude < this.southwest.longitude
-    || marker.latitude < this.southwest.latitude
-    || marker.latitude > this.northeast.latitude
-    || marker.longitude > this.northeast.longitude) {
-      return true;
+    try {
+      if(marker.longitude < this.southwest.longitude
+      || marker.latitude < this.southwest.latitude
+      || marker.latitude > this.northeast.latitude
+      || marker.longitude > this.northeast.longitude) {
+        return true;
+      }
+      return false;
+    } catch(error) {
+      console.error(error);
     }
-    return false;
+
+
   }
   private getStartMarker(): Marker {
     return this.startMarkers.length === 1 ? this.startMarkers[0] : null;
