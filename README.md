@@ -1,31 +1,13 @@
-Minimum viable product:<br>
-    - We run a java program where we pass in a satellite image of BYU campus and your current location and desired destination.<br>
-    - We can input how much you care about walking through lawns, parking lots, buildings, etc.<br>
-    - This gives a shortest path from current location to desired destination.<br>
-    - We will manually annotate building information such as hours, peak busy times, exits, elevators, etc.<br>
-<br>
-Desired product:<br>
-    - Create a google maps web component where you can do the minimum viable product plus a simple web interface where 
-    anybody can input current location and desired destination (only for BYU campus).<br>
-    - Users can annotate buildings anywhere.<br>
-    - Users can input how much they care about walking through lawns, parking lots, buildings, etc.<br>
+Problem: Currently, there are many apps and technologies available that allow people to get walking directions from point A to point B. However, all of these services fall short in two major aspects. First, they do not usually find the actual shortest path from point A to point B. They tend to come up with the shortest path only using sidewalks, roads, and well-known paths. However, there are almost always shorter paths when one takes into account walking through parking lots, grassy areas, and buildings. Second, these services do not usually allow users to customize their route based on personal preference. For example, some people might not want to walk up stairs or steep inclines. We plan to solve these two primary problems. Campus Pilot attempts to calculate the true shortest path from point A to point B and will allow users to adjust settings to find the path that best suits their personal needs. 
 
+Signifigance: We hope that this project will greatly impact the lives of busy students and people everywhere. It will allow people to save time and get to their destinations as quickly as possible. More importantly, we believe that Campus Pilot will greatly benefit people with handicaps and disabilities. For example, many people have disabilities that force them to avoid stairs, steep elevations, and large distances. Campus Pilot will allow these people to better navigate their surroundings.
 
-Technologies used:<br>
-    - Server side: Java<br>
-    - Client side: Polymer<br>
-    - Database: Firebase<br>
-    
-    
-    
-    
-Ideas for the shortest Path:
-* Generate nodes based on GMAPI to find paths that we KNOW exist
-* Create a distance matrix based on euclidean distance (also can: create elevation matrix)
-* Update distance matrix based on building data
-* Update nodes for building exits / entrances
-* Calculate Dijkstra's to find a shortest path, including ones that could go through obstacles
-* Check if that path goes through an impossible obstacle, if so, update the weight to infinity and try again
-* Check if that path goes through a lawn or parking lot, if so, update the weight based on preferences.
-* Continue above until path cost does not improve.
+Technologies currently avaliable: As stated in Section 1, there are currently many technologies that calculate walking directions from source to destination. Here is a list of a few of the current technologies available: Google Maps, 	Apple Maps, MapQuest, CoPilot, Waze, and inRoute. However, as stated before, none of these truly find the shortest distance between point A and point B. They fail to take into account buildings, parking lots, and grass. They also fail to allow users to properly customize their route according to specific needs.
 
+Database: We are using Firebase for our database. Firebase is a database stored in the cloud by Google.  Firebase is nice because we are relying on Google for our security and stability of the server.  Another advantage that Google provides is a web interface for Firebase, so we can easily see the data in real time.  As of right now, there are two collections in the database: buildings and entrances.  All buildings have a list of entrances, title, latitude, longitude, opening time, and closing times.  All entrances have a reference back to the building that owns them, latitude, and longitude coordinates.  
+
+Frontend: For the front end we have chosen to use Google’s web component library, Polymer. Polymer fits our needs best because it supports ES6 and TypeScript, which, when coupled together, make asynchronous development very easy.  Polymer also has the behaviour of a single page application, which makes annotating the map very slick because no page reloads occur.
+
+Labeling: Our idea relies heavily on allowing users to cut through buildings to reach their destination quicker. As a result we need information regarding exits, entrances, and hours of operations for the buildings which users want to use. In order to do this, we plan on having users annotate buildings that they use frequently. In order for our app to work with BYU, we are personally creating all the annotations for the campus. Users will be able to drop pins at building entrances and exits and lable hours of operations through our website. 
+
+The Graph: In order to break down the image we use a connected components algorithm to fill in buildings with the color red. Google's API allows us to fill in some builings automatically and our algorithm takes care of the rest. We also have colors in our config file which allow us to detect grass, stairs, and potentially unpassable areas. We use the AStar algorithm to find a path from point A to point B given the various costs of buildings, grass, ect. 
