@@ -125,13 +125,13 @@ export class WalkerMap {
     } else if(this.settingEndMarker) {
       Actions.setEndMarker(this, marker);
     } else {
-      Actions.setStartMarker(this, null);
-      Actions.setEndMarker(this, null);
-      await Actions.initMarkers(this, 'getMarkers');
-      Actions.setMarkers(this, [...this.markers, marker]);
-      Actions.setLatitudeAndLongitude(this, marker);
-      const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
-      walkerMarkerModal.open();
+      // Actions.setStartMarker(this, null);
+      // Actions.setEndMarker(this, null);
+      // await Actions.initMarkers(this, 'getMarkers');
+      // Actions.setMarkers(this, [...this.markers, marker]);
+      // Actions.setLatitudeAndLongitude(this, marker);
+      // const walkerMarkerModal: WalkerMarkerModal = this.querySelector('#walker-marker-modal');
+      // walkerMarkerModal.open();
     }
 
 
