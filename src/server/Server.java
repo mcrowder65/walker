@@ -4,6 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -55,8 +58,11 @@ public class Server {
 			System.out.println("Using other port..");
 			port = Integer.parseInt(args[0]);
 		}
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(System.currentTimeMillis());
 
-		System.out.println("Port = " + port);
+		System.out.print(cal.getTime());
+		System.out.println(" Port = " + port);
 		try {
 			httpServer = HttpServer.create(new InetSocketAddress(port), MAX_WAITING_CONNECTIONS);
 		} catch (IOException e) {
@@ -92,7 +98,11 @@ public class Server {
 	public static void reset() {
 		long start = System.currentTimeMillis();
 		try {
-			System.out.println("preprocessing");
+			Calendar cal = new GregorianCalendar();
+			cal.setTimeInMillis(System.currentTimeMillis());
+
+			System.out.print(cal.getTime());
+			System.out.println(" preprocessing");
 
 			LatLng southwest = new LatLng(40.244803, -111.657854);
 			LatLng northeast = new LatLng(40.2519803, -111.643854);
@@ -107,8 +117,12 @@ public class Server {
 			e.printStackTrace();
 		}
 		long end = System.currentTimeMillis();
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(System.currentTimeMillis());
+		cal.setTimeZone(TimeZone.getTimeZone("PST"));
 
-		System.out.println("done preprocessing. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");
+		System.out.print(cal.getTime());
+		System.out.println(" done preprocessing. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");
 
 	}
 

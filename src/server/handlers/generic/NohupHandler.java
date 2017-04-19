@@ -12,7 +12,6 @@ public class NohupHandler extends WalkerHandler {
 
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		// TODO Auto-generated method stub
 		String FILENAME = "nohup.out";
 		StringBuilder json = new StringBuilder();
 		BufferedReader br = null;
