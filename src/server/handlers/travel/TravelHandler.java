@@ -2,6 +2,8 @@ package server.handlers.travel;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -61,8 +63,11 @@ public class TravelHandler extends WalkerHandler {
 			exchange.getResponseBody().close();
 		}
 		long end = System.currentTimeMillis();
+		Calendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(end);
 
-		System.out.println("done travelling, took " + ((end / 1000.0) - (start / 1000.0)) + " seconds");
+		System.out.print(cal.getTime());
+		System.out.println(" done travelling, took " + ((end / 1000.0) - (start / 1000.0)) + " seconds");
 
 	}
 
@@ -79,9 +84,9 @@ public class TravelHandler extends WalkerHandler {
 		try {
 			start = new LatLng(startMarker.getLatitude(), startMarker.getLongitude());
 			end = new LatLng(endMarker.getLatitude(), endMarker.getLongitude());
-			if (start.longitude < southwest.longitude || start.longitude > northeast.longitude || 
-				start.latitude < southwest.latitude || start.latitude > northeast.latitude || 
-				end.longitude < southwest.longitude || end.longitude > northeast.longitude
+			if (start.longitude < southwest.longitude || start.longitude > northeast.longitude
+					|| start.latitude < southwest.latitude || start.latitude > northeast.latitude
+					|| end.longitude < southwest.longitude || end.longitude > northeast.longitude
 					|| end.latitude < southwest.latitude || end.latitude > northeast.latitude) {
 
 				String resp = APITools.GetDirectionsResponse(start.toUrlValue(), end.toUrlValue());
