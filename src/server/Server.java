@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -59,7 +58,6 @@ public class Server {
 			port = Integer.parseInt(args[0]);
 		}
 		Calendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(System.currentTimeMillis());
 
 		System.out.print(cal.getTime());
 		System.out.println(" Port = " + port);
@@ -118,8 +116,6 @@ public class Server {
 		}
 		long end = System.currentTimeMillis();
 		Calendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(System.currentTimeMillis());
-		cal.setTimeZone(TimeZone.getTimeZone("PST"));
 
 		System.out.print(cal.getTime());
 		System.out.println(" done preprocessing. It took " + (getSeconds(end) - getSeconds(start)) + " seconds");

@@ -64,7 +64,6 @@ public class TravelHandler extends WalkerHandler {
 		}
 		long end = System.currentTimeMillis();
 		Calendar cal = new GregorianCalendar();
-		cal.setTimeInMillis(end);
 
 		System.out.print(cal.getTime());
 		System.out.println(" done travelling, took " + ((end / 1000.0) - (start / 1000.0)) + " seconds");
