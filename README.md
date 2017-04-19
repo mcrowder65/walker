@@ -13,3 +13,5 @@
 <b>The Graph:</b> To break down the image, we use a connected components algorithm to fill in buildings with the color red. Google's API allows us to fill in some buildings automatically and our algorithm takes care of the rest. We also color-code the image for grass, stairs, and potentially unpassable areas. We use the A\* algorithm to find a path from point A to point B given the various costs of buildings, grass, etc. 
 
 https://drive.google.com/open?id=0BxYl7lEbWcxrc1NQSHFjZkxjaUk
+
+<b>Video Demo:</b> https://www.youtube.com/watch?v=drwATJyG2_Y&feature=youtu.be
