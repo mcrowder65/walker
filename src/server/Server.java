@@ -21,6 +21,7 @@ import generic.Tools;
 import googlemaps.LatLng;
 import server.handlers.building.GetBuildingHandler;
 import server.handlers.building.GetBuildingsHandler;
+import server.handlers.generic.NohupHandler;
 import server.handlers.marker.DeleteMarkerHandler;
 import server.handlers.marker.GetMarkersHandler;
 import server.handlers.marker.SetMarkerHandler;
@@ -36,6 +37,7 @@ public class Server {
 	private GetBuildingsHandler getBuildingsHandler;
 	private GetBuildingHandler getBuildingHandler;
 	private TravelHandler travelHandler;
+	private NohupHandler nohupHandler;
 
 	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
 		new Server().run(args);
@@ -81,6 +83,8 @@ public class Server {
 		travelHandler = new TravelHandler();
 		httpServer.createContext("/travel", travelHandler);
 
+		nohupHandler = new NohupHandler();
+		httpServer.createContext("/logs", nohupHandler);
 		httpServer.start();
 		reset();
 	}
