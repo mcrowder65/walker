@@ -40,6 +40,7 @@ public class ZoningTools {
 		int hour = (time.get(Calendar.HOUR_OF_DAY)) % 24; // Mountain time
 
 		int convHour = (hour + timezone) % 24;
+		if (convHour < 0) convHour += 24;
 		System.out.println("if this isn't correct then something is going wrong - local time hour:" + convHour);
 
 		return convHour;
